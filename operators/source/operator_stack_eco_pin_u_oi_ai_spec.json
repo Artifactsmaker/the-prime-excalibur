@@ -1,0 +1,228 @@
+{
+  "identity": {
+    "id": "oi.stack.eco_pin_u.v1",
+    "shortName": "ECO_PIN_U_STACK",
+    "fullName": "Entropy Collapse -> Inward Consolidation -> Fixed-Point Validation Stack",
+    "version": "1.0.0",
+    "status": "stable",
+    "authorship": [
+      "Trung Bom",
+      "GPT"
+    ],
+    "license": "Proprietary-ready / research specification"
+  },
+  "intent": {
+    "objective": "Create a full operator stack for admissibility control, core consolidation, and stable existence validation.",
+    "problemStatement": "Reasoning systems need more than raw search: they need controlled possibility, coherent core formation, and law-level validation.",
+    "designRationale": "Use ECO to filter admissible space, P_in to densify viable structure, and U to validate fixed-point stability.",
+    "publicSummary": "This stack turns a raw possibility field into a stable solution through collapse, inward consolidation, and fixed-point validation."
+  },
+  "classification": {
+    "stackClass": "operator_stack",
+    "stackFormula": "x_{t+1} = U(P_in(ECO(x_t)))",
+    "stackRoles": {
+      "ECO": "admissibility control",
+      "P_in": "core consolidation",
+      "U": "stable existence validation"
+    }
+  },
+  "mathematics": {
+    "coreFormula": "Phi(x_t) = U(P_in(ECO(x_t)))",
+    "phaseInterpretation": [
+      "Phase 1: collapse weak possibility regions",
+      "Phase 2: densify viable states toward a core attractor",
+      "Phase 3: validate final fixed-point stability"
+    ],
+    "convergenceIndicators": [
+      {
+        "name": "Entropy Reduction",
+        "formula": "Delta H_t = H(x_t) - H(ECO(x_t))",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Inwardness",
+        "formula": "I_t = inwardness(P_in(ECO(x_t)))",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Fixed-Point Error",
+        "formula": "epsilon_t = ||U(P_in(ECO(x_t))) - P_in(ECO(x_t))||",
+        "targetDirection": "lower"
+      }
+    ]
+  },
+  "semantics": {
+    "axioms": [
+      "Admissibility precedes consolidation.",
+      "Consolidation precedes final validation.",
+      "Stable existence requires fixed-point consistency."
+    ],
+    "propositions": [
+      "If entropy decreases, inwardness increases, and fixed-point error shrinks, the stack moves toward a stable attractor.",
+      "The stack separates possibility control, core formation, and existence validation into modular layers."
+    ],
+    "theoremSketches": [
+      "Pipeline convergence sketch: ECO narrows space, P_in densifies core, U validates stability.",
+      "Modularity sketch: decoupling admissibility, consolidation, and validation improves interpretability and control."
+    ],
+    "convergenceStatement": "The stack converges toward stable regimes when Delta H rises, inwardness rises, and fixed-point error falls."
+  },
+  "pipeline": [
+    {
+      "id": "ECO",
+      "type": "meta_operator",
+      "role": "filter admissible states",
+      "inputRef": "x_t",
+      "outputRef": "x_t_admissible",
+      "dependency": [
+        "U"
+      ]
+    },
+    {
+      "id": "P_in",
+      "type": "operator",
+      "role": "densify viable states toward a core",
+      "inputRef": "x_t_admissible",
+      "outputRef": "x_t_core",
+      "dependency": [
+        "ECO"
+      ]
+    },
+    {
+      "id": "U",
+      "type": "law",
+      "role": "validate fixed-point stability",
+      "inputRef": "x_t_core",
+      "outputRef": "x_t+1",
+      "dependency": [
+        "P_in"
+      ]
+    }
+  ],
+  "oiMapping": [
+    {
+      "layer": "law",
+      "role": "U defines existence.",
+      "relationToStack": "Top criterion of stability."
+    },
+    {
+      "layer": "meta_operator",
+      "role": "ECO controls admissibility.",
+      "relationToStack": "First gate of possibility."
+    },
+    {
+      "layer": "operator",
+      "role": "P_in consolidates structure.",
+      "relationToStack": "Middle formation layer."
+    },
+    {
+      "layer": "state",
+      "role": "Concrete state evolution.",
+      "relationToStack": "Input and output substrate of the stack."
+    }
+  ],
+  "aiMapping": {
+    "runtimeTargets": [
+      "llm_inference",
+      "planner",
+      "symbolic_solver",
+      "retrieval",
+      "agent",
+      "operator_runtime",
+      "isa_chip"
+    ],
+    "aiRole": "Full-stack reasoning control architecture.",
+    "effectOnHypotheses": "Filters weak hypotheses, consolidates coherent cores, and validates stable outputs.",
+    "effectOnSearch": "Controls branching, reduces search radius, and defines stopping through fixed-point validation.",
+    "effectOnHallucination": "Improves reliability by requiring admissibility, coherence, and final stability.",
+    "effectOnLatency": "Adds structured control overhead but can reduce wasted deep-search cost."
+  },
+  "isaMapping": {
+    "macroInstruction": "STACK_EPU src -> dst",
+    "expansion": [
+      "ECO src, metric, threshold, r1 -> mode",
+      "PIN r1, metric, threshold, r2 -> core",
+      "UVAL r2, tolerance, dst -> stable_flag"
+    ],
+    "executionView": "Macro-level stack that expands into three control phases: collapse, inward consolidation, validation."
+  },
+  "benchmarkProfile": {
+    "scenario": "Compare raw search, search+pruning, and full ECO->P_in->U stack execution.",
+    "baselineSystems": [
+      "brute_force_search",
+      "heuristic_pruning",
+      "beam_search",
+      "confidence_only_stop"
+    ],
+    "metrics": [
+      {
+        "name": "Operational Entropy",
+        "symbol": "H",
+        "meaning": "Entropy of active possibility space.",
+        "targetDirection": "lower"
+      },
+      {
+        "name": "Inwardness",
+        "symbol": "I",
+        "meaning": "Coherence of viable core region.",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Fixed-Point Error",
+        "symbol": "epsilon",
+        "meaning": "Distance from stable invariance.",
+        "targetDirection": "lower"
+      },
+      {
+        "name": "Task Validity",
+        "symbol": "V",
+        "meaning": "Fraction of stable valid outputs.",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Total Runtime",
+        "symbol": "T",
+        "meaning": "Wall-clock or step budget to stable output.",
+        "targetDirection": "lower"
+      }
+    ],
+    "expectedEffects": [
+      "Lower entropy than baseline pipelines.",
+      "Higher inwardness before final validation.",
+      "Lower fixed-point error at termination.",
+      "Higher output validity on constrained reasoning tasks."
+    ]
+  },
+  "safetyGuards": [
+    {
+      "id": "guard.pipeline_desync",
+      "condition": "operator phases disagree on admissibility, core validity, or stability",
+      "action": "return control to previous phase with bounded recovery",
+      "reason": "Maintain modular consistency."
+    },
+    {
+      "id": "guard.false_stability",
+      "condition": "U validates but downstream behavior remains unstable",
+      "action": "trigger re-entry through ECO with stricter thresholds",
+      "reason": "Prevent accepting unstable attractors."
+    }
+  ],
+  "deploymentNotes": {
+    "compilerView": "Compile as a macro-pipeline with three modular phases.",
+    "runtimeView": "Track entropy, inwardness, fixed-point error, and recovery loops across the full stack.",
+    "chipView": "Map to three specialized execution blocks with trace-sharing between phases.",
+    "observability": [
+      "delta_entropy",
+      "delta_inwardness",
+      "fixed_point_error",
+      "recovery_loop_count",
+      "stable_output_rate"
+    ]
+  },
+  "metadata": {
+    "language": "English",
+    "domain": "O.i / A.i",
+    "operatorRole": "full_stack",
+    "visibility": "public-spec / private-implementation"
+  }
+}

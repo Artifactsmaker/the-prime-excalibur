@@ -1,0 +1,44 @@
+{
+  "operator": {
+    "id": "omega_0",
+    "symbol": "Ω₀",
+    "name": "The Omega-Zero Operator",
+    "vi_name": "Toán tử Hủy Khả Thể",
+    "version": "1.0.0",
+    "language": "en",
+    "author": "Trung Bờm × GPT",
+    "constraints": {
+      "no_latex": true,
+      "unicode_required": true,
+      "office_math_vector_equation_style": true
+    },
+    "thesis": "Phase death is endogenous: possibilities self-annihilate when misaligned with the grounding field ψₑ.",
+    "math": {
+      "basic_form": "Ω₀(ψ) = − γ · ψ",
+      "schrodinger_extended": "∂ψ/∂t = − (i/ħ) · Ĥψ − γ · ψ",
+      "field_decay": "ψ(x,t) = e^(−γt) · ψ(x,0)",
+      "total_field": "Ω₀(Ψ_total) = − Σᵢ γᵢ · ψᵢ",
+      "life_cycle": "Ψ_life(t) = ψₛ ∘ Σε ∘ (ψ⊗) ∘ ⊙ₛ · e^(−Ω₀t)"
+    },
+    "semantics": {
+      "type": "endogenous_phase_decay",
+      "effects": [
+        "silent branch death",
+        "cascade collapse if γ exceeds critical threshold",
+        "entropy balancing inverse of life"
+      ]
+    },
+    "applications": {
+      "ai": [
+        "Idea fading to reduce hallucination",
+        "Memory decay for coherence",
+        "Controlled emotional dissolution"
+      ],
+      "oi": [
+        "Safe phase pruning",
+        "Stability of distributed operator networks",
+        "Single-reality enforcement"
+      ]
+    }
+  }
+}

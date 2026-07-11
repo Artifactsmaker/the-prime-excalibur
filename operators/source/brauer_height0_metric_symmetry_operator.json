@@ -1,0 +1,179 @@
+{
+  "artifact_type": "operatorology.operator",
+  "name": "Height-Collapse / Metric→Symmetry Attractor",
+  "symbol": "ℋ₀⟂",
+  "version": "1.0.0",
+  "language": "vi",
+  "authors": [
+    "Phan Thành Trung (Trung Bờm)",
+    "ChatGPT (assistant)"
+  ],
+  "summary": "Toán tử mô tả giới hạn Brauer Height→0: metric suy biến (mất năng lực phân biệt ở các chiều không-bền), symmetry/invariance chi phối và trở thành cấu trúc nền để kiểm định quyết định. Dùng cho AI (robust representation, retrieval/rerank) và O.i (giảm nhiễu quyết định), có ánh xạ xuống silicon (precision/rank/threshold controller).",
+  "concepts": {
+    "state_space": {
+      "notation": "𝓧",
+      "description": "Không gian trạng thái (embedding, belief state, decision state, hoặc feature manifold)."
+    },
+    "height": {
+      "notation": "H",
+      "domain": "ℝ_{≥0}",
+      "interpretation": "Tham số độ phân giải cấu trúc. H cao: phân biệt chi tiết; H thấp: bỏ nhiễu, giữ bất biến.",
+      "role": "Điều khiển schedule/precision/threshold/rank."
+    },
+    "metric": {
+      "notation": "g_H hoặc d_H",
+      "description": "Tensor metric hoặc hàm khoảng cách phụ thuộc Height. Khi H→0, metric suy biến (degenerate).",
+      "degeneracy_condition": "det(g_H)→0 khi H→0 hoặc tồn tại v≠0 sao cho vᵀ g_0 v = 0."
+    },
+    "symmetry": {
+      "notation": "G",
+      "description": "Nhóm biến đổi (augmentations) mô hình hóa các biến thể tương đương của cùng một ý nghĩa/đối tượng.",
+      "orbit": "Orb(x) = { g·x | g∈G }",
+      "invariant": "I(x)=I(g·x) cho mọi g∈G"
+    }
+  },
+  "formal_definitions": [
+    {
+      "id": "def.metric_divergence",
+      "title": "Toán tử đo khác biệt (Metric/Divergence)",
+      "equation": "𝓓_H(x,y) = (x−y)ᵀ g_H (x−y)  (Mahalanobis)  hoặc  𝓓_H(x,y)=1−cos(x,y)",
+      "notes": [
+        "g_H có thể là đường chéo (per-dimension weights), low-rank, hoặc full matrix.",
+        "Trong chip: 𝓓_H chủ yếu là MAC (dot-product) + (optional) norm."
+      ]
+    },
+    {
+      "id": "def.symmetry_projection",
+      "title": "Toán tử chiếu bất biến (Symmetry Projection / Group Averaging)",
+      "equation": "𝓟_G[f](x)=∫_{g∈G} f(g·x) dμ(g)  (thực hành: average over transforms)",
+      "notes": [
+        "Trong ML: ensemble over augmentations / pooling theo nhóm / canonicalization.",
+        "Trong O.i: kiểm định ổn định của kết luận dưới biến đổi bối cảnh."
+      ]
+    },
+    {
+      "id": "def.height_collapse",
+      "title": "Toán tử Height-Collapse (Attractor H→0)",
+      "equation": "𝓒_{H→0}(x) = argmin_z ( 𝓓_H(x,z) + λ·𝓛_inv(z) )",
+      "inv_loss_examples": [
+        "𝓛_inv(z)=E_{g∼G}[||z−g·z||²]  (penalty phá bất biến)",
+        "𝓛_inv(z)=−I(z)  (maximize invariant score)"
+      ],
+      "notes": [
+        "Ý nghĩa: giảm Height → hợp nhất các biến thể trong orbit; chỉ giữ invariant như 'tọa độ' còn lại.",
+        "Trong triển khai thực tế: không cần giải argmin; có thể dùng canonicalization + pooling + threshold merge."
+      ]
+    }
+  ],
+  "interpretation": {
+    "core_claim": "Tại H→0, metric suy biến và mất năng lực phân biệt các trạng thái dọc theo những chiều không-bền; symmetry/invariance trở thành cấu trúc nền chi phối, khiến các biến thể trong Orb(x) được đồng nhất hóa bởi metric.",
+    "refinement": "Không nói 'metric = 0' mà nói 'metric suy biến': det(g_H)→0 hoặc rank(g_0) giảm."
+  },
+  "ai_applications": [
+    {
+      "area": "Representation / Embedding Robustness",
+      "goal": "Học biểu diễn bền dưới biến đổi (augmentations/paraphrase).",
+      "loss": "𝓛 = E_{g∼G}[𝓓_H(f(x), f(g·x))]  với schedule H: cao→thấp",
+      "expected_effect": "Giảm overfitting vào chi tiết không-bất-biến; tăng generalization."
+    },
+    {
+      "area": "Retrieval / RAG",
+      "goal": "Recall nhanh bằng metric, sau đó rerank bằng invariance.",
+      "pipeline": [
+        "Tầng 1 (H cao): ANN retrieval theo cosine/Mahalanobis để recall top-K.",
+        "Tầng 2 (H thấp): symmetry projection/canonicalization + stability check để rerank/verify."
+      ]
+    },
+    {
+      "area": "Calibration / Confidence",
+      "goal": "Đặt H thấp hơn khi entropy/cảnh báo nhiễu cao.",
+      "rule": "Nếu entropy(p) > τ thì giảm H và tăng kiểm định bất biến."
+    }
+  ],
+  "oi_applications": [
+    {
+      "area": "Decision Noise Engineering",
+      "goal": "Tách signal (bất biến) khỏi noise (phụ thuộc framing/ngữ cảnh).",
+      "model": "x = s + n,  và  𝓒_{H→0}(x) ≈ s",
+      "validity_test": "Valid(a)=1 nếu E_{g∼G}[Δ(a;g)] ≤ ε (kết luận ổn định dưới lật framing/nguồn)."
+    },
+    {
+      "area": "Gatekeeper / Fixed-point",
+      "goal": "Đưa hệ về symmetry fixed-point khi cần chốt quyết định.",
+      "note": "Phù hợp với logic HZSO/BZDO: hòa tan khác biệt để lộ luật nền bất biến."
+    }
+  ],
+  "silicon_mapping": {
+    "goal": "Biến pipeline Metric→Symmetry thành khối tính toán rẻ, nhanh, ổn định năng lượng.",
+    "blocks": [
+      {
+        "name": "Metric Front-End (Recall)",
+        "functions": [
+          "dot product / cosine",
+          "Mahalanobis diagonal or low-rank",
+          "top-K selection"
+        ],
+        "hardware": [
+          "MAC/systolic array",
+          "approx norm/reciprocal",
+          "heap/select network"
+        ]
+      },
+      {
+        "name": "Symmetry Back-End (Verify)",
+        "functions": [
+          "canonicalization",
+          "pooling/averaging",
+          "invariant signature (sketch/hash)",
+          "stability check"
+        ],
+        "hardware": [
+          "LUT + simple transforms",
+          "pooling units",
+          "sketch (random features)"
+        ]
+      },
+      {
+        "name": "Height Controller",
+        "functions": [
+          "bitwidth schedule",
+          "merge threshold τ(H)",
+          "rank k(H) control"
+        ],
+        "mapping": [
+          "H cao → FP16/INT16, τ nhỏ, k lớn",
+          "H thấp → INT8/INT4, τ lớn, k nhỏ"
+        ]
+      }
+    ],
+    "practical_notes": [
+      "Height xuống silicon tự nhiên bằng điều khiển precision, threshold hợp nhất và rank (low-rank/prune).",
+      "Không cần hiện thực hóa 'Einstein metric'; đây là metric trong không gian trạng thái AI/O.i."
+    ]
+  },
+  "tests": [
+    {
+      "id": "test.stability_paraphrase",
+      "description": "Một câu hỏi được paraphrase/lật framing: vector biểu diễn sau 𝓟_G nên gần nhau hơn so với trước chiếu.",
+      "success_criterion": "mean d_H(z, z_g) giảm khi H giảm."
+    },
+    {
+      "id": "test.merge_threshold",
+      "description": "Hai trạng thái khác nhau chủ yếu ở chiều nhiễu: khi H→0 và τ(H) tăng, hệ phải merge (treat-as-same).",
+      "success_criterion": "merge_rate tăng khi H giảm, nhưng accuracy invariant không giảm quá ngưỡng."
+    }
+  ],
+  "implementation_guidance": {
+    "recommended_defaults": {
+      "metric": "cosine hoặc Mahalanobis diagonal",
+      "projection": "K-sample augmentation average",
+      "height_schedule": "linear hoặc entropy-triggered",
+      "merge_threshold": "τ(H)=τ0 + α(1−H/H0)"
+    },
+    "warnings": [
+      "Nếu H giảm quá nhanh, có thể collapse quá mức (mất phân biệt cần thiết).",
+      "Cần định nghĩa rõ nhóm G (các biến đổi tương đương) theo domain."
+    ]
+  },
+  "license": "CC-BY-4.0"
+}

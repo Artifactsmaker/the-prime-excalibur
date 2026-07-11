@@ -1,0 +1,141 @@
+{
+  "artifact_type": "operatorology.operator",
+  "name": "Toán tử Nền",
+  "symbol": "𝓢₀",
+  "aliases": [
+    "Foundation Operator",
+    "Toán tử Luật Nền Bất Biến",
+    "Toán tử Trích Bất Biến"
+  ],
+  "version": "1.0.0",
+  "language": "vi",
+  "authors": [
+    "Phan Thành Trung (Trung Bờm)",
+    "ChatGPT (assistant)"
+  ],
+  "summary": "𝓢₀ trích phần bất biến (luật nền) của trạng thái x dưới tập biến đổi hợp lệ G. 𝓢₀ là phép chiếu/canonicalization để mọi biến thể g·x rơi về cùng đại diện. Height có thể định nghĩa từ 𝓢₀: 𝓗(x)=D(x,𝓢₀(x)). Dùng cho AI (robust embedding, RAG rerank) và O.i (giảm nhiễu quyết định), ánh xạ silicon qua canonicalization + pooling + invariant signature.",
+  "primitives": {
+    "state_space": {
+      "notation": "𝓧",
+      "description": "Không gian trạng thái (embedding/belief/decision/phase-state)."
+    },
+    "valid_transforms": {
+      "notation": "G",
+      "description": "Tập biến đổi hợp lệ (tương đương ý nghĩa), dùng để định nghĩa đối xứng/luật nền.",
+      "orbit": "Orb(x)={ g·x | g∈G }"
+    },
+    "difference_measure": {
+      "notation": "D(x,y)",
+      "description": "Thước đo khác biệt (cosine divergence, Mahalanobis, hoặc thước đo miền ứng dụng)."
+    }
+  },
+  "definitions": [
+    {
+      "id": "S0.1",
+      "title": "Định nghĩa 1: Chiếu bất biến bằng trung bình qua biến thể",
+      "equation": "𝓢₀[F](x)=E_{g∼G}[ F(g·x) ]",
+      "notes": [
+        "Thực hành: average/pooling qua K biến thể (augmentations).",
+        "F có thể là identity hoặc encoder f(x)."
+      ]
+    },
+    {
+      "id": "S0.2",
+      "title": "Định nghĩa 2: 𝓢₀ là phép chiếu xuống không gian các hàm bất biến",
+      "equation": "𝓢₀: 𝓕(𝓧)→𝓘_G,  với  f∈𝓘_G ⇔ f(x)=f(g·x) ∀g∈G",
+      "properties": [
+        "Bất biến",
+        "Idempotent (áp nhiều lần không đổi)"
+      ]
+    },
+    {
+      "id": "S0.3",
+      "title": "Định nghĩa 3: Canonicalization (đại diện nền)",
+      "equation": "𝓢₀(x)=canon(x) sao cho 𝓢₀(x)=𝓢₀(g·x) ∀g∈G",
+      "notes": [
+        "Dùng khi có quy tắc đưa về dạng chuẩn (canonical form)."
+      ]
+    }
+  ],
+  "axioms": [
+    {
+      "name": "Bất biến",
+      "equation": "𝓢₀(x)=𝓢₀(g·x), ∀g∈G"
+    },
+    {
+      "name": "Idempotent",
+      "equation": "𝓢₀(𝓢₀(x))=𝓢₀(x)"
+    },
+    {
+      "name": "Điểm cố định của đối xứng",
+      "equation": "g·𝓢₀(x)=𝓢₀(x), ∀g∈G"
+    }
+  ],
+  "derived": [
+    {
+      "id": "H.from.S0",
+      "title": "Định nghĩa Height từ 𝓢₀",
+      "equation": "𝓗(x)=D(x, 𝓢₀(x))",
+      "meaning": [
+        "𝓗 nhỏ: x gần luật nền (bền dưới biến thể).",
+        "𝓗 lớn: x xa luật nền (nhiễu/phá đối xứng mạnh)."
+      ]
+    }
+  ],
+  "pipeline_role": {
+    "statement": "𝓢₀ nằm trước Height/Metric trong chuỗi hình thành cấu trúc: Symmetry nền (𝓢₀) → phá đối xứng (P_in) → Height (𝓗) → Metric (𝓖) → gradient năng lượng → binding → cấu trúc.",
+    "operator_pipeline": "Ψ₀ → 𝓢₀ → (P_in gây phá đối xứng) → Ψₑ → 𝓗 → 𝓖 → ∇E → E_bind → cấu trúc"
+  },
+  "applications": {
+    "ai": [
+      {
+        "name": "Embedding bất biến",
+        "method": "z=𝓢₀[f](x)=avg_i f(T_i(x))",
+        "use": [
+          "retrieval",
+          "rerank",
+          "clustering",
+          "dedup"
+        ]
+      },
+      {
+        "name": "RAG: recall nhanh + verify bất biến",
+        "pipeline": [
+          "Recall top-K theo embedding thường (nhanh).",
+          "Tính z=𝓢₀(x) và z_q=𝓢₀(q) rồi rerank theo D(z_q,z)."
+        ]
+      }
+    ],
+    "oi": [
+      {
+        "name": "Giảm nhiễu quyết định",
+        "method": "Chuẩn hóa bối cảnh: x₀=𝓢₀(x); đánh giá quyết định trên x₀ thay vì x.",
+        "validity": "Một kết luận tốt ổn định dưới các biến đổi hợp lệ g∈G."
+      }
+    ],
+    "silicon": [
+      {
+        "name": "Khắc 𝓢₀ lên silicon",
+        "blocks": [
+          "Canonicalization/LUT transforms (nhẹ)",
+          "Pooling/average (cộng + shift)",
+          "Invariant signature (sketch/hash) cho so khớp nhanh"
+        ],
+        "note": "𝓢₀ phù hợp làm 'khóa' (key) ổn định cho retrieval/decision gating."
+      }
+    ]
+  },
+  "tests": [
+    {
+      "id": "test.invariance",
+      "description": "Lấy x và các biến thể g·x. Kiểm tra D(𝓢₀(x), 𝓢₀(g·x)) gần 0.",
+      "criterion": "mean D(z, z_g) ≤ ε"
+    },
+    {
+      "id": "test.height_link",
+      "description": "Đo 𝓗(x)=D(x,𝓢₀(x)) và so sánh với ổn định của hệ dưới biến thể.",
+      "criterion": "𝓗 giảm ↔ ổn định tăng"
+    }
+  ],
+  "license": "CC-BY-4.0"
+}

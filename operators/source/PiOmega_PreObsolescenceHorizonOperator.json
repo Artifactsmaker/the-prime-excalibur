@@ -1,0 +1,168 @@
+{
+  "id": "PiOmega_PreObsolescenceHorizon",
+  "version": "0.1.0",
+  "type": "operator",
+  "family": "survivability-forecast",
+  "title": "ΠΩ — Pre-Obsolescence Horizon Operator",
+  "aliases": [
+    "Toán tử Tiền Lỗi Thời Trên Toàn Chân Trời",
+    "Pre-Obsolescence Horizon Operator",
+    "Πo + OHI Unified Operator"
+  ],
+  "symbol": "ΠΩ",
+  "objective": {
+    "mode": "FORECAST",
+    "metric": "Future_Survivability"
+  },
+  "definition_vi": "ΠΩ là toán tử đánh giá khả năng sống còn của một ý tưởng/sản phẩm trong tương lai trước khi nó tồn tại. Nó kết hợp hai cơ chế: (1) Πo — kiểm tra liệu ý tưởng có 'sinh ra đã lỗi thời' tại thời điểm ra mắt hay không; (2) OHI — đo tổng năng lượng lỗi thời tích luỹ trên toàn bộ chân trời tương lai hữu ích. Kết quả trả về gồm lỗi thời tại ra mắt, lỗi thời tích luỹ, và phân loại khả năng sống sót.",
+  "setup": {
+    "I": "ý tưởng / sản phẩm / thiết kế",
+    "t0": "0 (hiện tại)",
+    "tL": "thời điểm dự kiến tung sản phẩm",
+    "T": "chân trời đánh giá (vòng đời công nghệ/sản phẩm)",
+    "O_I(t|F)": "mật độ lỗi thời tại thời điểm t dưới bối cảnh tương lai F",
+    "w(t)": "hàm trọng số thời gian",
+    "F": "bối cảnh tương lai (công nghệ, thị trường, luật pháp, hạ tầng...)"
+  },
+  "formulae": [
+    {
+      "id": "launch_obsolescence",
+      "name": "Launch obsolescence",
+      "latex": "O^{\\text{launch}}(I) = O_I(t_L \\mid F)",
+      "interpretation_vi": "Mức lỗi thời tức thì tại ngày ra mắt."
+    },
+    {
+      "id": "ohi",
+      "name": "Obsolescence Horizon Integral",
+      "latex": "\\mathrm{OHI}(I) = \\int_0^{T} w(t)\\,O_I(t)\\,dt",
+      "interpretation_vi": "Tổng lỗi thời tích luỹ trên toàn chân trời T."
+    },
+    {
+      "id": "piomega",
+      "name": "Unified operator",
+      "latex": "\\Pi_{\\Omega}(I) = \\Big( O^{\\text{launch}}(I),\\ \\mathrm{OHI}(I),\\ \\mathcal{C}(I) \\Big)",
+      "interpretation_vi": "Trả về bộ ba: lỗi thời tại ra mắt, lỗi thời tích luỹ, và phân loại."
+    },
+    {
+      "id": "score",
+      "name": "Unified score",
+      "latex": "S(I) = \\alpha\\,\\widehat{O}^{\\text{launch}}(I) + (1-\\alpha)\\,\\widehat{\\mathrm{OHI}}(I)",
+      "interpretation_vi": "Điểm số sống sót (càng thấp càng tốt)."
+    }
+  ],
+  "normalization": {
+    "note_vi": "O^launch và OHI được chuẩn hoá trước khi trộn. Mặc định dùng min-max hoặc z-score tuỳ pipeline.",
+    "recommended_methods": ["minmax", "zscore", "robust"]
+  },
+  "classification": {
+    "thresholds": {
+      "Omega_low": 0.0,
+      "Omega_high": 0.5
+    },
+    "rule": {
+      "latex": "\\mathcal{C}(I)=\\begin{cases}\\text{Loại bỏ / chuyển hướng}, & S(I) > \\Omega_{high}\\\\ \\text{Xem xét chỉnh sửa}, & \\Omega_{low} \\le S(I) \\le \\Omega_{high}\\\\ \\text{Tiếp tục / mở rộng}, & S(I) < \\Omega_{low}\\end{cases}",
+      "labels_vi": [
+        "Loại bỏ / chuyển hướng",
+        "Xem xét chỉnh sửa",
+        "Tiếp tục / mở rộng"
+      ],
+      "interpretation_vi": "S(I) càng lớn thì càng rủi ro lỗi thời; S(I) càng thấp thì càng bền vững."
+    },
+    "zero_centered_note_vi": "Nếu chuẩn hoá quanh 0: S>0 không khả thi; S=0 trung tính; S<0 đột phá/vượt trước thời đại."
+  },
+  "lenses": [
+    {
+      "id": "Pi_o",
+      "name": "Launch Lens (Πo)",
+      "question_vi": "Ý tưởng này có bị lỗi thời đúng ngày nó xuất hiện không?"
+    },
+    {
+      "id": "OHI_lens",
+      "name": "Horizon Lens (OHI)",
+      "question_vi": "Nếu không lỗi thời ngay, nó sẽ mục rữa nhanh thế nào trong vòng đời tương lai?"
+    }
+  ],
+  "example": {
+    "idea": "Pin xe điện 500 km, dự kiến ra mắt sau 3 năm",
+    "future_context_F": [
+      "pin 1500–3000 km",
+      "pin hạt nhân sạc 1 lần dùng 10 năm",
+      "hạ tầng pin hoán đổi 30 giây"
+    ],
+    "values": {
+      "Olaunch": 0.8,
+      "OHI": 2.4,
+      "alpha": 0.5,
+      "S": 1.1,
+      "Omega_high": 0.5
+    },
+    "result": "ΠΩ(I) = (0.8, 2.4, Loại bỏ / chuyển hướng)"
+  },
+  "applications": [
+    {
+      "area": "R&D / đổi mới",
+      "items_vi": [
+        "Loại bỏ sớm dự án đi vào ngõ cụt",
+        "Ưu tiên nguồn lực cho ý tưởng có S(I) thấp",
+        "Xác định hướng nghiên cứu có khả năng vượt tương lai"
+      ]
+    },
+    {
+      "area": "Lập kế hoạch sản phẩm",
+      "items_vi": [
+        "Tránh xây sản phẩm sẽ lỗi thời trước ngày ra mắt",
+        "Tối ưu thời điểm tung sản phẩm",
+        "Điều chỉnh roadmap để tăng tuổi thọ công nghệ"
+      ]
+    },
+    {
+      "area": "Kiến trúc AI",
+      "items_vi": [
+        "Né các kiến trúc sắp trở thành legacy",
+        "Đảm bảo tương thích xu hướng mô hình thế hệ tiếp theo",
+        "Tối ưu pipeline cho độ bền 3–5 năm"
+      ]
+    },
+    {
+      "area": "Quy hoạch cấp độ quốc gia / xã hội",
+      "items_vi": [
+        "Dự báo lỗi thời của hạ tầng, giáo dục, luật pháp",
+        "Lập kế hoạch chuyển pha công nghệ",
+        "Ra quyết định dựa trên độ bền tương lai thay vì nhu cầu hiện tại"
+      ]
+    }
+  ],
+  "runtime_inputs": {
+    "idea_id": "string",
+    "t_launch": "number",
+    "T_horizon": "number",
+    "alpha": "number in [0,1]",
+    "Omega_low": "number",
+    "Omega_high": "number",
+    "Olaunch": "number (normalized or raw)",
+    "ohiSamples": "number[] (optional discrete samples approximating O_I(t))",
+    "weights": "number[] (optional w(t) samples aligned with ohiSamples)"
+  },
+  "ui_hints": {
+    "display_objective": "FORECAST → Future_Survivability",
+    "display_sections_order": [
+      "setup",
+      "launch_obsolescence",
+      "ohi",
+      "score",
+      "classification"
+    ],
+    "suggested_diagram": "mermaid",
+    "diagram_mermaid_template": "flowchart TB\n  I[Idea I] --> L[Launch Lens: O^launch(I)=O_I(t_L|F)]\n  I --> H[Horizon Lens: OHI(I)=∫ w(t)O_I(t)dt]\n  L --> N1[Normalize O^launch]\n  H --> N2[Normalize OHI]\n  N1 --> S[Score S(I)=α·Ō^launch+(1-α)·ŌHI]\n  N2 --> S\n  S --> C{Classify by Ω_low, Ω_high}\n  C -- S>Ω_high --> R1[Reject / Pivot]\n  C -- Ω_low≤S≤Ω_high --> R2[Revise]\n  C -- S<Ω_low --> R3[Proceed / Expand]"
+  },
+  "quote": "ΠΩ evaluates the future survivability of an idea before it is born.",
+  "tags": [
+    "operatorology",
+    "operator-intelligence",
+    "pre-obsolescence",
+    "forecasting",
+    "product-strategy",
+    "rd",
+    "horizon-integral"
+  ]
+}

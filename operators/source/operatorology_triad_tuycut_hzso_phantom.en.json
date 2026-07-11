@@ -1,0 +1,180 @@
+{
+  "schema": {
+    "name": "Operatorology.TriadPack.TuyCut_HZSO_Phantom",
+    "version": "1.0.0",
+    "language": "en",
+    "license": "CC-BY-4.0",
+    "created_utc": "2026-02-28T03:37:53Z",
+    "tags": [
+      "Operatorology",
+      "Operator Intelligence",
+      "AI",
+      "Tuy's Cut",
+      "HZSO",
+      "Height",
+      "Phantom Operator",
+      "commutator",
+      "invariance",
+      "feasibility",
+      "adversarial dynamics"
+    ],
+    "notes": [
+      "Conceptual training artifact: a triad pipeline combining selection (Tuy's Cut), validation (HZSO), and invariance-preserving evolution (Phantom).",
+      "Includes an 'epic' Phantom semantics: defensive invariance and optional bounded fault injection into a designated adversarial channel.",
+      "Not advice for misuse; treat offensive injection as controlled research in adversarial robustness only."
+    ]
+  },
+  "core_idea": {
+    "triad": [
+      {
+        "id": "O_TUYS_CUT_VALIDITY",
+        "role": "Validity selector (cuts away infeasible branches, chooses low-Height feasible state).",
+        "ai_mapping": [
+          "candidate selection",
+          "structured search",
+          "hard-gate optimizer"
+        ]
+      },
+      {
+        "id": "O_HZSO_HEIGHT_ZERO",
+        "role": "Symmetry validator + gate (Height≈0 implies consistency with base law S0).",
+        "ai_mapping": [
+          "loss / constraint gate",
+          "stopping criterion",
+          "anomaly detection"
+        ]
+      },
+      {
+        "id": "O_PHANTOM_COMMUTATOR",
+        "role": "Invariance-preserving adaptation (commutator) + optional bounded adversarial injection on a target channel.",
+        "ai_mapping": [
+          "safe exploration",
+          "training stabilization",
+          "robustness probing",
+          "controlled adversarial training"
+        ]
+      }
+    ],
+    "pipeline": {
+      "unicode": "O_stable = O_phantom ∘ O_HZSO ∘ O_TuyCut",
+      "ascii": "O_stable = O_phantom o O_HZSO o O_TuyCut"
+    }
+  },
+  "definitions": {
+    "height": {
+      "unicode": "H(x) = D(x, S₀)",
+      "ascii": "H(x) = D(x, S0)",
+      "meaning": "Non-negative deviation from base symmetry/law S0; H=0 iff x ∈ S0."
+    },
+    "phantom": {
+      "unicode": "O_phantom = B⁻¹ ∘ A⁻¹ ∘ B ∘ A",
+      "ascii": "O_phantom = B^-1 o A^-1 o B o A",
+      "meaning": [
+        "Defensive: approximate invariance (Height/invariants unchanged).",
+        "Offensive (bounded): inject a controlled perturbation into an adversarial channel while keeping self stable."
+      ]
+    }
+  },
+  "operators": [
+    {
+      "id": "O_TUYS_CUT_VALIDITY",
+      "name": "Tuy's Cut Operator — Validity Selector",
+      "inputs": [
+        "x",
+        "S0",
+        "D",
+        "params"
+      ],
+      "outputs": [
+        "x_selected",
+        "Height",
+        "feasible:boolean"
+      ],
+      "params": {
+        "candidates": 64,
+        "radius": 0.05,
+        "temperature": 0.1,
+        "eps": 0.001
+      },
+      "properties": [
+        "Prefers feasible candidates (Height≤eps and constraints satisfied).",
+        "Among feasible, minimizes Height; ties broken by smaller movement."
+      ]
+    },
+    {
+      "id": "O_HZSO_HEIGHT_ZERO",
+      "name": "Height-Zero Symmetry Operator (HZSO)",
+      "inputs": [
+        "x",
+        "S0",
+        "D",
+        "eps"
+      ],
+      "outputs": [
+        "ok:boolean",
+        "Height",
+        "reasons[]"
+      ],
+      "params": {
+        "eps": 0.001,
+        "stepSize": 0.05,
+        "iters": 12
+      },
+      "capabilities": [
+        "Gate: accept if Height≤eps and constraints satisfied.",
+        "Optional projection toward Height≈0 using finite-difference gradient descent."
+      ]
+    },
+    {
+      "id": "O_PHANTOM_COMMUTATOR",
+      "name": "Phantom Operator — Commutator (Epic Mode)",
+      "inputs": [
+        "state{x,channels}",
+        "params"
+      ],
+      "outputs": [
+        "state'"
+      ],
+      "params": {
+        "aAmp": 0.02,
+        "bAmp": 0.02,
+        "inject": 0.0,
+        "targetChannel": "opp"
+      },
+      "capabilities": [
+        "Defensive commutator on self state x (approx invariance).",
+        "Optional bounded injection into a specified channel (e.g., 'opp') for adversarial robustness research."
+      ],
+      "safety": [
+        "Keep injection bounded and within controlled evaluation settings.",
+        "Use for robustness testing / adversarial training, not for malicious deployment."
+      ]
+    }
+  ],
+  "metrics": [
+    {
+      "id": "D_CONSTRAINT_L2",
+      "name": "Constraint-L2 Deviation Metric",
+      "definition": {
+        "unicode": "D(x,S₀)=√(Σ g_i(x)² + Σ max(0,h_j(x))²)",
+        "ascii": "D(x,S0)=sqrt(sum g_i(x)^2 + sum max(0,h_j(x))^2)"
+      }
+    }
+  ],
+  "training_recipes": [
+    {
+      "name": "Robust training loop (conceptual)",
+      "steps": [
+        "Apply Tuy's Cut to choose a valid candidate state.",
+        "Use HZSO gate; if not OK, project toward Height≈0.",
+        "Apply Phantom (defense) to stabilize while probing perturbations.",
+        "Optionally enable bounded injection on an adversarial channel during evaluation to measure robustness."
+      ],
+      "success_criteria": [
+        "Height after triad remains near zero (within eps).",
+        "Feasibility reasons are empty.",
+        "Robustness improves against bounded perturbations without catastrophic drift."
+      ]
+    }
+  ]
+}
