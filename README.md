@@ -116,3 +116,15 @@ https://artifactsmaker.github.io/the-prime-excalibur/
 ### クレジット
 
 開発: Phan Thành Trung
+
+Copyright © 2026 Phan Thành Trung. All rights reserved.
+
+This repository and all original source code, operator specifications,
+operator configurations, documentation, data structures, designs, and
+assets contained herein are proprietary works of Phan Thành Trung.
+
+Except for viewing and forking through GitHub functionality as permitted
+by the GitHub Terms of Service, no permission is granted to copy, modify,
+distribute, sublicense, sell, commercially exploit, or create derivative
+works from any part of this repository without prior written permission
+from the copyright holder.
