@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -96,7 +96,8 @@
                 <span>MODE: MULTIPLICATIVE GENESIS</span>
                 <span id="genesisReadout">WEBGL: STARTING</span>
               </div>
-              <div class="genesis-pipeline">A/B Prime Domains -> Overlap -> Prime Multiplication -> Matter Nodes -> Galaxy Seeds</div>
+              <div class="genesis-phase" id="genesisPhase">PHASE 01 · A × B</div>
+              <div class="genesis-pipeline" id="genesisPipeline">A/B PRIME DOMAINS → Ω OVERLAP → PRIME MULTIPLICATION</div>
               <div class="genesis-fallback" id="genesisFallback">WebGL chamber is not available.</div>
             </div>
             <p id="stageCaption" data-i18n="idle">Idle</p>
@@ -151,6 +152,7 @@
                   </label>
                   <button class="secondary-button compact" id="saveSettingsButton" type="button" data-i18n="applySettings">Apply</button>
                 </div>
+                <div class="api-key-status" id="apiKeyStatus" aria-live="polite"></div>
               </section>
             </div>
           </section>
