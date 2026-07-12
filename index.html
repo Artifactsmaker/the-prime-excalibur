@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -56,8 +56,8 @@
 
         <section class="system-strip" aria-label="System status">
           <div class="segmented language-switch" id="languageSwitch" aria-label="Language">
-            <button data-lang="VN" type="button">VN</button>
-            <button class="active" data-lang="EN" type="button">EN</button>
+            <button class="active" data-lang="VN" type="button">VN</button>
+            <button data-lang="EN" type="button">EN</button>
             <button data-lang="JP" type="button">JP</button>
           </div>
           <div class="status-chip">
@@ -75,8 +75,8 @@
             <h2 data-i18n="executionCommand">Execution Command</h2>
           </div>
 
-          <label class="field-label" for="commandInput" data-i18n="command">Command</label>
-          <textarea id="commandInput" spellcheck="false">If all prime numbers were removed from the universe, what would remain?</textarea>
+          <label class="field-label" for="commandInput" data-i18n="command">Lệnh</label>
+          <textarea id="commandInput" spellcheck="false">Nếu rút toàn bộ số nguyên tố ra khỏi vũ trụ, ta còn gì?</textarea>
 
           <div class="control-group">
             <span class="group-title" data-i18n="inferenceLayer">Inference Layer</span>
@@ -228,6 +228,15 @@
           </div>
         </section>
         <section class="footer-center"><span>::</span> Operator Intelligence / 2026 <span>::</span></section>
+        <section class="footer-counter" aria-live="polite">
+          <span class="footer-counter-label" data-i18n="activityTotal">Tổng Hoạt Động</span>
+          <strong id="activityTotalCount">0</strong>
+          <div class="footer-counter-details">
+            <span><b id="visitCount">0</b> <span data-i18n="visits">Truy cập</span></span>
+            <span><b id="executionCount">0</b> <span data-i18n="executions">Thực thi</span></span>
+          </div>
+          <small id="counterScope" data-i18n="globalCounter">Bộ đếm toàn cầu</small>
+        </section>
         <section class="footer-credit">
           <span data-i18n="developedBy">Developed by:</span>
           <a href="https://www.fb.me/phanthanhtrung" target="_blank" rel="noreferrer">Phan Thành Trung</a>
