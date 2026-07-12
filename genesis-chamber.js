@@ -4,6 +4,8 @@
   const chamber = document.getElementById("genesisChamber");
   const stage = document.querySelector(".stage-visual");
   const readout = document.getElementById("genesisReadout");
+  const phaseReadout = document.getElementById("genesisPhase");
+  const pipelineReadout = document.getElementById("genesisPipeline");
   const fallback = document.getElementById("genesisFallback");
   const expandButton = document.getElementById("genesisExpandButton");
   const coEmergenceButton = document.getElementById("coEmergenceButton");
@@ -13,7 +15,12 @@
 
   if (!canvas || !chamber) return;
 
-  const gl = canvas.getContext("webgl", { alpha: true, antialias: true });
+  const gl = canvas.getContext("webgl", {
+    alpha: false,
+    antialias: true,
+    preserveDrawingBuffer: true,
+    powerPreference: "high-performance",
+  });
   if (!gl) {
     if (fallback) {
       fallback.style.display = "block";
@@ -21,6 +28,8 @@
     }
     return;
   }
+
+  let contextLost = false;
 
   const vertexSource = `
     attribute vec3 aPosition;
@@ -80,7 +89,23 @@
   const lineProgram = createProgram(lineFragmentSource);
   const pointBuffer = gl.createBuffer();
   const lineBuffer = gl.createBuffer();
-  const state = { coEmergenceUntil: 0 };
+  const state = { coEmergenceUntil: 0, lastPhase: -1 };
+
+  const genesisPhases = [
+    ["A × B", "PRIME A × PRIME B"],
+    ["C", "COMPOSITE FORMATION"],
+    ["Π", "PI LOCK"],
+    ["K", "CORE EXTRACTION"],
+    ["M", "MATTER CLOSURE"],
+    ["D", "RESIDUE GENERATION"],
+    ["L", "FORCE GENERATION"],
+    ["Φ", "FIELD FORMATION"],
+    ["V", "VORTEX FORMATION"],
+    ["G", "GALAXY CLUSTERING"],
+    ["G\u2225", "CO-EMERGENT GALAXIES"],
+    ["BH", "CENTRAL BLACK HOLE"],
+    ["𝓤", "REALITY CLOSURE"],
+  ];
 
   const domainA = Array.from({ length: 520 }, () => ({
     radius: 2.1 + Math.random() * 5.7,
@@ -170,8 +195,10 @@
   function resize() {
     const box = chamber.getBoundingClientRect();
     const dpr = Math.min(2, window.devicePixelRatio || 1);
-    canvas.width = Math.max(1, Math.floor(box.width * dpr));
-    canvas.height = Math.max(1, Math.floor(box.height * dpr));
+    const width = Math.max(320, Math.floor((box.width || stage?.clientWidth || 960) * dpr));
+    const height = Math.max(240, Math.floor((box.height || stage?.clientHeight || 480) * dpr));
+    canvas.width = width;
+    canvas.height = height;
     gl.viewport(0, 0, canvas.width, canvas.height);
   }
 
@@ -243,11 +270,25 @@
   }
 
   function animate(ms) {
+    if (contextLost) {
+      window.requestAnimationFrame(animate);
+      return;
+    }
+
+    try {
     const time = ms * 0.001;
     const { active, overlap, residue, closure } = readControls(ms);
+    const cycle = (ms % 52000) / 52000;
+    const phaseIndex = Math.min(12, Math.floor(cycle * 13));
+    const phaseProgress = cycle * 13 - phaseIndex;
     const products = Math.round(24 + overlap * 88 + (active ? 44 : 0));
-    const matter = Math.round(products * (0.22 + closure * 0.32));
+    const cores = Math.round(products * (0.35 + closure * 0.28));
+    const matter = Math.round(cores * (0.4 + closure * 0.42));
+    const forces = Math.round(products * residue * 0.34);
+    const fields = Math.max(1, Math.round(forces * overlap * 0.22));
+    const vortices = Math.max(1, Math.round(fields * residue * 0.42));
     const galaxySeeds = Math.max(1, Math.round((overlap * closure - 0.35) * 6) + (active ? 3 : 0));
+    const blackHoles = closure > 0.58 && galaxySeeds > 1 ? Math.max(1, Math.floor(galaxySeeds / 3)) : 0;
     const torsion = Math.round(residue * (45 + overlap * 42));
     const residuePercent = Math.round((1 - closure * 0.42) * residue * 100);
     const coStatus = active ? "ACTIVE" : galaxySeeds > 2 ? "FORMING" : "OFF";
@@ -268,6 +309,7 @@
     const matrix = multiply(perspective(Math.PI / 3, aspect, 0.1, 90), lookAt(eye, [0, 0, 0], [0, 1, 0]));
     const points = [];
     const lines = [];
+    const reveal = (stageIndex) => clamp((phaseIndex - stageIndex) + phaseProgress, 0.12, 1);
 
     stars.forEach((star) => point(points, star[0], star[1], star[2], star[3] * 0.36, star[4] * 0.36, star[5] * 0.42));
 
@@ -290,7 +332,7 @@
       const x = Math.cos(a) * r * 0.9;
       const y = Math.sin(phase + time * 0.6) * 0.9 * overlap;
       const z = Math.sin(a) * r * 0.55;
-      const flash = 0.65 + Math.sin(time * 3.2 + i) * 0.25;
+      const flash = (0.65 + Math.sin(time * 3.2 + i) * 0.25) * reveal(0);
       point(points, x, y, z, 1, 0.86 + flash * 0.12, 0.54 + flash * 0.28);
       if (i % 7 === 0) {
         point(lines, x, y, z, 1, 0.9, 0.52);
@@ -301,7 +343,8 @@
     for (let i = 0; i < matter; i += 1) {
       const a = i * 2.399 + time * 0.12;
       const r = Math.sqrt(i / matter) * (2.3 + closure * 1.7);
-      point(points, Math.cos(a) * r, Math.sin(i + time) * 0.5, Math.sin(a) * r * 0.56, 1, 0.94, 0.62);
+      const materialization = reveal(4);
+      point(points, Math.cos(a) * r, Math.sin(i + time) * 0.5, Math.sin(a) * r * 0.56, materialization, 0.94 * materialization, 0.62 * materialization);
     }
 
     for (let seed = 0; seed < galaxySeeds; seed += 1) {
@@ -311,7 +354,20 @@
       const z = Math.sin(a) * radius * 0.56;
       const y = Math.sin(a * 1.7 + time) * 0.34;
       const tint = seed % 2 ? [0.45, 0.9, 1] : [1, 0.72, 0.34];
-      drawGalaxy(points, lines, x, y, z, 0.65 + closure * 0.54, time + seed, closure, residue, tint);
+      const galaxyReveal = reveal(9);
+      drawGalaxy(points, lines, x, y, z, (0.65 + closure * 0.54) * (0.72 + galaxyReveal * 0.28), time + seed, closure, residue, tint.map((value) => value * galaxyReveal));
+    }
+
+    if (reveal(11) > 0.2) {
+      const pulse = 0.7 + Math.sin(time * 2.4) * 0.22;
+      for (let i = 0; i < Math.max(1, blackHoles); i += 1) {
+        const a = i * Math.PI * 2 / Math.max(1, blackHoles) + time * 0.04;
+        const radius = blackHoles > 1 ? 2.4 : 0;
+        const x = Math.cos(a) * radius;
+        const z = Math.sin(a) * radius * 0.56;
+        point(points, x, 0, z, 0.02, 0.025, 0.04);
+        drawEllipse(lines, 0.28 + pulse * 0.12, 0.18 + pulse * 0.08, 0, [0.72, 0.42, 1], -time * 0.7, i, 48);
+      }
     }
 
     for (let trail = 0; trail < 7 + Math.round(residue * 8); trail += 1) {
@@ -328,9 +384,20 @@
     drawBuffer(lineProgram, lineBuffer, lines, gl.LINE_STRIP, 1, matrix);
 
     if (readout) {
-      readout.textContent = `A ${Math.round(overlap * 92)} | B ${Math.round(overlap * 88)} | OVR ${Math.round(overlap * 100)} | P ${products} | M ${matter} | G ${galaxySeeds} | RES ${residuePercent} | TOR ${torsion} | CL ${Math.round(closure * 100)} | CO ${coStatus}`;
+      readout.textContent = `Ω ${Math.round(overlap * 100)} | C ${products} | K ${cores} | M ${matter} | D ${residuePercent} | L ${forces} | Φ ${fields} | V ${vortices} | G ${galaxySeeds} | BH ${blackHoles} | 𝓤 ${Math.round(closure * 100)}`;
     }
-
+    if (phaseIndex !== state.lastPhase) {
+      state.lastPhase = phaseIndex;
+      const phase = genesisPhases[phaseIndex];
+      if (phaseReadout) phaseReadout.textContent = `PHASE ${String(phaseIndex + 1).padStart(2, "0")} · ${phase[0]} · ${phase[1]}`;
+      if (pipelineReadout) pipelineReadout.textContent = `A ∩ B → ${genesisPhases.slice(0, phaseIndex + 1).map((item) => item[0]).join(" → ")}`;
+    }
+    } catch (error) {
+      if (fallback) {
+        fallback.style.display = "block";
+        fallback.textContent = "Prime Overlap chamber is restoring...";
+      }
+    }
     window.requestAnimationFrame(animate);
   }
 
@@ -345,6 +412,22 @@
   });
 
   try {
+    canvas.addEventListener("webglcontextlost", (event) => {
+      event.preventDefault();
+      contextLost = true;
+      if (fallback) {
+        fallback.style.display = "block";
+        fallback.textContent = "Prime Overlap chamber is restoring...";
+      }
+    }, false);
+
+    canvas.addEventListener("webglcontextrestored", () => {
+      contextLost = false;
+      if (fallback) fallback.style.display = "none";
+      resize();
+      window.requestAnimationFrame(animate);
+    }, false);
+
     window.addEventListener("resize", resize);
     resize();
     window.requestAnimationFrame(animate);
