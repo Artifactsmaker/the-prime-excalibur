@@ -1,0 +1,210 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Prime Excalibur</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <section class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <img src="./assets/oi-research-logo.jpg" alt="" />
+          </div>
+          <div>
+            <span class="brand-kicker">Operator Intelligence Research</span>
+            <h1>The Prime Excalibur</h1>
+            <p data-i18n="brandSubtitle">Decompose &gt; Analyze &gt; Recompose</p>
+          </div>
+        </section>
+
+        <section class="system-strip" aria-label="System status">
+          <div class="segmented language-switch" id="languageSwitch" aria-label="Language">
+            <button class="active" data-lang="EN" type="button">EN</button>
+            <button data-lang="VN" type="button">VN</button>
+            <button data-lang="JP" type="button">JP</button>
+          </div>
+          <div class="status-chip">
+            <span class="status-dot"></span>
+            <span id="providerStatus">Local Shell</span>
+            <strong id="activeModelStatus">gpt-4.1-mini</strong>
+          </div>
+          <button class="icon-button" id="settingsButton" title="Settings" type="button" data-i18n="settingsShort">SET</button>
+        </section>
+      </header>
+
+      <section class="workspace">
+        <aside class="control-panel" aria-label="Execution controls">
+          <div class="panel-header">
+            <h2 data-i18n="executionCommand">Execution Command</h2>
+          </div>
+
+          <label class="field-label" for="commandInput" data-i18n="command">Command</label>
+          <textarea id="commandInput" spellcheck="false">If all prime numbers were removed from the universe, what would remain?</textarea>
+
+          <div class="control-group">
+            <span class="group-title" data-i18n="inferenceLayer">Inference Layer</span>
+            <div class="segmented" data-bind="inference">
+              <button data-value="STD" type="button">STD</button>
+              <button class="active" data-value="AUG" type="button">AUG</button>
+              <button data-value="DEEP" type="button">DEEP</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <span class="group-title" data-i18n="knowledge">Knowledge</span>
+            <div class="segmented" data-bind="knowledge">
+              <button data-value="OFF" type="button">OFF</button>
+              <button class="active" data-value="ON" type="button">ON</button>
+              <button data-value="RAG" type="button">RAG</button>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <span class="group-title" data-i18n="outputMode">Output Mode</span>
+            <select id="outputMode">
+              <option value="Explain" data-i18n="modeExplain">Explain</option>
+              <option value="Analyze" data-i18n="modeAnalyze">Analyze</option>
+              <option value="Write" data-i18n="modeWrite">Write</option>
+              <option value="Code" data-i18n="modeCode">Code</option>
+              <option value="Plan" data-i18n="modePlan">Plan</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <span class="group-title" data-i18n="priority">Priority</span>
+            <div class="segmented" data-bind="priority">
+              <button class="active" data-value="EXPLAIN" type="button" data-i18n="priorityExplain">Explain</button>
+              <button data-value="STRICT" type="button" data-i18n="priorityStrict">Strict</button>
+              <button data-value="CREATIVE" type="button" data-i18n="priorityCreative">Creative</button>
+            </div>
+          </div>
+
+          <button class="run-button" id="runButton" type="button" data-i18n="run">EXECUTE</button>
+        </aside>
+
+        <section class="main-stage">
+          <div class="stage-visual">
+            <div class="genesis-chamber" id="genesisChamber" aria-hidden="true">
+              <canvas id="primeGenesisCanvas"></canvas>
+              <button class="genesis-expand" id="genesisExpandButton" type="button" aria-label="Expand genesis chamber">⛶</button>
+              <div class="genesis-hud">
+                <strong>PRIME OVERLAP GENESIS CHAMBER</strong>
+                <span>FIELD: A/B PRIME OVERLAP</span>
+                <span>MODE: MULTIPLICATIVE GENESIS</span>
+                <span id="genesisReadout">WEBGL: STARTING</span>
+              </div>
+              <div class="genesis-phase" id="genesisPhase">PHASE 01 · A × B</div>
+              <div class="genesis-pipeline" id="genesisPipeline">A/B PRIME DOMAINS → Ω OVERLAP → PRIME MULTIPLICATION</div>
+              <div class="genesis-fallback" id="genesisFallback">WebGL chamber is not available.</div>
+            </div>
+            <p id="stageCaption" data-i18n="idle">Idle</p>
+          </div>
+
+          <nav class="tabs" aria-label="Output tabs">
+            <button class="active" data-tab="answer" type="button" data-i18n="tabAnswer">Answer</button>
+            <button data-tab="trace" type="button" data-i18n="tabTrace">Trace</button>
+            <button data-tab="operators" type="button" data-i18n="tabOperators">Operators</button>
+            <button data-tab="setup" type="button" data-i18n="tabSetup">Setup</button>
+          </nav>
+
+          <section class="tab-panel active" id="answerPanel">
+            <div class="result-card">
+              <div class="card-kicker" data-i18n="responseDraft">O.i Response Draft</div>
+              <h3 id="answerTitle" data-i18n="readyTitle">Operator console is ready.</h3>
+              <div id="answerText" class="answer-body" data-i18n="readyText">
+                Enter a command, choose an inference layer, then press EXECUTE. O.i Box will apply the bundled operator chain before calling the selected provider.
+              </div>
+            </div>
+          </section>
+
+          <section class="tab-panel" id="tracePanel">
+            <ol class="trace-list" id="traceList"></ol>
+          </section>
+
+          <section class="tab-panel" id="operatorsPanel">
+            <div class="operator-toolbar">
+              <input id="operatorSearch" data-i18n-placeholder="searchOperators" placeholder="Search operators..." type="search" />
+              <span id="operatorCount">0 operators</span>
+            </div>
+            <div class="operator-grid" id="operatorGrid"></div>
+          </section>
+
+          <section class="tab-panel" id="setupPanel">
+            <div class="setup-stack">
+              <section class="api-key-card" aria-label="Gemini API key configuration">
+                <div class="api-key-card-header">
+                  <div>
+                    <span data-i18n="apiConfigRequired">API Key Configuration</span>
+                    <small data-i18n="apiConfigHint">Paste your personal Gemini API key to launch evaluation.</small>
+                  </div>
+                  <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noreferrer" data-i18n="getFreeKey">Get free key</a>
+                </div>
+                <div class="api-key-row">
+                  <input id="providerSelect" type="hidden" value="Gemini" />
+                  <input id="modelInput" type="hidden" value="gemini-3.5-flash" />
+                  <input id="endpointInput" type="hidden" value="" />
+                  <label id="apiKeyField" class="api-key-input-wrap">
+                    <span data-i18n="apiKey">API Key</span>
+                    <input id="apiKeyInput" data-i18n-placeholder="apiKeyPlaceholder" placeholder="AIzaSy..." type="password" />
+                  </label>
+                  <button class="secondary-button compact" id="saveSettingsButton" type="button" data-i18n="applySettings">Apply</button>
+                </div>
+                <div class="api-key-status" id="apiKeyStatus" aria-live="polite"></div>
+              </section>
+            </div>
+          </section>
+        </section>
+
+      </section>
+      <section class="companion-apps" aria-label="Companion apps">
+        <div class="companion-heading">
+          <span data-i18n="companionApps">Companion Apps</span>
+          <small data-i18n="companionAppsHint">Open bundled O.i tools as separate work surfaces.</small>
+        </div>
+        <div class="tarot-grid">
+          <a class="tarot-card tarot-trajectory" href="./apps/trajectory-lab/index.html" target="_blank" rel="noreferrer">
+            <span class="tarot-number">I</span>
+            <span class="tarot-icon" aria-hidden="true">TL</span>
+            <strong data-i18n="trajectoryLabName">Trajectory Lab</strong>
+            <small data-i18n="trajectoryLabHint">Manuscript trajectory framework</small>
+          </a>
+          <a class="tarot-card tarot-passport" href="./apps/element-passport-generator/index.html" target="_blank" rel="noreferrer">
+            <span class="tarot-number">II</span>
+            <span class="tarot-icon" aria-hidden="true">EP</span>
+            <strong data-i18n="elementPassportName">Element Passport</strong>
+            <small data-i18n="elementPassportHint">Element passport generator</small>
+          </a>
+          <a class="tarot-card tarot-prime" href="./apps/prime-ulam-nuclear-atlas/index.html" target="_blank" rel="noreferrer">
+            <span class="tarot-number">III</span>
+            <span class="tarot-icon" aria-hidden="true">PU</span>
+            <strong data-i18n="primeUlamAtlasName">Prime Ulam Atlas</strong>
+            <small data-i18n="primeUlamAtlasHint">Prime Ulam nuclear integer atlas</small>
+          </a>
+        </div>
+      </section>
+      <footer class="app-footer">
+        <section class="footer-support">
+          <h2><span>::</span> <span data-i18n="supportWork">Support My Work</span></h2>
+          <div class="footer-links">
+            <span class="bank-pill">MB Bank: 0987971238</span>
+            <a href="https://www.buymeacoffee.com/vietgemsvn" target="_blank" rel="noreferrer">Buy Me A Coffee</a>
+          </div>
+        </section>
+        <section class="footer-center"><span>::</span> Operator Intelligence / 2026 <span>::</span></section>
+        <section class="footer-credit">
+          <span data-i18n="developedBy">Developed by:</span>
+          <a href="https://www.fb.me/phanthanhtrung" target="_blank" rel="noreferrer">Phan Thành Trung</a>
+          <a class="footer-id" href="https://orcid.org/0009-0000-7520-6781" target="_blank" rel="noreferrer">ORCID: 0009-0000-7520-6781</a>
+          <a class="footer-id" href="https://doi.org/10.5281/zenodo.21310036" target="_blank" rel="noreferrer">DOI: 10.5281/zenodo.21310036</a>
+        </section>
+      </footer>
+    </main>
+
+    <script src="./operator-data.js"></script>
+    <script src="./app.js"></script>
+    <script src="./genesis-chamber.js"></script>
+  </body>
+</html>
