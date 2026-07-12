@@ -1277,11 +1277,11 @@ select:focus {
 
 .app-footer {
   display: grid;
-  grid-template-columns: minmax(360px, 1.2fr) minmax(220px, 0.7fr) minmax(300px, 1fr);
+  grid-template-columns: minmax(260px, 1.1fr) minmax(180px, 0.7fr) minmax(150px, 0.52fr) minmax(280px, 1fr);
   align-items: center;
-  gap: 18px;
-  min-height: 58px;
-  padding: 12px 28px;
+  gap: 14px;
+  min-height: 54px;
+  padding: 10px 24px;
   border-top: 1px solid rgba(247, 198, 91, 0.42);
   background:
     radial-gradient(circle at 12% 20%, rgba(247, 198, 91, 0.16), transparent 26%),
@@ -1292,7 +1292,7 @@ select:focus {
 }
 
 .footer-support h2 {
-  margin: 0 0 6px;
+  margin: 0 0 4px;
   color: var(--gold);
   font-size: 0.68rem;
   font-weight: 950;
@@ -1357,11 +1357,63 @@ select:focus {
   font-style: normal;
 }
 
+.footer-counter {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+  min-width: 0;
+  padding: 7px 10px;
+  border: 1px solid rgba(247, 198, 91, 0.28);
+  border-radius: 6px;
+  background: rgba(3, 12, 24, 0.72);
+  box-shadow: inset 0 0 22px rgba(0, 213, 255, 0.05);
+}
+
+.footer-counter-label {
+  align-self: center;
+  overflow: hidden;
+  color: var(--gold);
+  font-size: 0.61rem;
+  font-weight: 950;
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.footer-counter > strong {
+  grid-row: span 2;
+  align-self: center;
+  color: #ffffff;
+  font-family: "Cambria Math", "Segoe UI", sans-serif;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.footer-counter-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px 8px;
+  color: #b8c7da;
+  font-size: 0.62rem;
+  font-weight: 800;
+}
+
+.footer-counter-details b {
+  color: var(--cyan);
+}
+
+.footer-counter small {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 0.56rem;
+}
+
 .footer-credit {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 4px 8px;
   color: var(--muted);
   font-size: 0.72rem;
   font-weight: 900;
@@ -1539,8 +1591,8 @@ select:focus {
   }
 
   .app-footer {
-    grid-template-columns: 1fr;
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 18px;
   }
 
   .tarot-grid {
@@ -1670,6 +1722,10 @@ select:focus {
   .footer-center {
     margin: 18px 0;
     letter-spacing: 0.12em;
+  }
+
+  .footer-counter {
+    margin: 12px 0;
   }
 
   .companion-heading small {
