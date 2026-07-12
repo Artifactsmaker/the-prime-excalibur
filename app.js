@@ -11,12 +11,13 @@ const state = {
     apiKey: "",
     endpoint: "",
   },
-  language: localStorage.getItem("oiBoxLanguage") || "EN",
+  language: localStorage.getItem("oiBoxLanguage") || "VN",
   commandTouched: false,
 };
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+const GLOBAL_COUNTER_BASE = "https://api.counterapi.dev/v1/o-i-vn-prime-excalibur";
 
 const i18n = {
   EN: {
@@ -115,6 +116,11 @@ const i18n = {
     freeGeminiAltHint: "Alternative Flash model when demand spikes",
     requiresFreeApiKey: "Requires free API key",
     supportWork: "Support My Work",
+    activityTotal: "Total Activity",
+    visits: "Visits",
+    executions: "Executions",
+    globalCounter: "Global counter",
+    counterFallback: "Local fallback",
     developedBy: "Developed by:",
     activeConfig: "Active Configuration",
     activeConfigHint: "Advanced users can override provider, model, key, and endpoint here.",
@@ -224,6 +230,11 @@ const i18n = {
     freeGeminiAltHint: "Model Flash thay thế khi model chính quá tải",
     requiresFreeApiKey: "Cần API key miễn phí",
     supportWork: "Ủng Hộ Dự Án",
+    activityTotal: "Tổng Hoạt Động",
+    visits: "Truy cập",
+    executions: "Thực thi",
+    globalCounter: "Bộ đếm toàn cầu",
+    counterFallback: "Dự phòng cục bộ",
     developedBy: "Phát triển bởi:",
     activeConfig: "Cấu Hình Đang Dùng",
     activeConfigHint: "Người dùng nâng cao có thể sửa provider, model, key và endpoint tại đây.",
@@ -333,6 +344,11 @@ const i18n = {
     freeGeminiAltHint: "高負荷時に切り替える Flash model",
     requiresFreeApiKey: "無料 API key が必要",
     supportWork: "プロジェクト支援",
+    activityTotal: "合計アクティビティ",
+    visits: "訪問",
+    executions: "実行",
+    globalCounter: "グローバルカウンター",
+    counterFallback: "ローカル予備",
     developedBy: "開発者:",
     activeConfig: "使用中設定",
     activeConfigHint: "上級ユーザーは provider、model、key、endpoint をここで上書きできます。",
@@ -931,6 +947,8 @@ async function runExecution() {
     return;
   }
 
+  incrementExecutionCount();
+
   $("#stageCaption").textContent = t("processing");
   $("#runButton").disabled = true;
   $("#runButton").textContent = t("runningButton");
@@ -995,6 +1013,72 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function readUsageCount(key) {
+  const value = Number.parseInt(localStorage.getItem(key) || "0", 10);
+  return Number.isFinite(value) && value >= 0 ? value : 0;
+}
+
+function renderUsageMetrics(visits = readUsageCount("oiBoxVisits"), executions = readUsageCount("oiBoxExecutions"), scopeKey = "counterFallback") {
+  if ($("#visitCount")) $("#visitCount").textContent = visits.toLocaleString();
+  if ($("#executionCount")) $("#executionCount").textContent = executions.toLocaleString();
+  if ($("#activityTotalCount")) $("#activityTotalCount").textContent = (visits + executions).toLocaleString();
+  const scope = $("#counterScope");
+  if (scope) {
+    scope.dataset.i18n = scopeKey;
+    scope.textContent = t(scopeKey);
+  }
+}
+
+async function requestGlobalCounter(name, action = "") {
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 4500);
+  try {
+    const suffix = action ? `/${action}` : "";
+    const response = await fetch(`${GLOBAL_COUNTER_BASE}/${name}${suffix}`, {
+      method: "GET",
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    if (response.status === 404 && !action) return 0;
+    if (!response.ok) throw new Error(`Counter API ${response.status}`);
+    const payload = await response.json();
+    const value = Number(payload.value ?? payload.count ?? payload.data?.value);
+    if (!Number.isFinite(value)) throw new Error("Counter API returned an invalid value");
+    return value;
+  } finally {
+    window.clearTimeout(timeout);
+  }
+}
+
+async function syncGlobalCounters(registerVisit = false, incrementExecution = false) {
+  const shouldRegisterVisit = registerVisit && !sessionStorage.getItem("oiBoxGlobalVisitRegistered");
+  try {
+    const [visits, executions] = await Promise.all([
+      requestGlobalCounter("visits", shouldRegisterVisit ? "up" : ""),
+      requestGlobalCounter("executions", incrementExecution ? "up" : ""),
+    ]);
+    if (shouldRegisterVisit) sessionStorage.setItem("oiBoxGlobalVisitRegistered", "1");
+    renderUsageMetrics(visits, executions, "globalCounter");
+  } catch (error) {
+    renderUsageMetrics();
+  }
+}
+
+function initializeUsageMetrics() {
+  if (!sessionStorage.getItem("oiBoxVisitRegistered")) {
+    localStorage.setItem("oiBoxVisits", String(readUsageCount("oiBoxVisits") + 1));
+    sessionStorage.setItem("oiBoxVisitRegistered", "1");
+  }
+  renderUsageMetrics();
+  syncGlobalCounters(true, false);
+}
+
+function incrementExecutionCount() {
+  localStorage.setItem("oiBoxExecutions", String(readUsageCount("oiBoxExecutions") + 1));
+  renderUsageMetrics();
+  syncGlobalCounters(false, true);
+}
+
 function bindControls() {
   $$("[data-bind]").forEach((group) => {
     group.addEventListener("click", (event) => {
@@ -1042,6 +1126,7 @@ function bindControls() {
 }
 
 bindControls();
+initializeUsageMetrics();
 applyLanguage();
 loadSettings();
 loadOperators().catch((error) => {
