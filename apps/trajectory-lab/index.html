@@ -252,9 +252,9 @@
             <div class="flex items-center space-x-4">
                 <!-- Glowing EN/VN/JP Language Toggle -->
                 <div class="sparkle-frame border-2 rounded-xl px-2.5 py-1 flex items-center gap-1.5 bg-slate-50 dark:bg-academic-950 transition-all duration-300">
-                    <button id="langENBtn" class="text-xs font-black px-1.5 py-0.5 rounded text-indigo-600 dark:text-indigo-400 bg-indigo-100/50 dark:bg-indigo-950/50 transition-all scale-105" title="Select English">EN</button>
+                    <button id="langENBtn" class="text-xs font-bold px-1.5 py-0.5 rounded text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all" title="Select English">EN</button>
                     <span class="text-slate-300 dark:text-slate-700 text-xs font-bold">|</span>
-                    <button id="langVNBtn" class="text-xs font-bold px-1.5 py-0.5 rounded text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all" title="Chọn Tiếng Việt">VN</button>
+                    <button id="langVNBtn" class="text-xs font-black px-1.5 py-0.5 rounded text-indigo-600 dark:text-indigo-400 bg-indigo-100/50 dark:bg-indigo-950/50 transition-all scale-105" title="Chọn Tiếng Việt">VN</button>
                     <span class="text-slate-300 dark:text-slate-700 text-xs font-bold">|</span>
                     <button id="langJPBtn" class="text-xs font-bold px-1.5 py-0.5 rounded text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all" title="日本語を選択">JP</button>
                 </div>
@@ -1101,7 +1101,7 @@
             temperature: parseFloat(localStorage.getItem('ujrs_temp') || '0.3'),
             currentData: null,
             activeTab: 'overview',
-            language: 'EN' // English set as default as requested
+            language: 'VN' // Vietnamese is the default language
         };
 
         const DEMOS = {
@@ -1129,7 +1129,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             initUI();
             checkAndApplyTheme();
-            applyLanguage(state.language); // Enforce default English loading sequence
+            applyLanguage(state.language);
         });
 
         function initUI() {
