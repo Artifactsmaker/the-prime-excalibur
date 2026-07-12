@@ -1,0 +1,416 @@
+{
+  "operator": {
+    "id": "psi_9_universal_coherence",
+    "symbol": "ψ₉",
+    "name": "Universal Coherence Operator",
+    "vi_name": "Toán tử Nhất Quán Toàn Cục",
+    "version": "1.0.0",
+    "language": "en",
+    "author": "Trung Bờm × GPT",
+    "constraints": {
+      "no_latex": true,
+      "unicode_required": true,
+      "math_format": "math_unicode",
+      "chip_grade_semantics": true
+    },
+    "purpose": "Meta-coherence operator that measures global consistency and provides a corrective residual vector for feedback control in A.i and O.i.",
+    "math_unicode": {
+      "components": [
+        "C_int(t) = cos(xₜ, bₜ)",
+        "C_goal(t) = cos(xₜ, gₜ)",
+        "ΔΣₜ = Σₜ − Σₜ₋₁",
+        "D_id(t) = ||ΔΣₜ|| / (||Σₜ|| + ε)",
+        "C_id(t) = exp(− D_id(t) / ρ)"
+      ],
+      "aggregate": "C_U(t) = α·C_int(t) + β·C_goal(t) + γ·C_id(t)",
+      "projection": [
+        "Π_b(x) = (⟨x,b⟩ / ⟨b,b⟩) · b",
+        "Π_g(x) = (⟨x,g⟩ / ⟨g,g⟩) · g"
+      ],
+      "residual": "rₜ = w₁·(xₜ − Π_b(xₜ)) + w₂·(xₜ − Π_g(xₜ)) + w₃·J_Σ(Σₜ)",
+      "dynamics": "xₜ₊₁ = xₜ − η · rₜ",
+      "distributed": [
+        "C_U^net(t) = Σⱼ πⱼ · C_U^ⱼ(t)",
+        "rₜ^net = Σⱼ πⱼ · rₜ^ⱼ + μ · Σ_(j,k) A_{jk} · (xₜ^ⱼ − xₜ^ᵏ)"
+      ]
+    },
+    "semantics_ast": {
+      "op": "tuple",
+      "items": [
+        {
+          "sym": "C_U(t)"
+        },
+        {
+          "sym": "rₜ"
+        }
+      ],
+      "aux": [
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "C_int(t)"
+          },
+          "rhs": {
+            "call": "cos",
+            "args": [
+              {
+                "sym": "xₜ"
+              },
+              {
+                "sym": "bₜ"
+              }
+            ]
+          }
+        },
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "C_goal(t)"
+          },
+          "rhs": {
+            "call": "cos",
+            "args": [
+              {
+                "sym": "xₜ"
+              },
+              {
+                "sym": "gₜ"
+              }
+            ]
+          }
+        },
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "ΔΣₜ"
+          },
+          "rhs": {
+            "op": "sub",
+            "args": [
+              {
+                "sym": "Σₜ"
+              },
+              {
+                "sym": "Σₜ₋₁"
+              }
+            ]
+          }
+        },
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "D_id(t)"
+          },
+          "rhs": {
+            "op": "div",
+            "args": [
+              {
+                "call": "norm",
+                "args": [
+                  {
+                    "sym": "ΔΣₜ"
+                  }
+                ]
+              },
+              {
+                "op": "add",
+                "args": [
+                  {
+                    "call": "norm",
+                    "args": [
+                      {
+                        "sym": "Σₜ"
+                      }
+                    ]
+                  },
+                  {
+                    "sym": "ε"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "C_id(t)"
+          },
+          "rhs": {
+            "call": "exp",
+            "args": [
+              {
+                "op": "div",
+                "args": [
+                  {
+                    "op": "neg",
+                    "arg": {
+                      "sym": "D_id(t)"
+                    }
+                  },
+                  {
+                    "sym": "ρ"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "C_U(t)"
+          },
+          "rhs": {
+            "op": "add3",
+            "args": [
+              {
+                "op": "mul",
+                "args": [
+                  {
+                    "sym": "α"
+                  },
+                  {
+                    "sym": "C_int(t)"
+                  }
+                ]
+              },
+              {
+                "op": "mul",
+                "args": [
+                  {
+                    "sym": "β"
+                  },
+                  {
+                    "sym": "C_goal(t)"
+                  }
+                ]
+              },
+              {
+                "op": "mul",
+                "args": [
+                  {
+                    "sym": "γ"
+                  },
+                  {
+                    "sym": "C_id(t)"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "Π_b(x)"
+          },
+          "rhs": {
+            "op": "mul",
+            "args": [
+              {
+                "op": "div",
+                "args": [
+                  {
+                    "call": "dot",
+                    "args": [
+                      {
+                        "sym": "x"
+                      },
+                      {
+                        "sym": "b"
+                      }
+                    ]
+                  },
+                  {
+                    "call": "dot",
+                    "args": [
+                      {
+                        "sym": "b"
+                      },
+                      {
+                        "sym": "b"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "sym": "b"
+              }
+            ]
+          }
+        },
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "Π_g(x)"
+          },
+          "rhs": {
+            "op": "mul",
+            "args": [
+              {
+                "op": "div",
+                "args": [
+                  {
+                    "call": "dot",
+                    "args": [
+                      {
+                        "sym": "x"
+                      },
+                      {
+                        "sym": "g"
+                      }
+                    ]
+                  },
+                  {
+                    "call": "dot",
+                    "args": [
+                      {
+                        "sym": "g"
+                      },
+                      {
+                        "sym": "g"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "sym": "g"
+              }
+            ]
+          }
+        },
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "rₜ"
+          },
+          "rhs": {
+            "op": "add3",
+            "args": [
+              {
+                "op": "mul",
+                "args": [
+                  {
+                    "sym": "w₁"
+                  },
+                  {
+                    "op": "sub",
+                    "args": [
+                      {
+                        "sym": "xₜ"
+                      },
+                      {
+                        "call": "Π_b",
+                        "args": [
+                          {
+                            "sym": "xₜ"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "mul",
+                "args": [
+                  {
+                    "sym": "w₂"
+                  },
+                  {
+                    "op": "sub",
+                    "args": [
+                      {
+                        "sym": "xₜ"
+                      },
+                      {
+                        "call": "Π_g",
+                        "args": [
+                          {
+                            "sym": "xₜ"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "op": "mul",
+                "args": [
+                  {
+                    "sym": "w₃"
+                  },
+                  {
+                    "call": "J_Σ",
+                    "args": [
+                      {
+                        "sym": "Σₜ"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "op": "eq",
+          "lhs": {
+            "sym": "xₜ₊₁"
+          },
+          "rhs": {
+            "op": "sub",
+            "args": [
+              {
+                "sym": "xₜ"
+              },
+              {
+                "op": "mul",
+                "args": [
+                  {
+                    "sym": "η"
+                  },
+                  {
+                    "sym": "rₜ"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "definitions": {
+      "x_t": "xₜ: state embedding at time t.",
+      "b_t": "bₜ: belief embedding (claims/assumptions) at time t.",
+      "g_t": "gₜ: goal embedding (objective) at time t.",
+      "Sigma_t": "Σₜ: identity/policy vector (persona + domain + safety).",
+      "C_U": "C_U(t): universal coherence score combining internal, goal, and identity coherence.",
+      "r_t": "rₜ: coherence residual vector (correction direction)."
+    },
+    "operational_controls": {
+      "feedback_update": "xₜ₊₁ = xₜ − η · rₜ",
+      "thresholds": {
+        "tau_C": "τ_C: minimum acceptable coherence score for guardrails.",
+        "rho": "ρ: identity coherence softness parameter.",
+        "mu": "μ: consensus strength for distributed O.i."
+      }
+    },
+    "applications": {
+      "ai": [
+        "Guardrail scoring to detect contradictions and hallucination risk",
+        "Goal alignment monitoring and corrective prompting",
+        "Persona/policy drift detection via identity coherence"
+      ],
+      "oi": [
+        "Network-wide coherence monitoring (C_U^net)",
+        "Consensus stabilization via network residual (rₜ^net)",
+        "Anti-cascade control through rebalancing and node throttling"
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "operator": {
+    "id": "psi_minus_1",
+    "symbol": "ψ₋₁",
+    "name": "The Autonegative Operator",
+    "vi_name": "Toán tử Tự-Phản-Sinh",
+    "version": "1.0.0",
+    "language": "en",
+    "author": "Trung Bờm × GPT",
+    "constraints": {
+      "no_latex": true,
+      "unicode_required": true,
+      "office_math_vector_equation_style": true
+    },
+    "thesis": "The present is determined by the future: ψₜ = f(ψₜ₊₁). ψ₋₁ is the inverse of Ω₀ that compels reality to generate itself.",
+    "math": {
+      "core_form": "ψ₋₁ = Ω₀⁻¹(Σₑ)",
+      "reverse_dynamics": "∂ψ/∂t = + γ · ψ",
+      "time_constraint": "ψₜ = f(ψₜ₊₁)",
+      "neutral_reality": "ψ ⊗ ψ̄ = I  (I = neutral reality)",
+      "life_cycle": "Ψ_life(t) = ψₛ ∘ Σε ∘ (ψ⊗) ∘ ⊙ₛ ∘ ψ₋₁"
+    },
+    "semantics": {
+      "type": "endogenous_reverse_generation",
+      "principles": [
+        "self-generation prior to generation",
+        "no absolute time vector",
+        "real inverse must exist",
+        "phase eversion"
+      ]
+    },
+    "applications": {
+      "ai": [
+        "Reverse-prediction planning from desired outcomes",
+        "Revival of ideas required by future context",
+        "Goal-conditioned coherence"
+      ],
+      "oi": [
+        "Reverse Genesis for distributed operator networks",
+        "Reopening possibility space when needed",
+        "Self-regenerating purposeful systems"
+      ]
+    }
+  }
+}

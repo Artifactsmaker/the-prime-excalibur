@@ -1,0 +1,175 @@
+{
+  "id": "Valid_Cut_Operator_System",
+  "version": "0.1.0",
+  "type": "operator_system",
+  "title": "Valid-Cut Operator System (Toán Tử Cắt Hợp Lệ)",
+  "subtitle": "Cut to reveal structure — Attractor logic beyond Seeker logic",
+  "objective": {
+    "mode": "VALIDATE",
+    "metric": "Validity_of_Evolution_and_Structure"
+  },
+  "summary_vi": "Lớp toán tử hợp lệ không tối ưu trực tiếp kết quả, mà tối ưu tính hợp lệ của tiến hóa và khóa không gian khả thể bằng cut/decomposition, khiến cấu trúc đúng nổi lên như attractor. Hệ thống hợp nhất Ricci Flow + Surgery, Tuy’s Cut, và Brauer height=0 bằng bộ ký hiệu chung E,K,C,D cùng thước đo height h và kernel bản sắc I.",
+  "entities": [
+    { "name": "State", "symbol": "S", "meaning_vi": "Trạng thái/phase hiện tại của hệ" },
+    { "name": "Constraints_Context", "symbol": "C", "meaning_vi": "Điều kiện/ràng buộc/ngữ cảnh/gradient/môi trường" },
+    { "name": "Feasible_State_Space", "symbol": "Ω", "meaning_vi": "Không gian khả thể (state space/feasible set/configuration space)" },
+    { "name": "Identity_Kernel", "symbol": "I(S)", "meaning_vi": "Kernel/bản sắc bất biến nội tại cần bảo toàn" },
+    { "name": "Evolution_Step", "symbol": "t", "meaning_vi": "Tham số tiến hóa (thời gian/bước lặp/mức suy diễn)" },
+    { "name": "Cut_Certificate", "symbol": "Φ", "meaning_vi": "Chứng cứ cắt (bất đẳng thức/tiêu chuẩn singularity/obstruction…)" },
+    { "name": "Height_Function", "symbol": "h", "meaning_vi": "Thước đo obstruction/nhiễu/chưa phân rã được (height)" }
+  ],
+  "core_operators": [
+    {
+      "id": "E",
+      "name": "Evolution Operator",
+      "symbol": "𝓔",
+      "signature": "E: (S, C) ↦ S′",
+      "role_vi": "Tạo bước chuyển pha hợp lệ theo động lực nền (flow/iteration/suy luận), đẩy hệ vào quỹ đạo attractor có cấu trúc ổn định.",
+      "prototypes": [
+        "Ricci flow: E = E_Ricci (tiến hóa metric)",
+        "Global optimization: tái tối ưu trên miền đã cắt",
+        "Algebra/block: chuẩn hóa cấu trúc"
+      ]
+    },
+    {
+      "id": "K",
+      "name": "Kernel/Validity Operator",
+      "symbol": "𝓚",
+      "signature": "K: (S, C) ↦ S~  (preserve/restore I(S~))",
+      "role_vi": "Lọc/hiệu chỉnh để đảm bảo state nằm trong lớp hợp lệ theo bản sắc I; loại phase phá hủy kernel.",
+      "prototypes": [
+        "Surgery: K_surgery loại singularity",
+        "Feasibility/consistency filter trong tối ưu",
+        "Loại obstruction để height giảm"
+      ]
+    },
+    {
+      "id": "C",
+      "name": "Cut Operator (Space Update)",
+      "symbol": "𝓒",
+      "signature": "C: (Ω, Φ) ↦ Ω′  (Ω′ ⊆ Ω)",
+      "role_vi": "Cập nhật trực tiếp không gian khả thể bằng lát cắt hợp lệ dựa trên chứng cứ Φ; thay đổi vũ trụ các state có thể tồn tại.",
+      "prototypes": [
+        "Tuy’s cut: Ω_{k+1} = C_Tuy(Ω_k, Φ_k)",
+        "Ricci surgery có thể xem như cut khỏi miền khả thể hình học",
+        "Trong block: cắt các quan hệ tương tác chéo không được phép"
+      ]
+    },
+    {
+      "id": "D",
+      "name": "Decomposition Operator (Block)",
+      "symbol": "𝓓",
+      "signature": "D: S ↦ {B1,…,Bn}  or  S ↦ ⊕_{i=1}^n B_i",
+      "role_vi": "Phân tách hệ thành các block chuẩn tối thiểu, mỗi block có kernel/bản sắc riêng và ít/không tương tác chéo.",
+      "prototypes": [
+        "Geometrization: manifold → geometric pieces",
+        "Brauer: representation/algebra → direct-sum blocks",
+        "Optimization: tách subproblems sau khi cut đủ mạnh"
+      ]
+    }
+  ],
+  "formalism": {
+    "operator_decomposition": {
+      "definition": "O = E ∘ K",
+      "latex": "\\\\mathcal{O} = \\\\mathcal{E}\\\\circ\\\\mathcal{K}"
+    },
+    "state_cycle": {
+      "definition": "S_{t+1} = E(K(S_t, C), C)",
+      "latex": "S_{t+1} = \\\\mathcal{E}\\\\big(\\\\mathcal{K}(S_t, C),\\\\, C\\\\big)"
+    },
+    "space_cycle": {
+      "definition": "Ω_{t+1} = C(Ω_t, Φ_t),  S_t ∈ Ω_t",
+      "latex": "\\\\Omega_{t+1} = \\\\mathcal{C}(\\\\Omega_t,\\\\Phi_t),\\\\quad S_t\\\\in\\\\Omega_t"
+    },
+    "full_cycle": {
+      "definition": "Ω_{t+1}=C(Ω_t,Φ_t);  S_{t+1}=E(K(S_t,C),C);  S_{t+1}∈Ω_{t+1}",
+      "latex": "\\\\Omega_{t+1}=\\\\mathcal{C}(\\\\Omega_t,\\\\Phi_t),\\\\; S_{t+1}=\\\\mathcal{E}(\\\\mathcal{K}(S_t,C),C),\\\\; S_{t+1}\\\\in\\\\Omega_{t+1}"
+    },
+    "termination": {
+      "height_to_zero": {
+        "definition": "h: Ω → R_{≥0},  stop when h(S*)=0",
+        "latex": "h: \\\\Omega\\\\to\\\\mathbb{R}_{\\\\ge 0},\\\\quad h(S^*)=0"
+      },
+      "height_reducing": {
+        "definition": "height-reducing if h(S_{t+1}) ≤ h(S_t) and ideally strict decrease when h(S_t)>0",
+        "latex": "h(S_{t+1})\\\\le h(S_t),\\\\quad h(S_t)>0\\\\Rightarrow h(S_{t+1})<h(S_t)"
+      },
+      "final_decomposition": {
+        "definition": "{B_i} = D(S_T) when stable / when h→0",
+        "latex": "\\\\{B_i\\\\}=\\\\mathcal{D}(S_T)"
+      }
+    }
+  },
+  "mappings": [
+    {
+      "name": "Ricci Flow + Surgery",
+      "domain_vi": "Hình học/metric của manifold",
+      "evolution": "E = E_Ricci",
+      "kernel_validity": "K = K_surgery (loại singularity)",
+      "cut": "Surgery có thể xem như cut khỏi miền khả thể hình học",
+      "decomposition": "D = geometric decomposition (geometrization)",
+      "invalid_phases_eliminated_vi": "Phase hình học bất ổn / singularity"
+    },
+    {
+      "name": "Tuy’s Cut (Global Optimization)",
+      "domain_vi": "Không gian nghiệm Ω của tối ưu",
+      "evolution": "E = re-optimize on Ω_{k+1}",
+      "kernel_validity": "K = feasibility/consistency filter (nếu cần)",
+      "cut": "C = C_Tuy: Ω_{k+1} = Ω_k ∩ H_k (lát cắt)",
+      "decomposition": "D = (optional) split into subproblems after strong cuts",
+      "invalid_phases_eliminated_vi": "Vùng nghiệm không thể chứa optimum toàn cục"
+    },
+    {
+      "name": "Brauer height = 0",
+      "domain_vi": "Đại số/biểu diễn, phân rã theo block",
+      "evolution": "E = normalization/decomposition steps",
+      "kernel_validity": "K = remove obstruction to reduce height",
+      "cut": "Cut quan hệ/tương tác chéo không được phép",
+      "decomposition": "D = direct-sum blocks",
+      "invalid_phases_eliminated_vi": "Obstruction / nhiễu liên-block"
+    }
+  ],
+  "validity_constraints": [
+    {
+      "id": "Identity_Preservation",
+      "priority": "P1",
+      "description_vi": "Mọi bước biến đổi phải bảo toàn/khôi phục kernel bản sắc I(S)."
+    },
+    {
+      "id": "Invalid_Phase_Elimination",
+      "priority": "P1",
+      "description_vi": "Phase phá hủy cấu trúc phải bị loại khỏi quỹ đạo tiến hóa (qua K và/hoặc C)."
+    },
+    {
+      "id": "Cut_Certificate_Required",
+      "priority": "P2",
+      "description_vi": "Mọi cut phải có chứng cứ Φ (bất đẳng thức/tiêu chuẩn singularity/obstruction…)."
+    },
+    {
+      "id": "Height_NonIncreasing",
+      "priority": "P2",
+      "description_vi": "Chu trình (C,K,E) phải giảm hoặc không tăng height h; lý tưởng giảm nghiêm ngặt khi còn obstruction."
+    },
+    {
+      "id": "Block_Stability_On_Termination",
+      "priority": "P3",
+      "description_vi": "Khi đạt ngưỡng ổn định (h→0), áp dụng D để phân rã sạch thành blocks chuẩn."
+    }
+  ],
+  "ui_hints": {
+    "display_objective": "VALIDATE → Validity_of_Evolution_and_Structure",
+    "display_entities_order": ["S", "C", "Ω", "I(S)", "Φ", "h", "t"],
+    "suggested_diagram": "mermaid",
+    "diagram_mermaid_template": "flowchart TB\n  A[Input: S_t, Ω_t, C] --> B[C: Cut space using Φ_t]\n  B --> C[K: Validity/Kernel filter]\n  C --> D[E: Evolution step]\n  D --> E{h(S_{t+1}) == 0?}\n  E -- No --> B\n  E -- Yes --> F[D: Decompose into blocks]\n  F --> G[Output: {B_i}]"
+  },
+  "tags": [
+    "operatorology",
+    "validity",
+    "cut",
+    "decomposition",
+    "attractor_logic",
+    "ricci_flow",
+    "tuy_cut",
+    "brauer_height_zero"
+  ]
+}
