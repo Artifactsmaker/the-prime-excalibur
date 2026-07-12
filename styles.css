@@ -415,6 +415,14 @@ select:focus {
   inset: 0;
   width: 100%;
   height: 100%;
+  background:
+    radial-gradient(circle at 48% 46%, rgba(255, 221, 120, 0.16), transparent 18%),
+    radial-gradient(circle at 25% 35%, rgba(247, 121, 52, 0.14), transparent 30%),
+    radial-gradient(circle at 80% 42%, rgba(27, 167, 255, 0.18), transparent 34%),
+    #020814;
+  opacity: 0.98;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .genesis-expand {
@@ -533,6 +541,24 @@ select:focus {
   text-align: right;
   text-transform: uppercase;
   text-shadow: 0 0 18px rgba(0, 0, 0, 0.82);
+  font-family: "Cambria Math", "Segoe UI Symbol", "Segoe UI", sans-serif;
+}
+
+.genesis-phase {
+  position: absolute;
+  bottom: 16px;
+  left: 18px;
+  z-index: 3;
+  max-width: min(390px, calc(100% - 36px));
+  padding: 6px 9px;
+  border-left: 2px solid var(--gold);
+  background: rgba(2, 8, 18, 0.62);
+  color: #fff1b8;
+  font-family: "Cambria Math", "Segoe UI Symbol", "Segoe UI", monospace;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 14px rgba(247, 198, 91, 0.48);
 }
 
 .genesis-fallback {
@@ -552,14 +578,17 @@ select:focus {
 #stageCaption {
   position: absolute;
   z-index: 4;
-  bottom: 22px;
-  left: 22px;
-  max-width: 220px;
+  top: 62px;
+  left: 18px;
+  max-width: min(260px, calc(100% - 90px));
   margin: 0;
+  padding: 6px 9px;
+  border-left: 2px solid rgba(247, 198, 91, 0.82);
+  background: rgba(2, 8, 18, 0.58);
   color: #fff0bf;
   font-size: 0.72rem;
   font-weight: 900;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.18em;
   text-align: left;
   text-shadow: 0 0 18px rgba(0, 0, 0, 0.8), 0 0 18px rgba(247, 198, 91, 0.34);
   text-transform: uppercase;
@@ -635,6 +664,12 @@ select:focus {
   color: var(--text);
   font-size: 0.96rem;
   line-height: 1.72;
+  contain: layout paint style;
+}
+
+.answer-body > * {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 64px;
 }
 
 .answer-body p {
@@ -677,6 +712,102 @@ select:focus {
   color: #9fe7ff;
   font-family: Consolas, "SFMono-Regular", monospace;
   font-size: 0.9em;
+}
+
+.math-inline,
+.math-block {
+  color: #fff3c4;
+  font-family: "Cambria Math", "STIX Two Math", Georgia, serif;
+  font-weight: 700;
+}
+
+.math-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.12em;
+  padding: 0 2px;
+  vertical-align: baseline;
+}
+
+.math-block {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  margin: 4px 0;
+  padding: 12px 14px;
+  overflow-x: auto;
+  border: 1px solid rgba(247, 198, 91, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 202, 86, 0.06);
+  line-height: 1.5;
+  white-space: nowrap;
+  contain-intrinsic-size: auto 74px;
+}
+
+.math-frac {
+  display: inline-grid;
+  grid-template-rows: auto auto;
+  align-items: center;
+  margin: 0 0.16em;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.math-frac > span:first-child {
+  padding: 0 0.26em 0.08em;
+  border-bottom: 1px solid currentColor;
+}
+
+.math-frac > span:last-child {
+  padding: 0.08em 0.26em 0;
+}
+
+.math-inline sub,
+.math-inline sup,
+.math-block sub,
+.math-block sup {
+  line-height: 0;
+}
+
+.answer-body pre.code-block {
+  position: relative;
+  margin: 2px 0 6px;
+  padding: 38px 16px 16px;
+  overflow: auto;
+  border: 1px solid rgba(247, 198, 91, 0.26);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 202, 86, 0.08), transparent 32%),
+    rgba(3, 7, 16, 0.94);
+  box-shadow: inset 0 1px 0 rgba(255, 244, 196, 0.06);
+  contain-intrinsic-size: auto 220px;
+}
+
+.answer-body pre.code-block code {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #dff7ff;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  white-space: pre;
+}
+
+.code-lang {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  padding: 3px 8px;
+  border: 1px solid rgba(247, 198, 91, 0.28);
+  border-radius: 999px;
+  color: var(--gold);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .answer-note {
@@ -856,6 +987,28 @@ select:focus {
   min-height: 38px;
   border-color: rgba(255, 126, 38, 0.72);
   background: rgba(4, 10, 22, 0.9);
+}
+
+.api-key-status {
+  display: none;
+  min-height: 20px;
+  padding: 8px 10px;
+  border: 1px solid rgba(82, 255, 187, 0.22);
+  border-radius: 8px;
+  background: rgba(30, 255, 171, 0.08);
+  color: #9cffd6;
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.api-key-status.visible {
+  display: block;
+}
+
+.api-key-status.warning {
+  border-color: rgba(255, 198, 91, 0.28);
+  background: rgba(255, 198, 91, 0.08);
+  color: #ffe2a1;
 }
 
 .secondary-button.compact {
@@ -1479,11 +1632,20 @@ select:focus {
     display: none;
   }
 
+  .genesis-phase {
+    right: 64px;
+    bottom: 14px;
+    max-width: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   #stageCaption {
-    bottom: 24px;
+    top: 14px;
     left: 16px;
-    max-width: calc(100% - 32px);
-    letter-spacing: 0.18em;
+    max-width: calc(100% - 88px);
+    letter-spacing: 0.12em;
   }
 
   .free-model-grid {
