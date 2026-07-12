@@ -511,8 +511,8 @@ tbody tr:hover {
       </div>
       <div class="top-actions">
         <div class="language-toggle" aria-label="Language">
-            <button id="langVn" type="button">VN</button>
-            <button id="langEn" class="active" type="button">EN</button>
+            <button id="langVn" class="active" type="button">VN</button>
+            <button id="langEn" type="button">EN</button>
             <button id="langJp" type="button">JP</button>
         </div>
         <div class="author-card" aria-label="Author and persistent identifiers">
@@ -670,7 +670,7 @@ const pageSize = 120;
 let filtered = rows;
 let selected = null;
 let page = 0;
-let currentLang = "en";
+let currentLang = "vn";
 
 const i18n = {
   en: {
@@ -1029,7 +1029,7 @@ window.addEventListener("resize", draw);
 renderStats();
 applyFilters();
 selectRow(rows.find(row => row.Nuclide_Label === "U-238") || rows[0]);
-applyLanguage("en");
+applyLanguage("vn");
 
 </script>
 </body>
