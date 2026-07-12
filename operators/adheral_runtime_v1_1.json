@@ -1,0 +1,106 @@
+{
+  "id": "operator.adheral.runtime.v1_1",
+  "version": "1.1.0",
+  "type": "operator_runtime",
+  "family": "relation-coupling",
+  "title": "Adheral Operator (⧉) — Runtime Relation-Coupling Operator",
+  "title_vi": "Toán tử Bám Vật Thể — Runtime Bám Dính Quan Hệ",
+  "symbol": "⧉",
+  "status": "runtime-upgraded",
+  "objective": {
+    "mode": "BIND",
+    "metric": "Stable_Symmetric_Adhesion",
+    "decision": "A⧉B holds when co-existence, symmetry, bidirectional reconstructability, elasticity, and invariance jointly exceed configured thresholds."
+  },
+  "upgrade_summary": [
+    "Adds numeric axiom scores rather than boolean-only checks.",
+    "Adds bidirectional reconstruction-error scoring using embeddings, reconstructed embeddings, or learned hooks.",
+    "Adds elasticity stress-test across distance and relation samples.",
+    "Adds invariance check using signatures or transformed embeddings.",
+    "Adds weighted total score and relation modes: adheral, partial, reject.",
+    "Adds ranked pair scanning for Adheral(S).",
+    "Adds trace export, O.i intermediate record, demo, and self-tests."
+  ],
+  "runtime_api": {
+    "main": "runAdheralV11(A, B, cfg?, hooks?)",
+    "batch": "adheralPairsRanked(entities, cfg?, hooks?)",
+    "export": "toOiAdheralRecord(result)",
+    "demo": "demoAdheralV11()",
+    "tests": "runSelfTests()"
+  },
+  "entity_schema": {
+    "id": "string",
+    "embedding": "number[] optional",
+    "transformedEmbedding": "number[] optional",
+    "stateSignature": "string optional",
+    "transformedSignature": "string optional",
+    "coExistence": "Record<otherId, number> optional",
+    "relationStrength": "Record<otherId, number> optional",
+    "reconstructs": "Record<otherId, boolean> optional",
+    "reconstructedEmbedding": "Record<otherId, number[]> optional",
+    "distanceSamples": "Record<otherId, number[]> optional",
+    "relationSamples": "Record<otherId, number[]> optional",
+    "coObservationSamples": "Record<otherId, boolean[]> optional"
+  },
+  "axioms_runtime": [
+    {
+      "id": "A1_CoExistence",
+      "score": "estimateCoExistence(A,B)",
+      "pass_condition": "P(A∧B) ≥ coExistence threshold",
+      "default_threshold": 0.9
+    },
+    {
+      "id": "A2_Symmetry",
+      "score": "0.55·min(rel_AB, rel_BA) + 0.45·(1 - |rel_AB-rel_BA|/tolerance)",
+      "pass_condition": "rel_AB and rel_BA are strong, and directional delta ≤ tolerance",
+      "default_tolerance": 0.15
+    },
+    {
+      "id": "A3_Reconstructability",
+      "score": "mean(score_AtoB, score_BtoA), where score=1-normalized_reconstruction_error/threshold",
+      "pass_condition": "Both Φ_A→B and Φ_B→A exist and reconstruction error is acceptable",
+      "default_error_threshold": 0.25
+    },
+    {
+      "id": "A4_Elasticity",
+      "score": "stress score from sample count, distance range, relation floor, and relation variance",
+      "pass_condition": "relation remains above floor under nontrivial distance variation",
+      "default_relation_floor": 0.6
+    },
+    {
+      "id": "A5_Invariance",
+      "score": "signature preservation or transformed-embedding drift score",
+      "pass_condition": "τ(A), τ(B) preserve relation identity within drift threshold",
+      "default_drift_threshold": 0.15
+    }
+  ],
+  "default_weights": {
+    "coExistence": 1.0,
+    "symmetry": 1.0,
+    "reconstructability": 1.25,
+    "elasticity": 1.0,
+    "invariance": 1.0
+  },
+  "decision_modes": {
+    "adheral": "totalScore ≥ 0.8 and required axioms pass",
+    "partial": "totalScore ≥ 0.55 but one or more strict conditions are incomplete",
+    "reject": "coupling evidence is insufficient"
+  },
+  "demo_expected": {
+    "demoIsAdheral": true,
+    "reconstructionFailureRejects": true,
+    "invarianceFailureRejects": true,
+    "rankedFindsXY": true
+  },
+  "operatorology_role": {
+    "classification": "Epic Core Candidate upgraded toward Epic Core runtime",
+    "recommended_group": "Relation-Coupling / Inseparable-Pair Operators",
+    "relation_to_S0_HZSO_BZDO": [
+      "𝓢₀ extracts invariant foundation before relation comparison.",
+      "HZSO can pull unstable relation states toward symmetry-compatible form.",
+      "BZDO dissolves character when the block or relation no longer has valid support.",
+      "Adheral detects pairs whose relation should be preserved instead of dissolved."
+    ]
+  },
+  "license": "CC-BY-4.0"
+}

@@ -1,0 +1,366 @@
+{
+  "operator_id": "deo2-operator",
+  "name": "DEO-2 Operator",
+  "symbol": "D_DEO-2",
+  "version": "0.1.0",
+  "schema_version": "1.0.0",
+  "compat": ">=0.1 <1.0",
+  "family": "disciplined-evolution-second-order-systems",
+  "title": "DEO-2 — Disciplined Evolution Operator for Second-Order Differential Systems",
+  "description_vi": "DEO-2 là toán tử tiến hóa có kỷ luật cho hệ vi phân bậc hai. Nó ghép ba lớp: cắt miền hợp lệ bằng Tuy’s Cut, tiến hóa cục bộ bằng generator đã chuẩn hóa theo Brauer Độ cao 0, và hiệu chỉnh sau tiến hóa để giữ hệ trong miền khả thi.",
+  "description_en": "DEO-2 is a disciplined evolution operator for second-order differential systems. It combines feasibility projection via Tuy's Cut, local evolution under a Brauer height-0 normalized generator, and post-evolution correction to keep the system inside the valid domain.",
+  "objective": {
+    "mode": "COMPOSITE",
+    "metric": "Disciplined_Convergence"
+  },
+  "tags": [
+    "operatorology",
+    "operator-intelligence",
+    "disciplined-evolution",
+    "projected-semigroup",
+    "tuy-cut",
+    "brauer-height-0",
+    "silicon-ready"
+  ],
+  "inputs": {
+    "required": [
+      {
+        "id": "states",
+        "type": "array<object>",
+        "description_vi": "Tập trạng thái hiện tại của hệ, mỗi trạng thái gồm vị trí và vận tốc"
+      },
+      {
+        "id": "projection",
+        "type": "object",
+        "description_vi": "Tham số chiếu Π(t): vector a, ngưỡng b, comparator, epsilon"
+      },
+      {
+        "id": "generator",
+        "type": "object",
+        "description_vi": "Generator Λ(t) đã chuẩn hóa dùng cho bước tiến hóa cục bộ"
+      },
+      {
+        "id": "dt",
+        "type": "number",
+        "description_vi": "Bước thời gian Δt cho một nhịp tiến hóa"
+      }
+    ],
+    "optional": [
+      {
+        "id": "steps",
+        "type": "integer",
+        "description_vi": "Số bước lặp hữu hạn để xấp xỉ tích Chernoff"
+      },
+      {
+        "id": "context",
+        "type": "object",
+        "description_vi": "Ngữ cảnh bổ sung cho log hoặc giải thích"
+      },
+      {
+        "id": "annotations",
+        "type": "array<object>",
+        "description_vi": "Nhãn bổ sung cho từng trạng thái"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      {
+        "id": "disciplined_states",
+        "type": "array<object>",
+        "description_vi": "Tập trạng thái sau các bước chiếu-tiến hóa-hiệu chỉnh"
+      }
+    ],
+    "standard_contract": [
+      "ContextPack",
+      "ToolPlan",
+      "DecisionLog"
+    ]
+  },
+  "parameters": {
+    "steps": {
+      "type": "integer",
+      "default": 1,
+      "range": [1, 1000000],
+      "description_vi": "Số bước hữu hạn dùng để xấp xỉ chuỗi tích của DEO-2"
+    },
+    "position_weight": {
+      "type": "number",
+      "default": 1.0,
+      "range": [0.0, 1000.0],
+      "description_vi": "Hệ số trọng số cho thành phần vị trí trong bước tiến hóa"
+    },
+    "velocity_weight": {
+      "type": "number",
+      "default": 1.0,
+      "range": [0.0, 1000.0],
+      "description_vi": "Hệ số trọng số cho thành phần vận tốc trong bước tiến hóa"
+    },
+    "keep_removed_trace": {
+      "type": "boolean",
+      "default": true,
+      "description_vi": "Có lưu dấu vết trạng thái bị loại ở mỗi bước hay không"
+    }
+  },
+  "state_model": {
+    "input_state": "X_k = (q_k, v_k): trạng thái hệ bậc hai gồm vị trí q và vận tốc v",
+    "intermediate_states": [
+      "pre_projected_states",
+      "locally_evolved_states",
+      "post_projected_states"
+    ],
+    "output_state": "X_(k+1): trạng thái đã qua một hoặc nhiều bước DEO-2"
+  },
+  "formulae": [
+    {
+      "id": "canonical",
+      "name": "Canonical DEO-2 form",
+      "latex": "D_{DEO-2}(T)=\\lim_{n\\to\\infty}\\prod_{k=1}^{n}[\\Pi(t_k)\\,\\exp(\\Delta t_k\\Lambda(t_k))\\,\\Pi(t_k)]",
+      "interpretation_vi": "Chuỗi chiếu-tiến hóa-chiếu lặp lại để tạo tiến hóa có kỷ luật"
+    },
+    {
+      "id": "projection",
+      "name": "Projection form",
+      "latex": "\\Pi(t)(S)=S\\cap H_t",
+      "interpretation_vi": "Toán tử chiếu giữ hệ trong miền hợp lệ theo Tuy’s Cut"
+    },
+    {
+      "id": "local_evolution",
+      "name": "Local evolution",
+      "latex": "X' = \\exp(\\Delta t\\Lambda)X",
+      "interpretation_vi": "Bước tiến hóa cục bộ dưới generator đã chuẩn hóa"
+    },
+    {
+      "id": "runtime_step",
+      "name": "Runtime step form",
+      "latex": "X_{k+1}=\\Pi_k\\,\\Phi_{\\Delta t_k}\\,\\Pi_k(X_k)",
+      "interpretation_vi": "Dạng runtime: validity gate → local evolution → post-correction"
+    }
+  ],
+  "features": {
+    "relevance_features": ["state_presence"],
+    "authority_features": ["normalized_generator"],
+    "recency_features": [],
+    "consistency_features": ["pre_projection_validity", "post_projection_validity"],
+    "risk_features": ["drift_magnitude", "constraint_violation"]
+  },
+  "normalization": {
+    "method": "brauer_height_0",
+    "note_vi": "Generator Λ(t) được giả định đã chuẩn hóa cấu trúc trước khi runtime DEO-2 chạy"
+  },
+  "metrics": {
+    "primary_metric": {
+      "name": "discipline_ratio",
+      "type": "scalar",
+      "description_vi": "Tỷ lệ trạng thái giữ được sau cả hai lần chiếu"
+    },
+    "secondary_metrics": [
+      {
+        "name": "pre_cut_removed_count",
+        "type": "integer",
+        "description_vi": "Số trạng thái bị loại ở cổng chiếu trước tiến hóa"
+      },
+      {
+        "name": "post_cut_removed_count",
+        "type": "integer",
+        "description_vi": "Số trạng thái bị loại ở cổng hiệu chỉnh sau tiến hóa"
+      },
+      {
+        "name": "drift_energy",
+        "type": "scalar",
+        "description_vi": "Độ dịch chuyển tổng hợp của trạng thái sau tiến hóa cục bộ"
+      },
+      {
+        "name": "generator_norm",
+        "type": "scalar",
+        "description_vi": "Chuẩn độ lớn của generator Λ(t)"
+      }
+    ]
+  },
+  "thresholds": {
+    "epsilon": 0.0,
+    "max_drift_alert": 1000000.0
+  },
+  "kernel": {
+    "type": "composite",
+    "pipeline_steps": [
+      {
+        "id": "collect_states",
+        "name": "Collect States",
+        "role": "collect",
+        "description_vi": "Thu thập trạng thái, projection Π, generator Λ, và bước thời gian Δt"
+      },
+      {
+        "id": "validity_gate",
+        "name": "Validity Gate",
+        "role": "gate",
+        "description_vi": "Chiếu trạng thái vào miền hợp lệ trước tiến hóa"
+      },
+      {
+        "id": "local_evolution",
+        "name": "Local Evolution",
+        "role": "evolve",
+        "description_vi": "Tiến hóa cục bộ trạng thái bằng generator Λ và bước Δt"
+      },
+      {
+        "id": "post_correction",
+        "name": "Post-Evolution Correction",
+        "role": "gate",
+        "description_vi": "Chiếu lại để loại trạng thái drift khỏi miền hợp lệ"
+      },
+      {
+        "id": "build_commit_state",
+        "name": "Build Commit State",
+        "role": "commit",
+        "description_vi": "Ghi nhận trạng thái hợp lệ cuối cùng của bước DEO-2"
+      }
+    ],
+    "fusion_rule": "chained",
+    "hyperparameters": {
+      "steps": 1,
+      "position_weight": 1.0,
+      "velocity_weight": 1.0
+    }
+  },
+  "cut_rules": [
+    {
+      "id": "pre_projection_rule",
+      "condition": "state passes Π(t_k) comparator before evolution",
+      "action": "keep_else_drop",
+      "priority": 1,
+      "description_vi": "Cắt các trạng thái không hợp lệ trước khi generator tác động"
+    },
+    {
+      "id": "post_projection_rule",
+      "condition": "evolved state passes Π(t_k) comparator after evolution",
+      "action": "keep_else_drop",
+      "priority": 2,
+      "description_vi": "Hiệu chỉnh sau tiến hóa để ngăn drift khỏi miền hợp lệ"
+    }
+  ],
+  "override_policy": {
+    "priority_order": [
+      "safety_anchor",
+      "truth_anchor",
+      "cut_rules",
+      "generator_normalization",
+      "user_intent",
+      "context"
+    ]
+  },
+  "anchors": {
+    "style_anchor": {
+      "strength": "soft",
+      "description_vi": "Neo cách diễn giải quá trình tiến hóa"
+    },
+    "truth_anchor": {
+      "strength": "hard",
+      "description_vi": "Không commit trạng thái vi phạm projection sau hiệu chỉnh"
+    },
+    "identity_anchor": {
+      "strength": "soft",
+      "description_vi": "Neo bản sắc DEO-2 như toán tử chiếu-tiến hóa-chiếu"
+    },
+    "safety_anchor": {
+      "strength": "hard",
+      "description_vi": "Không bỏ qua bước validity gate hoặc post-correction trong runtime chuẩn"
+    }
+  },
+  "runtime_mapping": {
+    "runtime_role": "Disciplined state evolution for constrained second-order systems",
+    "pipeline_steps": [
+      "collect_states",
+      "validity_gate",
+      "local_evolution",
+      "post_correction",
+      "build_commit_state"
+    ],
+    "state_transition": "X_(k+1)=Π_k Φ_(Δt_k) Π_k(X_k)",
+    "decision_points": [
+      "before_validity_gate",
+      "after_validity_gate",
+      "after_local_evolution",
+      "after_post_correction"
+    ],
+    "fallback_behavior": "Nếu projection hoặc generator không hợp lệ, giữ nguyên trạng thái đầu vào và phát validation event"
+  },
+  "silicon_mapping": {
+    "hardware_role": "Constraint-preserving evolution pipeline",
+    "blocks": [
+      "state_buffer",
+      "projection_gate_pre",
+      "evolution_core",
+      "projection_gate_post",
+      "commit_buffer",
+      "logger_bus"
+    ],
+    "critical_checks": [
+      "pre_projection_check",
+      "post_projection_check",
+      "generator_dimension_check"
+    ],
+    "memory_needs": [
+      "state_vectors",
+      "projection_params",
+      "generator_params",
+      "step_logs"
+    ],
+    "control_signals": [
+      "pre_gate_enable",
+      "evolution_enable",
+      "post_gate_enable",
+      "commit_valid"
+    ],
+    "determinism_requirements": [
+      "stable_iteration_order",
+      "fixed_rounding",
+      "version_stamping"
+    ]
+  },
+  "logging": {
+    "log_level": "basic",
+    "required_fields": [
+      "run_id",
+      "operator_id",
+      "version",
+      "input_summary",
+      "step_events",
+      "metric_trace",
+      "final_summary"
+    ],
+    "redaction_rules": [
+      "mask_pii",
+      "hash_sensitive_values"
+    ],
+    "audit": {
+      "store_pre_metrics": true,
+      "store_post_metrics": true,
+      "store_cut_events": true,
+      "store_override_events": true
+    }
+  },
+  "decision_log_schema": {
+    "required_sections": [
+      "metadata",
+      "input_state",
+      "step_trace",
+      "metric_trace",
+      "events",
+      "final_summary"
+    ]
+  },
+  "presets": [
+    {
+      "preset_id": "default",
+      "name": "Default",
+      "description_vi": "Preset mặc định cho DEO-2 với một bước tiến hóa và hệ số vị trí/vận tốc bằng 1"
+    }
+  ],
+  "examples": [
+    {
+      "input_case": "Hai trạng thái cơ học bậc hai với projection tuyến tính và generator 2x2",
+      "expected_behavior_vi": "Trạng thái hợp lệ được tiến hóa rồi hiệu chỉnh; trạng thái drift bị loại ở post-correction"
+    }
+  ],
+  "quote": "DEO-2 evolves a system only through states that survive discipline."
+}
