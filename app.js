@@ -50,20 +50,24 @@ const i18n = {
     tabSetup: "Setup",
     responseDraft: "O.i Response Draft",
     readyTitle: "Operator console is ready.",
-    readyText: "Note: paste your Gemini API key in Setup for AI answers. Without a key, The Prime Excalibur still runs offline by returning an operator-chain analysis.",
+    readyText: "Note: paste your Gemini API key in Setup for O.i answers. Without a key, The Prime Excalibur still runs in Openbeta mode by returning an operator-chain analysis.",
     searchOperators: "Search operators...",
     aiProvider: "Active AI Provider",
     model: "Model",
     activeModel: "Active Model",
     apiKey: "API Key",
-    apiKeyPlaceholder: "Paste key here. Stored locally for prototype only.",
+    apiKeyPlaceholder: "Paste key here",
     apiConfigRequired: "API Key Configuration Required",
     apiConfigHint: "Paste your personal Gemini API key below to launch evaluation.",
     getFreeKey: "Get free key",
     applySettings: "Apply",
+    keySavedTitle: "Gemini API key is ready.",
+    keySavedText: "The key has been saved. You can now ask for an O.i answer.",
+    keySavedStatus: "Key saved. Returning to Answer.",
+    keyMissingStatus: "Paste a Gemini API key first.",
     autoDefaultModel: "Auto default by provider",
     customEndpoint: "",
-    saveSettings: "Save Local Settings",
+    saveSettings: "Save Openbeta Settings",
     operatorChain: "Operator Chain",
     runtime: "Runtime",
     provider: "Provider",
@@ -75,13 +79,18 @@ const i18n = {
     noCommandText: "Enter a command before running The Prime Excalibur.",
     missingKeyTitle: "API key is missing.",
     missingKeyText: "Gemini needs your personal free API key. Open Setup, paste the key, then press Apply.",
-    offlineAnswerTitle: "Offline operator-chain response.",
-    offlineAnswerIntro: "No Gemini API key is saved, so The Prime Excalibur generated a local response from the selected operator chain.",
+    offlineAnswerTitle: "Openbeta operator-chain response.",
+    offlineAnswerIntro: "No Gemini API key is active, so The Prime Excalibur generated an Openbeta response from the selected operator chain.",
     offlineQuestion: "Question",
     offlineReading: "Operator reading",
-    offlineNext: "To get a full AI answer, paste a Gemini API key in Setup and press Apply.",
+    offlineModeLabel: "Mode",
+    offlineInferenceLabel: "Inference layer",
+    offlineKnowledgeLabel: "Knowledge",
+    offlinePriorityLabel: "Priority",
+    offlineChainUsed: "Operator chain used",
+    offlineNext: "To get a full O.i answer, paste a Gemini API key in Setup and press Apply.",
     callingProviderTitle: "Calling {provider}...",
-    callingProviderText: "The Prime Excalibur is compiling the operator chain and sending the request to the AI provider.",
+    callingProviderText: "The Prime Excalibur is compiling the operator chain and sending the request to the O.i provider.",
     responseReadyTitle: "O.i response is ready.",
     providerErrorTitle: "Provider call failed.",
     traceInput: "Input Capture",
@@ -96,7 +105,7 @@ const i18n = {
     traceOutput: "Output Filter",
     traceOutputDetail: "Received the response and displayed it after the operator chain.",
     traceProviderError: "Provider Error",
-    fileFetchError: "Cannot call the provider from the current app surface. If you opened file://, run .\\start.ps1 and use http://localhost:4173. If it still fails, the provider may block browser CORS; the Tauri/.exe build will call through a native backend.",
+    fileFetchError: "Cannot call the provider from the current app surface. Use the Openbeta web build or GitHub Pages version, then try again.",
     highDemand: "The selected model is under high demand right now. The API key works, but the provider is temporarily overloaded. Try again later or switch to another Gemini model.",
     promptReturn: "Return a clear English answer. Include a short 'Operator chain used' section at the end.",
     langName: "English",
@@ -150,16 +159,24 @@ const i18n = {
     tabSetup: "Cài đặt",
     responseDraft: "Bản Nháp Phản Hồi O.i",
     readyTitle: "Bảng điều khiển toán tử đã sẵn sàng.",
-    readyText: "Lưu ý: hãy dán Gemini API key trong tab Cài đặt để nhận câu trả lời O,i. Nếu chưa có key, The Prime Excalibur vẫn chạy offline bằng chuỗi toán tử.",
+    readyText: "Lưu ý: hãy dán Gemini API key trong tab Cài đặt để nhận câu trả lời O.i. Nếu chưa có key, The Prime Excalibur vẫn chạy Openbeta bằng chuỗi toán tử.",
     searchOperators: "Tìm toán tử...",
     aiProvider: "AI Phụ Trợ Đang Dùng",
     model: "Mô Hình",
     activeModel: "Mô Hình Đang Chọn",
     apiKey: "API Key",
-    apiKeyPlaceholder: "Dán key vào đây. Bản thử nghiệm chỉ lưu cục bộ.",
+    apiKeyPlaceholder: "Dán Key vào đây",
+    apiConfigRequired: "Cần Cấu Hình API Key",
+    apiConfigHint: "Dán Gemini API key của bạn để bắt đầu đánh giá.",
+    getFreeKey: "Lấy key miễn phí",
+    applySettings: "Áp dụng",
+    keySavedTitle: "Gemini API key đã sẵn sàng.",
+    keySavedText: "Key đã được lưu. Bạn có thể nhận câu trả lời O.i ngay bây giờ.",
+    keySavedStatus: "Đã lưu key. Đang chuyển về Trả lời.",
+    keyMissingStatus: "Hãy dán Gemini API key trước.",
     autoDefaultModel: "Tự chọn mặc định theo provider",
     customEndpoint: "",
-    saveSettings: "Lưu Cài Đặt Cục Bộ",
+    saveSettings: "Lưu Cài Đặt Openbeta",
     operatorChain: "Chuỗi Toán Tử",
     runtime: "Runtime",
     provider: "Provider",
@@ -171,13 +188,18 @@ const i18n = {
     noCommandText: "Hãy nhập lệnh trước khi chạy The Prime Excalibur.",
     missingKeyTitle: "Thiếu API key.",
     missingKeyText: "Gemini cần API key miễn phí của bạn. Mở Cài đặt, dán key, rồi bấm Áp dụng.",
-    offlineAnswerTitle: "Phản hồi offline bằng chuỗi toán tử.",
-    offlineAnswerIntro: "Chưa có Gemini API key, nên The Prime Excalibur tạo phản hồi cục bộ từ chuỗi toán tử đang chọn.",
+    offlineAnswerTitle: "Phản hồi Openbeta bằng chuỗi toán tử.",
+    offlineAnswerIntro: "Chưa có Gemini API key, nên The Prime Excalibur tạo phản hồi Openbeta từ chuỗi toán tử đang chọn.",
     offlineQuestion: "Câu hỏi",
     offlineReading: "Diễn giải toán tử",
-    offlineNext: "Để nhận câu trả lời AI đầy đủ, hãy dán Gemini API key trong Cài đặt rồi bấm Áp dụng.",
+    offlineModeLabel: "Chế độ",
+    offlineInferenceLabel: "Tầng suy luận",
+    offlineKnowledgeLabel: "Tri thức",
+    offlinePriorityLabel: "Mức ưu tiên",
+    offlineChainUsed: "Chuỗi toán tử đã dùng",
+    offlineNext: "Để nhận câu trả lời O.i đầy đủ, hãy dán Gemini API key trong Cài đặt rồi bấm Áp dụng.",
     callingProviderTitle: "Đang gọi {provider}...",
-    callingProviderText: "The Prime Excalibur đang biên dịch chuỗi toán tử và gửi request tới AI phụ trợ.",
+    callingProviderText: "The Prime Excalibur đang biên dịch chuỗi toán tử và gửi request tới O.i provider.",
     responseReadyTitle: "Phản hồi O.i đã sẵn sàng.",
     providerErrorTitle: "Lỗi khi gọi provider.",
     traceInput: "Nhận Lệnh",
@@ -192,7 +214,7 @@ const i18n = {
     traceOutput: "Bộ Lọc Đầu Ra",
     traceOutputDetail: "Đã nhận phản hồi và hiển thị kết quả sau chuỗi toán tử.",
     traceProviderError: "Lỗi Provider",
-    fileFetchError: "Không gọi được provider từ bề mặt app hiện tại. Nếu đang mở bằng file://, hãy chạy .\\start.ps1 rồi vào http://localhost:4173. Nếu vẫn lỗi, có thể provider đang chặn CORS trong browser; bản Tauri/.exe sẽ gọi qua native backend để xử lý điểm này.",
+    fileFetchError: "Không gọi được provider từ bề mặt app hiện tại. Hãy dùng bản Openbeta web hoặc bản GitHub Pages rồi thử lại.",
     highDemand: "Mô hình đang bị quá tải tạm thời. API key đã hoạt động, nhưng provider đang có nhu cầu cao. Hãy thử lại sau hoặc đổi sang model Gemini khác.",
     promptReturn: "Trả lời rõ ràng bằng tiếng Việt. Cuối câu trả lời thêm một mục ngắn 'Chuỗi toán tử đã dùng'.",
     langName: "tiếng Việt",
@@ -246,16 +268,24 @@ const i18n = {
     tabSetup: "設定",
     responseDraft: "O.i 応答ドラフト",
     readyTitle: "演算子コンソールの準備ができました。",
-    readyText: "注意: AI 回答には Setup で Gemini API key を貼り付けてください。key がない場合でも、The Prime Excalibur は演算子チェーンで offline 応答を生成します。",
+    readyText: "注意: O.i 応答には Setup で Gemini API key を貼り付けてください。key がない場合でも、The Prime Excalibur は Openbeta モードで演算子チェーン応答を生成します。",
     searchOperators: "演算子を検索...",
     aiProvider: "使用中 AI プロバイダー",
     model: "モデル",
     activeModel: "選択中モデル",
     apiKey: "API Key",
-    apiKeyPlaceholder: "ここにキーを貼り付けます。プロトタイプではローカルにのみ保存します。",
+    apiKeyPlaceholder: "キーを貼り付け",
+    apiConfigRequired: "API Key 設定が必要です",
+    apiConfigHint: "Gemini API key を貼り付けて評価を開始します。",
+    getFreeKey: "無料 key を取得",
+    applySettings: "適用",
+    keySavedTitle: "Gemini API key の準備ができました。",
+    keySavedText: "key を保存しました。これで O.i 応答を取得できます。",
+    keySavedStatus: "key を保存しました。回答タブへ戻ります。",
+    keyMissingStatus: "先に Gemini API key を貼り付けてください。",
     autoDefaultModel: "プロバイダー別の既定モデル",
     customEndpoint: "",
-    saveSettings: "ローカル設定を保存",
+    saveSettings: "Openbeta 設定を保存",
     operatorChain: "演算子チェーン",
     runtime: "Runtime",
     provider: "Provider",
@@ -267,13 +297,18 @@ const i18n = {
     noCommandText: "The Prime Excalibur を実行する前にコマンドを入力してください。",
     missingKeyTitle: "API key がありません。",
     missingKeyText: "Gemini には無料の個人 API key が必要です。設定で key を貼り付け、適用を押してください。",
-    offlineAnswerTitle: "offline 演算子チェーン応答。",
-    offlineAnswerIntro: "Gemini API key が保存されていないため、選択された演算子チェーンからローカル応答を生成しました。",
+    offlineAnswerTitle: "Openbeta 演算子チェーン応答。",
+    offlineAnswerIntro: "Gemini API key が有効ではないため、選択された演算子チェーンから Openbeta 応答を生成しました。",
     offlineQuestion: "質問",
     offlineReading: "演算子による読み解き",
-    offlineNext: "完全な AI 回答を得るには、Setup で Gemini API key を貼り付けて Apply を押してください。",
+    offlineModeLabel: "モード",
+    offlineInferenceLabel: "推論レイヤー",
+    offlineKnowledgeLabel: "知識",
+    offlinePriorityLabel: "優先度",
+    offlineChainUsed: "使用した演算子チェーン",
+    offlineNext: "完全な O.i 応答を得るには、Setup で Gemini API key を貼り付けて Apply を押してください。",
     callingProviderTitle: "{provider} を呼び出しています...",
-    callingProviderText: "The Prime Excalibur は演算子チェーンをコンパイルし、AI プロバイダーへリクエストを送信しています。",
+    callingProviderText: "The Prime Excalibur は演算子チェーンをコンパイルし、O.i provider へリクエストを送信しています。",
     responseReadyTitle: "O.i 応答の準備ができました。",
     providerErrorTitle: "Provider 呼び出しに失敗しました。",
     traceInput: "入力取得",
@@ -288,7 +323,7 @@ const i18n = {
     traceOutput: "出力フィルター",
     traceOutputDetail: "応答を受信し、演算子チェーン適用後の結果を表示しました。",
     traceProviderError: "Provider エラー",
-    fileFetchError: "現在の app 表面から provider を呼び出せません。file:// で開いている場合は .\\start.ps1 を実行し、http://localhost:4173 を使ってください。それでも失敗する場合、provider が browser CORS をブロックしている可能性があります。Tauri/.exe 版では native backend 経由で呼び出します。",
+    fileFetchError: "現在の app 表面から provider を呼び出せません。Openbeta web 版または GitHub Pages 版を使用してから、もう一度試してください。",
     highDemand: "選択したモデルは現在高負荷です。API key は機能していますが、provider 側が一時的に混雑しています。後でもう一度試すか、別の Gemini model に切り替えてください。",
     promptReturn: "日本語で明確に回答してください。最後に短い '使用した演算子チェーン' セクションを含めてください。",
     langName: "日本語",
@@ -363,6 +398,21 @@ function saveSettings() {
   localStorage.setItem("oiBoxSettings", JSON.stringify(state.settings));
   syncSettingsFields();
   renderRuntime();
+  const status = $("#apiKeyStatus");
+  if (!state.settings.apiKey) {
+    if (status) {
+      status.textContent = t("keyMissingStatus");
+      status.classList.add("visible", "warning");
+    }
+    return;
+  }
+  if (status) {
+    status.textContent = t("keySavedStatus");
+    status.classList.add("visible");
+    status.classList.remove("warning");
+  }
+  setAnswer(t("keySavedTitle"), t("keySavedText"));
+  window.setTimeout(() => activateTab("answer"), 120);
 }
 
 function loadSettings() {
@@ -594,6 +644,7 @@ function formatAnswerText(text, options = {}) {
 
   const blocks = [];
   let list = null;
+  let codeBlock = null;
 
   const closeList = () => {
     if (!list) return;
@@ -601,21 +652,46 @@ function formatAnswerText(text, options = {}) {
     list = null;
   };
 
+  const closeCodeBlock = () => {
+    if (!codeBlock) return;
+    const language = codeBlock.language || "code";
+    blocks.push(`
+      <pre class="code-block"><span class="code-lang">${escapeHtml(language)}</span><code>${escapeHtml(codeBlock.lines.join("\n"))}</code></pre>
+    `);
+    codeBlock = null;
+  };
+
   normalized.split("\n").forEach((rawLine) => {
+    const fence = rawLine.trim().match(/^```([\w-]+)?\s*$/);
+    if (fence) {
+      if (codeBlock) {
+        closeCodeBlock();
+      } else {
+        closeList();
+        codeBlock = { language: fence[1] || "code", lines: [] };
+      }
+      return;
+    }
+
+    if (codeBlock) {
+      codeBlock.lines.push(rawLine.replace(/\s+$/, ""));
+      return;
+    }
+
     const line = rawLine.trim();
     if (!line) {
       closeList();
       return;
     }
 
-    const heading = line.match(/^(#{1,3})\s+(.+)$/) || line.match(/^(.{2,72}):$/);
+    const heading = line.match(/^#{1,6}\s+(.+)$/) || line.match(/^(.{2,96}):$/);
     if (heading) {
       closeList();
-      blocks.push(`<h4>${inlineFormat(heading[2] || heading[1])}</h4>`);
+      blocks.push(`<h4>${inlineFormat(heading[1])}</h4>`);
       return;
     }
 
-    const bullet = line.match(/^[-*•]\s+(.+)$/);
+    const bullet = line.match(/^(?:[-*]|\u2022)\s+(.+)$/);
     if (bullet) {
       if (!list || list.type !== "ul") {
         closeList();
@@ -639,15 +715,120 @@ function formatAnswerText(text, options = {}) {
     blocks.push(`<p>${inlineFormat(line)}</p>`);
   });
 
+  closeCodeBlock();
   closeList();
   const note = options.note ? `<div class="answer-note">${inlineFormat(options.note)}</div>` : "";
   return note + blocks.join("");
 }
 
 function inlineFormat(text) {
-  return escapeHtml(text)
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/`(.+?)`/g, "<code>$1</code>");
+  const tokens = [];
+  const stash = (html) => {
+    const token = `@@OI_TOKEN_${tokens.length}@@`;
+    tokens.push([token, html]);
+    return token;
+  };
+
+  let output = String(text || "").replace(/`([^`]+?)`/g, (_, code) => stash(`<code>${escapeHtml(code)}</code>`));
+  output = output
+    .replace(/\$\$([\s\S]+?)\$\$/g, (_, math) => stash(renderLatex(math, true)))
+    .replace(/\\\[([\s\S]+?)\\\]/g, (_, math) => stash(renderLatex(math, true)))
+    .replace(/\\\(([\s\S]+?)\\\)/g, (_, math) => stash(renderLatex(math, false)))
+    .replace(/\$([^$\n]+?)\$/g, (_, math) => stash(renderLatex(math, false)));
+
+  output = escapeHtml(output)
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+
+  tokens.forEach(([token, html]) => {
+    output = output.replaceAll(token, html);
+  });
+  return output;
+}
+
+function renderLatex(source, display = false) {
+  const html = latexToHtml(source);
+  return display
+    ? `<span class="math-block">${html}</span>`
+    : `<span class="math-inline">${html}</span>`;
+}
+
+function latexToHtml(source) {
+  let math = String(source || "").trim();
+  const tokens = [];
+  const stash = (html) => {
+    const token = `@@OI_MATH_${tokens.length}@@`;
+    tokens.push([token, html]);
+    return token;
+  };
+  math = math
+    .replace(/\\left/g, "")
+    .replace(/\\right/g, "")
+    .replace(/\\,/g, " ")
+    .replace(/\\;/g, " ")
+    .replace(/\\!/g, "")
+    .replace(/\\cdot/g, "·")
+    .replace(/\\times/g, "×")
+    .replace(/\\div/g, "÷")
+    .replace(/\\pm/g, "±")
+    .replace(/\\mp/g, "∓")
+    .replace(/\\leq?/g, "≤")
+    .replace(/\\geq?/g, "≥")
+    .replace(/\\neq/g, "≠")
+    .replace(/\\approx/g, "≈")
+    .replace(/\\sim/g, "∼")
+    .replace(/\\infty/g, "∞")
+    .replace(/\\rightarrow|\\to/g, "→")
+    .replace(/\\leftarrow/g, "←")
+    .replace(/\\Rightarrow/g, "⇒")
+    .replace(/\\Leftarrow/g, "⇐")
+    .replace(/\\leftrightarrow/g, "↔")
+    .replace(/\\sum/g, "∑")
+    .replace(/\\prod/g, "∏")
+    .replace(/\\int/g, "∫")
+    .replace(/\\sqrt\{([^{}]+)\}/g, "√($1)")
+    .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, (_, numerator, denominator) => {
+      return stash(`<span class="math-frac"><span>${latexToHtml(numerator)}</span><span>${latexToHtml(denominator)}</span></span>`);
+    });
+
+  const symbols = {
+    alpha: "α", beta: "β", gamma: "γ", delta: "δ", epsilon: "ε", varepsilon: "ε",
+    zeta: "ζ", eta: "η", theta: "θ", vartheta: "ϑ", iota: "ι", kappa: "κ",
+    lambda: "λ", mu: "μ", nu: "ν", xi: "ξ", pi: "π", varpi: "ϖ",
+    rho: "ρ", sigma: "σ", tau: "τ", upsilon: "υ", phi: "φ", varphi: "φ",
+    chi: "χ", psi: "ψ", omega: "ω", Gamma: "Γ", Delta: "Δ", Theta: "Θ",
+    Lambda: "Λ", Xi: "Ξ", Pi: "Π", Sigma: "Σ", Upsilon: "Υ", Phi: "Φ",
+    Psi: "Ψ", Omega: "Ω", mathbb: "",mathrm: "",mathbf: "",
+  };
+  math = math.replace(/\\([A-Za-z]+)/g, (match, name) => symbols[name] ?? match.slice(1));
+  math = math.replace(/\{([^{}]+)\}/g, "$1");
+  math = escapeHtml(math);
+  math = math
+    .replace(/([A-Za-z0-9Α-Ωα-ωπμνλθφψωΩ]+)_([A-Za-z0-9Α-Ωα-ωπμνλθφψωΩ]+)/g, "$1<sub>$2</sub>")
+    .replace(/([A-Za-z0-9Α-Ωα-ωπμνλθφψωΩ]+)\^([A-Za-z0-9+\-Α-Ωα-ωπμνλθφψωΩ]+)/g, "$1<sup>$2</sup>");
+  tokens.forEach(([token, html]) => {
+    math = math.replaceAll(token, html);
+  });
+  return math;
+}
+
+function translatedMode(mode) {
+  const key = {
+    Explain: "modeExplain",
+    Analyze: "modeAnalyze",
+    Write: "modeWrite",
+    Code: "modeCode",
+    Plan: "modePlan",
+  }[mode];
+  return key ? t(key) : mode;
+}
+
+function translatedPriority(priority) {
+  const key = {
+    EXPLAIN: "priorityExplain",
+    STRICT: "priorityStrict",
+    CREATIVE: "priorityCreative",
+  }[priority];
+  return key ? t(key) : priority;
 }
 
 function buildOfflineAnswer(command, chain, mode) {
@@ -661,12 +842,12 @@ function buildOfflineAnswer(command, chain, mode) {
     command,
     "",
     `${t("offlineReading")}:`,
-    `- Mode: **${mode}**`,
-    `- Inference layer: **${state.selected.inference}**`,
-    `- Knowledge: **${state.selected.knowledge}**`,
-    `- Priority: **${state.selected.priority}**`,
+    `- ${t("offlineModeLabel")}: **${translatedMode(mode)}**`,
+    `- ${t("offlineInferenceLabel")}: **${state.selected.inference}**`,
+    `- ${t("offlineKnowledgeLabel")}: **${state.selected.knowledge}**`,
+    `- ${t("offlinePriorityLabel")}: **${translatedPriority(state.selected.priority)}**`,
     "",
-    "Operator chain used:",
+    `${t("offlineChainUsed")}:`,
     ...operatorLines,
     "",
     t("offlineNext"),
@@ -877,3 +1058,5 @@ loadOperators().catch((error) => {
       ? `${error.message}. file を直接開くのではなく、local server で app を実行してください。`
       : `${error.message}. Run the app through a local server instead of opening the file directly.`;
 });
+
+
