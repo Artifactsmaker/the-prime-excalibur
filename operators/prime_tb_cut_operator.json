@@ -1,0 +1,227 @@
+{
+  "id": "omega_prime_tb_cut",
+  "symbol": "ΩPTB",
+  "name": "Prime-TB Cut Operator",
+  "short_name": "Prime-TB Cut",
+  "category": "prime_guided_topological_boundary_decomposition",
+  "version": "1.0",
+  "status": "conceptual_reference",
+  "description": "A reusable prime-guided topological-boundary operator that decomposes a structured entity into prime identity, boundary, shadow, spectral, interface, and recomposable layers.",
+  "formal_definition": {
+    "operator": "Ω_PTB(E) = Cut(E | PGS(E), TB(E), θ)",
+    "cut_site": "CutSite(E) = { x in E | PAM(x) = true and TB_score(x) >= θ }",
+    "output": "Ω_PTB(E) -> { I_P, B_T, S_D, Q_S, G_I, R_C }"
+  },
+  "conceptual_analogy": {
+    "crispr_cas9": {
+      "substrate": "DNA",
+      "guide": "guide RNA",
+      "recognition_motif": "PAM",
+      "cutting_agent": "Cas9",
+      "cut_site": "DNA cut site",
+      "post_cut_process": "repair or recombination"
+    },
+    "prime_tb_cut": {
+      "substrate": "represented entity E",
+      "guide": "PGS(E): Prime Guide Signature",
+      "recognition_motif": "PAM: Prime Alignment Motif",
+      "cutting_agent": "Ω_PTB",
+      "cut_site": "Prime Cut Site",
+      "post_cut_process": "atlas recomposition"
+    }
+  },
+  "inputs": [
+    "entity",
+    "entity_class",
+    "numeric_identity",
+    "topological_boundaries",
+    "metadata"
+  ],
+  "outputs": [
+    "prime_guide_signature",
+    "prime_alignment_motifs",
+    "prime_cut_sites",
+    "decomposed_layers",
+    "recomposition_note"
+  ],
+  "core_components": {
+    "PGS": {
+      "name": "Prime Guide Signature",
+      "role": "The guide signature that directs Ω_PTB toward prime-readable identity boundaries.",
+      "possible_descriptors": [
+        "prime_factorization",
+        "prime_count",
+        "distinct_prime_count",
+        "factor_entropy",
+        "prime_overlap",
+        "prime_gap",
+        "radical_signature",
+        "prime_power_status",
+        "gcd_signature",
+        "lcm_signature"
+      ]
+    },
+    "PAM": {
+      "name": "Prime Alignment Motif",
+      "role": "A prime-structured motif indicating that a component or layer is eligible for a Prime-TB Cut.",
+      "rule": "No PAM, no cut."
+    },
+    "TB": {
+      "name": "Topological Boundary Profile",
+      "role": "A profile of structural boundaries where an entity changes representational layer."
+    }
+  },
+  "layers": [
+    {
+      "symbol": "I_P",
+      "name": "Prime Identity",
+      "description": "Prime-number identity layer extracted from countable or identity-bearing variables."
+    },
+    {
+      "symbol": "B_T",
+      "name": "Topological Boundary",
+      "description": "Structural boundary layer where the entity shifts representational mode."
+    },
+    {
+      "symbol": "S_D",
+      "name": "Shadow Decomposition",
+      "description": "Relational or decay-shadow layer."
+    },
+    {
+      "symbol": "Q_S",
+      "name": "Spectral Signature",
+      "description": "Spectral expression or lightprint descriptor layer."
+    },
+    {
+      "symbol": "G_I",
+      "name": "Interface Geometry",
+      "description": "Interface or interaction geometry layer, including bioinorganic surfaces."
+    },
+    {
+      "symbol": "R_C",
+      "name": "Recomposable Core",
+      "description": "Recomposition-ready core representation for atlas, benchmark, or AI workflows."
+    }
+  ],
+  "boundary_types": [
+    "identity_boundary",
+    "shadow_boundary",
+    "spectral_boundary",
+    "cluster_boundary",
+    "biointerface_boundary",
+    "recomposition_boundary",
+    "functional_boundary",
+    "sequence_boundary",
+    "material_boundary",
+    "observation_boundary"
+  ],
+  "behaviors": [
+    "prime_signature_extraction",
+    "prime_alignment_motif_detection",
+    "topological_boundary_scoring",
+    "cut_site_selection",
+    "descriptor_layer_decomposition",
+    "atlas_recomposition",
+    "operator_routing"
+  ],
+  "pipeline": [
+    "entity_input",
+    "prime_guide_signature_extraction",
+    "prime_alignment_motif_detection",
+    "topological_boundary_detection",
+    "cut_site_selection",
+    "layer_decomposition",
+    "atlas_recomposition"
+  ],
+  "entity_classes": [
+    "nuclide",
+    "element",
+    "isotope",
+    "spectral_record",
+    "polyoxometalate",
+    "gene_sequence",
+    "protein_sequence",
+    "biointerface",
+    "material_structure",
+    "generic_entity"
+  ],
+  "default_config": {
+    "boundary_threshold": 0.5,
+    "max_motifs": 32,
+    "include_trivial_one": false,
+    "enabled_layers": [
+      "prime_identity",
+      "topological_boundary",
+      "shadow_decomposition",
+      "spectral_signature",
+      "interface_geometry",
+      "recomposable_core"
+    ]
+  },
+  "example_entities": [
+    {
+      "label": "Te-128",
+      "entity_class": "nuclide",
+      "numeric_identity": {
+        "Z": 52,
+        "N": 76,
+        "A": 128
+      },
+      "expected_motifs": [
+        "repeated 2^2 motif in Z and N",
+        "prime-power A motif"
+      ]
+    },
+    {
+      "label": "Na-23",
+      "entity_class": "nuclide",
+      "numeric_identity": {
+        "Z": 11,
+        "N": 12,
+        "A": 23
+      },
+      "expected_motifs": [
+        "prime-Z motif",
+        "prime-A motif",
+        "prime-Z / prime-A identity"
+      ]
+    },
+    {
+      "label": "[PW12O40]3-",
+      "entity_class": "polyoxometalate",
+      "numeric_identity": {
+        "P_Z": 15,
+        "W_Z": 74,
+        "W_count": 12,
+        "O_Z": 8,
+        "O_count": 40,
+        "charge_magnitude": 3
+      },
+      "expected_motifs": [
+        "Keggin 12-metal motif",
+        "40-oxo shell motif",
+        "prime charge-3 motif"
+      ]
+    }
+  ],
+  "applications": [
+    "Prime Elementology",
+    "Prime-Ulam descriptor extraction",
+    "Decay Shadow Atlas",
+    "Prime Spectrology",
+    "polyoxometalate interface analysis",
+    "bioinorganic interface mapping",
+    "feature engineering",
+    "explainable AI",
+    "operator intelligence",
+    "benchmark generation",
+    "entity routing"
+  ],
+  "interpretation_boundaries": [
+    "Prime-TB Cut is not a physical cutting process.",
+    "Prime-TB Cut is not a biochemical enzyme.",
+    "Prime-TB Cut does not claim that prime numbers physically cause spectra, decay, or biological activity.",
+    "Prime-TB Cut should be interpreted as a representational operator and descriptor framework."
+  ],
+  "slogan": "CRISPR-Cas9 cuts genetic code. Prime-TB Cut cuts identity boundaries."
+}

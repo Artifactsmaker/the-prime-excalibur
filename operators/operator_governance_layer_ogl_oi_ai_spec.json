@@ -1,0 +1,391 @@
+{
+  "identity": {
+    "id": "oi.ogl.governance_layer.v1",
+    "shortName": "OGL",
+    "fullName": "Operator Governance Layer",
+    "family": "Operator Intelligence / Adaptive Intelligence",
+    "version": "1.0.0",
+    "status": "stable",
+    "authorship": [
+      "Trung Bom",
+      "GPT"
+    ],
+    "license": "Proprietary-ready / research specification"
+  },
+  "intent": {
+    "objective": "Govern the full lifecycle of states and solutions, from pre-generation filtering to admissibility, consolidation, selection, validation, and total elimination.",
+    "problemStatement": "Traditional systems assume all possibilities are admissible before evaluation, leading to combinatorial explosion, unstable search, and weak convergence.",
+    "designRationale": "Replace uncontrolled possibility with a layered governance stack in which only states passing successive operators are allowed to persist.",
+    "publicSummary": "OGL is a governance stack that controls the right of states and solutions to exist, converge, stabilize, or be eliminated."
+  },
+  "classification": {
+    "stackClass": "governance_layer",
+    "stackFormula": "x_(t+1) = Brauer0(U(TuyCut(Bayes?(P_in(ECO(PreObsolete(x_t)))))))",
+    "stackRoles": {
+      "PreObsolete": "block obsolete or low-value generation",
+      "ECO": "filter admissible existence",
+      "P_in": "consolidate viable states toward a core",
+      "Bayes": "optional soft ranking within the core",
+      "TuyCut": "remove incorrect solutions and select valid ones",
+      "U": "validate fixed-point stability and existence",
+      "Brauer0": "eliminate the whole structure when continuation is no longer justified"
+    },
+    "paradigmShift": "Shift from solving over all possibilities to governing which possibilities are allowed to exist at all."
+  },
+  "mathematics": {
+    "coreFormula": "Phi(x_t) = Brauer0(U(TuyCut(Bayes?(P_in(ECO(PreObsolete(x_t)))))))",
+    "stageFormulae": {
+      "PreObsolete": "PreObsolete(X) = { x in X | x is not obsolete }",
+      "ECO": "ECO(X) = X ∩ B(U)",
+      "P_in": "P_in: X' -> Core(X')",
+      "Bayes": "P(theta | D, theta in Core(X'))",
+      "TuyCut": "TuyCut(X) = X \\ Invalid(X)",
+      "U": "Fix(U) = { x | U(x) = x }",
+      "Brauer0": "Brauer0(X) -> 0-level indistinguishable state"
+    },
+    "stateTransitionMeaning": [
+      "Stage 1 filters states before meaningful generation.",
+      "Stage 2 removes states that cannot converge.",
+      "Stage 3 pulls viable states inward toward a coherent core.",
+      "Stage 4 optionally ranks viable candidates probabilistically.",
+      "Stage 5 performs decisive elimination of invalid solutions.",
+      "Stage 6 validates final stability under the fixed-point law.",
+      "Stage 7 can terminate the entire structure if the game itself should not persist."
+    ],
+    "convergenceIndicators": [
+      {
+        "name": "Entropy Reduction",
+        "formula": "Delta H_t = H(x_t) - H(ECO(x_t))",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Inwardness",
+        "formula": "I_t = inwardness(P_in(ECO(x_t)))",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Selection Purity",
+        "formula": "S_t = valid(TuyCut(...)) / total(TuyCut(...))",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Fixed-Point Error",
+        "formula": "epsilon_t = ||U(x_t) - x_t||",
+        "targetDirection": "lower"
+      }
+    ],
+    "existenceCriterion": "A state is admitted to stable existence only if it survives governance and satisfies fixed-point consistency under U.",
+    "eliminationCriterion": "A system or state can be fully eliminated when continuation is structurally unjustified, degenerate, or no longer meaningful under governance."
+  },
+  "semantics": {
+    "axioms": [
+      "Not every generated state deserves persistence.",
+      "Admissibility precedes consolidation.",
+      "Consolidation precedes decisive selection.",
+      "Selection precedes fixed-point validation.",
+      "Stable existence is defined by invariance under the governing law.",
+      "A governance layer may terminate the entire structure if continuation is no longer justified."
+    ],
+    "propositions": [
+      "PreObsolete reduces low-value state generation before deeper compute begins.",
+      "ECO removes states outside the attraction basin of stable existence.",
+      "P_in increases coherence and reduces dispersion among viable states.",
+      "Bayesian ranking remains optional and is restricted to the governed core.",
+      "Tuy's Cut transforms viability into decisive correctness.",
+      "U validates whether the remaining state is truly stable.",
+      "Brauer Height = 0 acts as a final elimination operator over the whole game."
+    ],
+    "theoremSketches": [
+      "Governed convergence sketch: if entropy decreases, coherence increases, invalid states are cut, and fixed-point error shrinks, the stack tends toward a stable regime.",
+      "Selective existence sketch: a state that does not pass admissibility, selection, and validation cannot claim stable existence.",
+      "Terminal elimination sketch: if structural continuation collapses to irrelevance, Brauer0 can lawfully eliminate the whole hierarchy."
+    ],
+    "convergenceStatement": "OGL moves a system toward stability by filtering admissibility, consolidating viability, selecting correctness, and validating fixed-point consistency.",
+    "governanceStatement": "OGL does not merely solve problems; it governs the right of states and solutions to exist."
+  },
+  "pipeline": [
+    {
+      "step": 1,
+      "id": "pre_obsolete",
+      "nodeType": "pre_obsolete_operator",
+      "name": "Pre-Obsolete Operator",
+      "description": "Blocks outdated, weak, or structurally irrelevant states before deep processing.",
+      "inputRef": "raw_possibility_space",
+      "outputRef": "pre_filtered_space"
+    },
+    {
+      "step": 2,
+      "id": "eco",
+      "nodeType": "meta_operator",
+      "name": "Entropy Collapse Operator",
+      "description": "Filters states that cannot converge toward the attraction basin of the fixed-point law.",
+      "inputRef": "pre_filtered_space",
+      "outputRef": "admissible_space",
+      "dependency": [
+        "u_validation"
+      ]
+    },
+    {
+      "step": 3,
+      "id": "p_in",
+      "nodeType": "consolidation_operator",
+      "name": "Inward Consolidation Operator",
+      "description": "Pulls viable states inward toward a denser, more coherent core region.",
+      "inputRef": "admissible_space",
+      "outputRef": "core_space",
+      "dependency": [
+        "eco"
+      ]
+    },
+    {
+      "step": 4,
+      "id": "bayes_optional",
+      "nodeType": "probabilistic_ranker",
+      "name": "Bayesian Ranking (Optional)",
+      "description": "Optionally ranks candidates within the viable core using probabilistic updating.",
+      "inputRef": "core_space",
+      "outputRef": "ranked_core_space",
+      "dependency": [
+        "p_in"
+      ]
+    },
+    {
+      "step": 5,
+      "id": "tuys_cut",
+      "nodeType": "selection_operator",
+      "name": "Tuy's Cut Operator",
+      "description": "Cuts away invalid solutions and retains the valid or decisive region.",
+      "inputRef": "ranked_core_space",
+      "outputRef": "selected_space",
+      "dependency": [
+        "bayes_optional",
+        "p_in"
+      ]
+    },
+    {
+      "step": 6,
+      "id": "u_validation",
+      "nodeType": "fixed_point_law",
+      "name": "Fixed-Point Law U(x)=x",
+      "description": "Validates whether the selected state is stable under fixed-point invariance.",
+      "inputRef": "selected_space",
+      "outputRef": "stable_state",
+      "dependency": [
+        "tuys_cut"
+      ]
+    },
+    {
+      "step": 7,
+      "id": "brauer_zero",
+      "nodeType": "elimination_operator",
+      "name": "Brauer Height = 0 Operator",
+      "description": "Eliminates the entire hierarchical structure when the game itself should be erased.",
+      "inputRef": "stable_state_or_failed_state",
+      "outputRef": "zero_level_state",
+      "dependency": [
+        "u_validation"
+      ]
+    }
+  ],
+  "oiMapping": [
+    {
+      "layer": "generation",
+      "role": "Controls whether weak or obsolete states are allowed to emerge.",
+      "relationToOGL": "Handled by PreObsolete."
+    },
+    {
+      "layer": "admissibility",
+      "role": "Determines whether a state is allowed to continue existing.",
+      "relationToOGL": "Handled by ECO."
+    },
+    {
+      "layer": "convergence",
+      "role": "Forms a coherent core from viable states.",
+      "relationToOGL": "Handled by P_in."
+    },
+    {
+      "layer": "ranking",
+      "role": "Optionally orders viable candidates without defining existence itself.",
+      "relationToOGL": "Handled by optional Bayes."
+    },
+    {
+      "layer": "selection",
+      "role": "Converts viable possibilities into decisive correctness.",
+      "relationToOGL": "Handled by Tuy's Cut."
+    },
+    {
+      "layer": "stability",
+      "role": "Defines existence through invariance.",
+      "relationToOGL": "Handled by U(x)=x."
+    },
+    {
+      "layer": "elimination",
+      "role": "Erases the whole hierarchy when continuation is no longer justified.",
+      "relationToOGL": "Handled by Brauer Height = 0."
+    }
+  ],
+  "aiMapping": {
+    "runtimeTargets": [
+      "llm_inference",
+      "planner",
+      "symbolic_solver",
+      "retrieval",
+      "agent",
+      "operator_runtime",
+      "isa_chip",
+      "economic_system",
+      "scientific_modeling"
+    ],
+    "aiRole": "A full governance architecture for controlling possibility, convergence, correctness, stability, and termination.",
+    "effectOnHypotheses": "Filters weak hypotheses, consolidates viable cores, optionally ranks them, decisively cuts invalid branches, and validates stable outputs.",
+    "effectOnSearch": "Reduces combinatorial explosion by separating pre-generation blocking, admissibility filtering, consolidation, decisive selection, and final validation.",
+    "effectOnHallucination": "Suppresses unsupported outputs by requiring admissibility, coherent consolidation, decisive validity, and fixed-point consistency.",
+    "effectOnLatency": "Adds governance overhead but can reduce wasted deep-search cost and unstable termination."
+  },
+  "isaMapping": {
+    "macroInstruction": "OGL_RUN src -> dst",
+    "expansion": [
+      "PREOBS src -> r1",
+      "ECO r1, metric, threshold -> r2",
+      "PIN r2, metric, threshold -> r3",
+      "BAYES? r3 -> r4",
+      "TUYCUT r4 -> r5",
+      "UVAL r5, tolerance -> r6",
+      "BRAUER0 r6 -> dst"
+    ],
+    "executionView": "A macro-level governance pipeline that expands into seven ordered control phases: generation blocking, admissibility filtering, inward consolidation, optional ranking, decisive selection, fixed-point validation, and total elimination.",
+    "hardwarePhases": [
+      "front-end generation filter",
+      "admissibility controller",
+      "core consolidation block",
+      "optional probabilistic ranker",
+      "selection cutter",
+      "law-level validator",
+      "terminal eliminator"
+    ]
+  },
+  "benchmarkProfile": {
+    "scenario": "Compare unrestricted search, search with pruning, probabilistic-only ranking, and the full OGL pipeline across reasoning, planning, economics, and scientific modeling tasks.",
+    "baselineSystems": [
+      "brute_force_search",
+      "heuristic_pruning",
+      "bayes_only_ranking",
+      "confidence_only_stop",
+      "beam_search"
+    ],
+    "metrics": [
+      {
+        "name": "Operational Entropy",
+        "symbol": "H",
+        "meaning": "Entropy of the active possibility space under governance.",
+        "targetDirection": "lower"
+      },
+      {
+        "name": "Inwardness",
+        "symbol": "I",
+        "meaning": "Coherence and density of the viable core region.",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Selection Purity",
+        "symbol": "S",
+        "meaning": "Fraction of selected states that satisfy validity constraints.",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Fixed-Point Error",
+        "symbol": "epsilon",
+        "meaning": "Distance from invariance under the governing law.",
+        "targetDirection": "lower"
+      },
+      {
+        "name": "Stable Output Rate",
+        "symbol": "R_s",
+        "meaning": "Fraction of outputs that remain valid and stable after governance.",
+        "targetDirection": "higher"
+      },
+      {
+        "name": "Total Runtime",
+        "symbol": "T",
+        "meaning": "Total cost to reach governed stable output or governed elimination.",
+        "targetDirection": "lower"
+      }
+    ],
+    "expectedEffects": [
+      "Lower entropy than unrestricted or probabilistic-only pipelines.",
+      "Higher coherence before final validation.",
+      "Higher selection purity than soft-ranking-only systems.",
+      "Lower fixed-point error at accepted termination.",
+      "Higher stable output rate under constrained reasoning."
+    ]
+  },
+  "safetyGuards": [
+    {
+      "id": "guard.pre_obsolete_overblock",
+      "condition": "pre-generation filter removes too many viable states",
+      "action": "relax obsolete threshold and emit diagnostic trace",
+      "reason": "Avoid suppressing potentially valid emergence."
+    },
+    {
+      "id": "guard.eco_overcollapse",
+      "condition": "admissible space collapses below minimum viable support",
+      "action": "fallback to bounded mode and reopen limited search",
+      "reason": "Prevent premature elimination of recoverable states."
+    },
+    {
+      "id": "guard.false_core",
+      "condition": "P_in forms a dense core but validity confidence drops",
+      "action": "return to ECO or reduce inward contraction strength",
+      "reason": "Avoid converging around a misleading core."
+    },
+    {
+      "id": "guard.selection_desync",
+      "condition": "Tuy's Cut selects states later rejected systematically by U",
+      "action": "tighten selection constraints and emit mismatch report",
+      "reason": "Maintain alignment between selection and validation."
+    },
+    {
+      "id": "guard.false_stability",
+      "condition": "U accepts a state but downstream instability persists",
+      "action": "require multi-step revalidation before acceptance",
+      "reason": "Prevent false fixed-point acceptance."
+    },
+    {
+      "id": "guard.invalid_total_elimination",
+      "condition": "Brauer0 is triggered while recoverable structure still exists",
+      "action": "delay elimination and require justification certificate",
+      "reason": "Avoid erasing a system prematurely."
+    }
+  ],
+  "deploymentNotes": {
+    "compilerView": "Compile OGL as a macro-governance layer that wraps and orders all downstream operator execution.",
+    "runtimeView": "Track entropy, inwardness, selection purity, fixed-point error, stable output rate, and elimination triggers across the full governance pipeline.",
+    "chipView": "Map OGL to staged control hardware with explicit trace-sharing between filtering, consolidation, selection, validation, and elimination blocks.",
+    "observability": [
+      "pre_obsolete_rejection_rate",
+      "delta_entropy",
+      "delta_inwardness",
+      "selection_purity",
+      "fixed_point_error",
+      "stable_output_rate",
+      "elimination_trigger_count"
+    ],
+    "integrationNotes": [
+      "Use PreObsolete to control early generation cost.",
+      "Use ECO as the admissibility gate before expensive inference.",
+      "Use P_in to form a coherent core before ranking or cutting.",
+      "Use Bayes only inside the governed core if probabilistic ranking remains useful.",
+      "Use Tuy's Cut for decisive elimination of invalid solutions.",
+      "Use U as the final law-level validator.",
+      "Reserve Brauer0 for terminal governance cases."
+    ]
+  },
+  "metadata": {
+    "language": "English",
+    "domain": "O.i / A.i",
+    "operatorRole": "governance_layer",
+    "visibility": "public-spec / private-implementation",
+    "includesBayesOptional": true,
+    "governanceLevels": 7
+  }
+}

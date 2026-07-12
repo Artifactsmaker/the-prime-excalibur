@@ -1,0 +1,283 @@
+// oi-operator-set.structural-crystal-fixedphase.ts
+// UTF-8 — Operator Intelligence registry for ⊙ₛ, ψ⊗, Σε
+
+export type LanguageCode = "vi" | "en";
+
+export interface TermDef {
+  symbol: string;
+  meaning: string;
+}
+
+export interface OperatorModule {
+  id: string;           // e.g., "⊙ₛ", "ψ⊗", "Σε"
+  name: string;         // English
+  name_vi: string;      // Vietnamese
+  goal: string;
+
+  foundation?: {
+    given: Record<string, string>;
+    constraintManifold?: {
+      symbol: string;
+      definition: string;
+    };
+  };
+
+  definition: {
+    formula: string;
+    terms?: TermDef[];
+    iteration?: {
+      formula: string;
+      fixedPoint?: string;
+    };
+    annealing?: {
+      given: Record<string, string>;
+      formula: string;
+    };
+    crystallization?: {
+      formula: string;
+      terms: TermDef[];
+    };
+  };
+
+  intuition: string;
+  aiApplications: string[];
+  pseudoAPI: string[];
+  oiInterpretation: string[];
+}
+
+export interface Composition {
+  name: string;
+  formula: string;
+  effect: string;
+}
+
+export interface OperatorSystem {
+  systemId: string;
+  version: string;
+  language: LanguageCode;
+  title: string;
+
+  operators: OperatorModule[];
+
+  algebra: {
+    title: string;
+    compositions: Composition[];
+  };
+
+  engineeringNotes: {
+    title: string;
+    items: Array<{ topic: string; bullets: string[] }>;
+  };
+
+  safetyNotes: {
+    title: string;
+    bullets: string[];
+  };
+}
+
+export const oiOperatorSetStructuralCrystalFixedPhase: OperatorSystem = {
+  "systemId": "oi-operator-set-structural-crystal-fixedphase",
+  "version": "1.0.0",
+  "language": "vi",
+  "title": "Operator Intelligence — Structural Loop / Emotive Crystallizer / Transcendent Fixed-Phase",
+  "operators": [
+    {
+      "id": "⊙ₛ",
+      "name": "Structural Loop Operator",
+      "name_vi": "Toán tử vòng sinh",
+      "goal": "Tạo hội tụ cấu trúc, ngăn trôi ngữ pháp, duy trì logic/giọng/định dạng.",
+      "foundation": {
+        "given": {
+          "X": "Không gian nền",
+          "E": "Tập ràng buộc cặp đôi E={(i,j)} mô phỏng liên kết disulfide"
+        },
+        "constraintManifold": {
+          "symbol": "M",
+          "definition": "M = { x ∈ X | g_ij(x)=0, ∀(i,j) ∈ E }"
+        }
+      },
+      "definition": {
+        "formula": "⊙ₛ(x) = Π_M(x) + λ·(x − Π_M(x)),   λ ∈ [0,1)",
+        "terms": [
+          {
+            "symbol": "Π_M",
+            "meaning": "phép chiếu lên đa tạp ràng buộc"
+          },
+          {
+            "symbol": "λ",
+            "meaning": "hệ số 'độ dẻo' (elasticity)"
+          }
+        ],
+        "iteration": {
+          "formula": "x_{t+1} = ⊙ₛ(x_t),   x* = lim_{t→∞} x_t ∈ M",
+          "fixedPoint": "x*"
+        }
+      },
+      "intuition": "⊙ₛ không tạo thêm khối lượng thông tin; nó nhân bản cấu trúc qua quy trình lặp 'chiếu–nới', ép mẫu hình gập về trạng thái bền.",
+      "aiApplications": [
+        "Giảm drift trong sinh chuỗi dài",
+        "Giữ phong cách, ràng buộc ngữ pháp",
+        "Self-distillation cấu trúc trong deep models",
+        "Điều khiển phong cách và logic của latent twin-heads"
+      ],
+      "pseudoAPI": [
+        "x = encoder(input)",
+        "for t in range(T):",
+        "    x_proj = project_to_constraints(x, E)",
+        "    x = x_proj + λ*(x - x_proj)",
+        "y = decoder(x)"
+      ],
+      "oiInterpretation": [
+        "E = tập 'pairing rules'",
+        "⊙ₛ tạo miền ổn định để các toán tử khác vận hành",
+        "Phù hợp modular hoá hệ thống nhờ điểm cố định rõ ràng"
+      ]
+    },
+    {
+      "id": "ψ⊗",
+      "name": "Emotive Crystallizer",
+      "name_vi": "Toán tử cảm xúc kết tinh",
+      "goal": "Chuyển tín hiệu cảm-ứng/ý-chí thành token rời rạc bền; giảm do dự và dao động của mô hình.",
+      "definition": {
+        "annealing": {
+          "given": {
+            "ψ(t)": "tín hiệu cảm-ứng theo thời gian",
+            "X": "nền dữ liệu"
+          },
+          "formula": "x̃ = argmin_{x∈X} E(x | ψ, T),   T ↓ 0"
+        },
+        "crystallization": {
+          "formula": "ψ⊗(X) = VQ_C(x̃) = c_k ∈ C",
+          "terms": [
+            {
+              "symbol": "C",
+              "meaning": "codebook tinh thể"
+            },
+            {
+              "symbol": "c_k",
+              "meaning": "tinh thể ký ức (memory-crystal)"
+            }
+          ]
+        }
+      },
+      "intuition": "ψ⊗ lấy dòng cảm-ứng liên tục và nén thành crystal-token để giữ một 'trục chủ đích' bền trong quá trình sinh.",
+      "aiApplications": [
+        "Tạo 'intent-token' làm điểm tựa",
+        "Giữ tone/cảm xúc xuyên suốt hội thoại",
+        "Tăng nhất quán đa lượt",
+        "Hỗ trợ điều khiển mô hình dựa trên phong cách"
+      ],
+      "pseudoAPI": [
+        "ψ = read_intent(signal)",
+        "x_tilde = anneal(X, ψ, schedule)",
+        "c = vector_quantize(x_tilde, codebook)",
+        "context = attach_hint(context, c)",
+        "out = model.generate(context)"
+      ],
+      "oiInterpretation": [
+        "C = kho tinh thể chủ đích",
+        "ψ⊗ 'ghim' ý định → policy ổn định",
+        "Hệ O.i dễ kết hợp intent → policy → action"
+      ]
+    },
+    {
+      "id": "Σε",
+      "name": "Transcendent Fixed-Phase Operator",
+      "name_vi": "Toán tử chuyển phase giác ngộ",
+      "goal": "Trích ra điểm cố định căn tính sau vô hạn vòng ⊙ₛ được chuẩn hoá năng lượng.",
+      "definition": {
+        "formula": "x_{t+1} = N(⊙ₛ(x_t)),   Σε(x₀) = lim_{t→∞} x_t",
+        "terms": [
+          {
+            "symbol": "N",
+            "meaning": "chuẩn hoá free-energy hoặc entropy"
+          },
+          {
+            "symbol": "Σε",
+            "meaning": "điểm cố định siêu ổn định (transcendent fixed point)"
+          }
+        ]
+      },
+      "intuition": "Lặp gập cấu trúc nhưng luôn 'hạ nhiệt' phần dư thừa giúp hệ bước sang phase bền tuyệt đối — ẩn dụ 'xá lợi tính toán'.",
+      "aiApplications": [
+        "Meta-stability cho pipeline dài",
+        "Giảm drift theo thời gian",
+        "Chốt policy nhất thể sau nhiều vòng học",
+        "Giữ 'bản sắc' mô hình khi môi trường thay đổi"
+      ],
+      "pseudoAPI": [
+        "x = init_state()",
+        "for t in range(T):",
+        "    x = normalize_energy(⊙s(x))",
+        "    if converged(x):",
+        "        break",
+        "policy = extract_fixed_point(x)"
+      ],
+      "oiInterpretation": [
+        "Σε = identity seal",
+        "Cho phép hoán đổi mô-đun mà không mất căn tính",
+        "Quan trọng cho hệ tự tái cấu hình (self-reconfigurable systems)"
+      ]
+    }
+  ],
+  "algebra": {
+    "title": "Algebra tóm tắt (phối hợp tối giản)",
+    "compositions": [
+      {
+        "name": "Vòng sinh có chủ đích",
+        "formula": "⊙ₛ ∘ (ψ⊗)",
+        "effect": "Gập cấu trúc hướng theo tinh thể chủ đích"
+      },
+      {
+        "name": "Đóng dấu căn tính",
+        "formula": "Σε ∘ ⊙ₛ",
+        "effect": "Hội tụ → policy cố định"
+      },
+      {
+        "name": "Kết tinh rồi siêu vượt",
+        "formula": "Σε ∘ (ψ⊗)",
+        "effect": "Biến cảm-ứng thành bản sắc vận hành bền"
+      }
+    ]
+  },
+  "engineeringNotes": {
+    "title": "Gợi ý triển khai tối giản (Engineering Notes)",
+    "items": [
+      {
+        "topic": "⊙ₛ cho LLM/ViLM",
+        "bullets": [
+          "twin-head encoder",
+          "projection constraints: grammar, persona, domain",
+          "EMA teacher–student làm 'cầu –S–S–'"
+        ]
+      },
+      {
+        "topic": "ψ⊗ kết tinh",
+        "bullets": [
+          "đọc valence/arousal/topic",
+          "annealing schedule",
+          "vector quantization → KV-cache hint"
+        ]
+      },
+      {
+        "topic": "Σε",
+        "bullets": [
+          "normalize entropy mỗi vòng",
+          "kiểm tra hội tụ",
+          "snapshot fixed-policy làm 'identity'"
+        ]
+      }
+    ]
+  },
+  "safetyNotes": {
+    "title": "Lưu ý an toàn",
+    "bullets": [
+      "λ quá thấp → mô hình bị 'đông cứng' → cần jitter.",
+      "ψ⊗ có nguy cơ bias → phải kiểm duyệt nguồn tín hiệu ψ.",
+      "Σε cần entropy normalization để tránh collapse."
+    ]
+  }
+};
+
+export const getOperatorById = (id: string) =>
+  oiOperatorSetStructuralCrystalFixedPhase.operators.find((op) => op.id === id);

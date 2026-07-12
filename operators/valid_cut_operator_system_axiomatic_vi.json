@@ -1,0 +1,113 @@
+{
+  "artifact_type": "operatorology.system",
+  "name": "Valid-Cut Operator System",
+  "symbol": "𝕍",
+  "language": "vi",
+  "version": "1.0.0",
+  "authors": [
+    "Phan Thành Trung (Trung Bờm)",
+    "ChatGPT (assistant)"
+  ],
+  "description": "Hệ toán tử chuẩn tắc mô hình hóa tiến hóa có ràng buộc, cắt miền khả thể, bảo toàn bất biến, và phân rã cấu trúc chuẩn khi height → 0.",
+  "components": {
+    "state_space": {
+      "symbol": "Ω",
+      "description": "Không gian trạng thái tổng quát (vector space, manifold, Hilbert space, hoặc configuration space)."
+    },
+    "state": {
+      "symbol": "S",
+      "definition": "Một phần tử thuộc Ω, biểu diễn phase hoặc cấu hình của hệ."
+    },
+    "identity_kernel": {
+      "symbol": "𝓘",
+      "definition": "Ánh xạ bất biến nội tại: 𝓘(S) là bản sắc cấu trúc của trạng thái.",
+      "property": "Invariant: 𝓘(S) = 𝓘(S') nếu và chỉ nếu S và S' cùng lớp cấu trúc."
+    },
+    "height_function": {
+      "symbol": "h",
+      "definition": "h: Ω → ℝ≥0, đo mức obstruction hoặc độ lệch khỏi trạng thái chuẩn tắc.",
+      "axioms": [
+        "h(S) ≥ 0 ∀S",
+        "h(S) = 0 ⇔ S là trạng thái chuẩn tắc",
+        "h đóng vai trò Lyapunov function"
+      ]
+    }
+  },
+  "operators": {
+    "cut_operator": {
+      "symbol": "𝓒",
+      "type": "Power set operator",
+      "definition": "𝓒: P(Ω) → P(Ω), với 𝓒(Ω) ⊆ Ω",
+      "axioms": [
+        "Contractive: 𝓒(Ω) ⊆ Ω",
+        "Height non-increasing: sup h(𝓒(Ω)) ≤ sup h(Ω)"
+      ],
+      "interpretation": "Loại bỏ các trạng thái không hợp lệ khỏi không gian khả thể."
+    },
+    "kernel_operator": {
+      "symbol": "𝓚",
+      "type": "State operator",
+      "definition": "𝓚: Ω → Ω",
+      "axioms": [
+        "Invariant preservation: 𝓘(𝓚(S)) = 𝓘(S)",
+        "Height non-increasing: h(𝓚(S)) ≤ h(S)"
+      ],
+      "interpretation": "Khôi phục hoặc chiếu trạng thái về lớp hợp lệ."
+    },
+    "evolution_operator": {
+      "symbol": "𝓔",
+      "type": "State operator",
+      "definition": "𝓔: Ω → Ω",
+      "axioms": [
+        "Height contractive expectation: E[h(𝓔(S))] ≤ λ h(S), với 0 < λ ≤ 1"
+      ],
+      "interpretation": "Tiến hóa hệ theo attractor dynamics."
+    },
+    "decomposition_operator": {
+      "symbol": "𝓓",
+      "type": "Structural operator",
+      "definition": "𝓓: Ω → ⊕ Bi",
+      "axioms": [
+        "Canonical decomposition khi h(S)=0",
+        "Blocks độc lập cấu trúc"
+      ],
+      "interpretation": "Phân rã hệ thành các block chuẩn tắc."
+    }
+  },
+  "dynamics": {
+    "state_update": "S_{t+1} = 𝓔(𝓚(S_t))",
+    "space_update": "Ω_{t+1} = 𝓒(Ω_t)",
+    "termination_condition": "h(S*) = 0",
+    "fixed_point": "𝓔(𝓚(S*)) = S*"
+  },
+  "theorems": {
+    "height_convergence": {
+      "statement": "Nếu 𝓒, 𝓚 contractive và h bounded below, thì h(S_t) → 0",
+      "interpretation": "Hệ hội tụ về trạng thái chuẩn tắc."
+    },
+    "fixed_point_existence": {
+      "statement": "Tồn tại S* sao cho S* là fixed point của 𝓔∘𝓚 và h(S*)=0"
+    },
+    "canonical_decomposition": {
+      "statement": "Nếu h(S*)=0, thì 𝓓(S*) là phân rã chuẩn tắc duy nhất (up to isomorphism)."
+    }
+  },
+  "mapping_examples": {
+    "ricci_flow": {
+      "𝓔": "Ricci flow",
+      "𝓚": "Surgery",
+      "h": "Curvature obstruction"
+    },
+    "tuys_cut": {
+      "𝓒": "Cutting plane operator",
+      "𝓔": "Optimization iteration",
+      "h": "Optimality gap"
+    },
+    "brauer_theory": {
+      "𝓚": "Block projection",
+      "𝓓": "Block decomposition",
+      "h": "Representation height"
+    }
+  },
+  "pipeline": "𝕍 = ⟨Ω, 𝓒, 𝓚, 𝓔, 𝓓, h, 𝓘⟩"
+}

@@ -1,0 +1,297 @@
+{
+  "schema": {
+    "name": "Operatorology.AdversarialCombatOperatorPack",
+    "version": "1.0.0",
+    "language": "en",
+    "license": "CC-BY-4.0",
+    "created_utc": "2026-02-27T12:48:47Z",
+    "notes": [
+      "Conceptual operator dataset for AI/OI training.",
+      "Encodes adversarial combat technique patterns as state-transform operators over Ω.",
+      "Not medical, biomechanical, or safety advice."
+    ]
+  },
+  "state_space": {
+    "symbol": "Ω",
+    "ascii_symbol": "Omega",
+    "fields": [
+      {
+        "name": "x",
+        "type": "Vec2",
+        "unit": "m",
+        "description": "Position"
+      },
+      {
+        "name": "v",
+        "type": "Vec2",
+        "unit": "m/s",
+        "description": "Velocity"
+      },
+      {
+        "name": "theta",
+        "type": "number",
+        "unit": "rad",
+        "description": "Body yaw/rotation"
+      },
+      {
+        "name": "tau",
+        "type": "number",
+        "unit": "s",
+        "description": "Reaction latency (higher = slower)"
+      },
+      {
+        "name": "psi",
+        "type": "number",
+        "unit": "1",
+        "range": [
+          0,
+          1
+        ],
+        "description": "Awareness proxy (1 aware, 0 reset)"
+      },
+      {
+        "name": "E",
+        "type": "number",
+        "unit": "au",
+        "min": 0,
+        "description": "Available energy"
+      },
+      {
+        "name": "S",
+        "type": "number",
+        "unit": "1",
+        "range": [
+          0,
+          1
+        ],
+        "description": "Balance/stability proxy"
+      }
+    ],
+    "feasibility_region": {
+      "definition": "F = { Ω : S>0, psi>0, E>0, tau<tau_max }",
+      "fields": {
+        "S": ">0",
+        "psi": ">0",
+        "E": ">0",
+        "tau": "< tau_max"
+      }
+    }
+  },
+  "operators": [
+    {
+      "id": "O_HOOK_TORQUE_CONVERGENCE",
+      "name": "Hook Punch — Torque Convergence Operator",
+      "pattern": "rotational_impulse_accumulation",
+      "brief": "Accumulates effective rotational impulse and reduces opponent awareness/balance; above threshold, awareness collapses (KO model).",
+      "domain": {
+        "activation": [
+          "Mid-range striking window (implementation-defined)",
+          "Requires non-trivial rotational drive from self"
+        ],
+        "targets": [
+          "theta",
+          "psi",
+          "S",
+          "E"
+        ]
+      },
+      "params": {
+        "kappa_hook": 1.0,
+        "alpha_theta": 0.25,
+        "beta_psi": 0.6,
+        "gamma_S": 0.4,
+        "eta_E": 0.15,
+        "J_KO": 2.5
+      },
+      "math_unicodes": {
+        "J_rot": "J_rot = κ_hook · |ω_self| · Δt",
+        "KO": "|J_rot| ≥ J_KO ⇒ ψ_opp → 0"
+      },
+      "update_rule_summary": [
+        "theta' = theta + alpha_theta * J_rot",
+        "psi' = 0 if J_rot >= J_KO else clamp01(psi - beta_psi*|J_rot|)",
+        "S' = clamp01(S - gamma_S*|J_rot|)",
+        "E' = max(0, E - eta_E*|J_rot|)"
+      ]
+    },
+    {
+      "id": "O_ELBOW_PRESSURE_FOCUS",
+      "name": "Horizontal Elbow — Pressure Focusing Operator",
+      "pattern": "pressure_concentration",
+      "brief": "At clinch range (Δx≈0), concentrated contact area amplifies pressure, breaking balance and slowing reactions.",
+      "domain": {
+        "activation": [
+          "||x_self - x_opp|| ≤ d_clinch"
+        ],
+        "targets": [
+          "S",
+          "tau",
+          "psi",
+          "E"
+        ]
+      },
+      "params": {
+        "d_clinch": 0.5,
+        "F": 1.0,
+        "A": 0.05,
+        "gamma_S": 0.35,
+        "delta_tau": 0.2,
+        "beta_psi": 0.15,
+        "eta_E": 0.1
+      },
+      "math_unicodes": {
+        "pressure": "P = F / A",
+        "clinch": "Δx → 0 ⇒ A small ⇒ P large"
+      },
+      "update_rule_summary": [
+        "if dx>d_clinch: no-op",
+        "P = F/max(A,eps)",
+        "S' = clamp01(S - gamma_S*P*dt)",
+        "tau' = tau + delta_tau*P*dt",
+        "psi' = clamp01(psi - beta_psi*P*dt)",
+        "E' = max(0, E - eta_E*P*dt)"
+      ]
+    },
+    {
+      "id": "O_THROW_BALANCEZERO_AXISINVERT",
+      "name": "Judo Throw — Balance-Zero + Axis-Inversion Operator",
+      "pattern": "composite_kuzushi_execute",
+      "brief": "Composite operator: destabilize (kuzushi) then invert/rotate kinematics (execute).",
+      "domain": {
+        "activation": [
+          "Close engagement and grip control (abstracted)"
+        ],
+        "targets": [
+          "S",
+          "x",
+          "v",
+          "theta"
+        ]
+      },
+      "params": {
+        "gamma_S": 0.9,
+        "induce_speed": 2.0,
+        "axis_rotation_rad": 3.141592653589793,
+        "theta_shift": 1.5707963267948966
+      },
+      "math_unicodes": {
+        "composition": "O_throw = O_execute ∘ O_kuzushi",
+        "kuzushi": "O_kuzushi: S_opp → 0",
+        "execute": "O_execute: (x,v) ↦ R(x,v)"
+      },
+      "update_rule_summary": [
+        "S1 = clamp01(S - gamma_S*induce_speed*dt)",
+        "if S1>0.25: return with updated S only",
+        "else: rotate x and v by axis_rotation_rad; theta' = theta + theta_shift"
+      ]
+    },
+    {
+      "id": "O_ARMBAR_CONSTRAINT_SINGULARITY",
+      "name": "Armbar — Constraint Singularity (DoF Annihilation) Operator",
+      "pattern": "hard_constraint_singularity",
+      "brief": "Exceeding joint constraint pushes system into a constraint singularity; energy locks and opponent submits (tap-out model).",
+      "domain": {
+        "activation": [
+          "Limb isolation and leverage (abstracted)"
+        ],
+        "targets": [
+          "psi",
+          "E",
+          "tau",
+          "S"
+        ]
+      },
+      "params": {
+        "theta_joint": 0.0,
+        "theta_max": 1.0,
+        "psi_tap": 0.15,
+        "E_lock_factor": 0.85,
+        "tau_spike": 0.6,
+        "S_drop": 0.5
+      },
+      "math_unicodes": {
+        "constraint": "θ_joint ≤ θ_max",
+        "exceed": "θ_joint > θ_max ⇒ constraint singularity",
+        "signal": "ψ → ψ_tap (tap-out signal)"
+      },
+      "update_rule_summary": [
+        "dTheta = theta_joint - theta_max",
+        "if dTheta<=0: no-op",
+        "psi' = min(psi, psi_tap)",
+        "E' = max(0, E * (1 - E_lock_factor*min(1,dTheta)))",
+        "tau' = tau + tau_spike*dt",
+        "S' = clamp01(S - S_drop*min(1,dTheta))"
+      ]
+    },
+    {
+      "id": "O_CALF_ATTRITION_DECAY",
+      "name": "Inside Calf Kick — Attrition Decay Operator",
+      "pattern": "exponential_capability_decay",
+      "brief": "Repeated low-line damage reduces mobility via exponential decay of vmax; drains energy and erodes balance.",
+      "domain": {
+        "activation": [
+          "Repetition count n ≥ 1"
+        ],
+        "targets": [
+          "v",
+          "E",
+          "S"
+        ]
+      },
+      "params": {
+        "v0_max": 6.0,
+        "lambda": 0.12,
+        "n": 1,
+        "leg_energy_drain": 0.25,
+        "gamma_S": 0.1
+      },
+      "math_unicodes": {
+        "vmax": "v_max(n) = v0 · exp(-λ·n)"
+      },
+      "update_rule_summary": [
+        "vmax = v0_max * exp(-lambda*n)",
+        "clamp |v| to vmax (direction preserved)",
+        "E' = max(0, E - leg_energy_drain*dt*n)",
+        "S' = clamp01(S - gamma_S*leg_energy_drain*dt*n)"
+      ]
+    },
+    {
+      "id": "O_COMBO_FUNCTIONAL_COMPOSITION",
+      "name": "Combo (Jab–Cross–Low Kick) — Functional Composition Operator",
+      "pattern": "functional_composition_3phase",
+      "brief": "Composition (not sum): jab disturbs awareness, cross compresses balance, low kick removes stance, often pushing Ω outside feasibility.",
+      "domain": {
+        "activation": [
+          "Sequenced engagement with timing control (abstracted)"
+        ],
+        "targets": [
+          "psi",
+          "S",
+          "tau",
+          "E"
+        ]
+      },
+      "params": {
+        "jab_psi_disturb": 0.18,
+        "cross_S_compress": 0.25,
+        "lowkick_S_remove": 0.55,
+        "tau_increase": 0.1,
+        "E_cost": 0.2,
+        "tau_max": 1.5,
+        "E_min": 0.05
+      },
+      "math_unicodes": {
+        "composition": "O_combo = O_low_kick ∘ O_cross ∘ O_jab",
+        "feasible": "F = {Ω : S>0, ψ>0, E>E_min, τ<τ_max}"
+      },
+      "update_rule_summary": [
+        "psi1 = clamp01(psi - jab_psi_disturb)",
+        "S2 = clamp01(min(S, S - cross_S_compress))",
+        "S3 = clamp01(S2 - lowkick_S_remove)",
+        "tau' = tau + tau_increase*dt",
+        "E' = max(0, E - E_cost*dt)",
+        "Ω is infeasible if (S3<=0) or (psi1<=0) or (E'<=E_min) or (tau'>=tau_max)"
+      ]
+    }
+  ]
+}

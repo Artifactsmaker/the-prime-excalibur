@@ -1,0 +1,317 @@
+{
+  "operator_id": "tuys-cut-operator",
+  "name": "Tuy's Cut Operator",
+  "symbol": "TC",
+  "version": "0.1.0",
+  "schema_version": "1.0.0",
+  "compat": ">=0.1 <1.0",
+  "family": "projection-global-optimization",
+  "title": "Tuy's Cut Operator — Feasibility Gate of Search Space",
+  "description_vi": "TC là toán tử cắt miền khả thi của không gian nghiệm bằng cách loại bỏ các vùng không thể chứa nghiệm tối ưu hoặc không còn hợp lệ theo logic ràng buộc.",
+  "description_en": "TC is a feasibility-cut operator that removes regions of the search space which cannot contain the optimum or are invalid under structural constraints.",
+  "objective": {
+    "mode": "FILTER",
+    "metric": "Feasibility_Preservation"
+  },
+  "tags": [
+    "operatorology",
+    "operator-intelligence",
+    "global-optimization",
+    "projection",
+    "feasibility-gate",
+    "silicon-ready"
+  ],
+  "inputs": {
+    "required": [
+      {
+        "id": "states",
+        "type": "array<object>",
+        "description_vi": "Tập trạng thái hoặc miền nghiệm hiện tại"
+      },
+      {
+        "id": "cut_params",
+        "type": "object",
+        "description_vi": "Tham số siêu phẳng cắt: vector a, ngưỡng b, toán tử so sánh"
+      }
+    ],
+    "optional": [
+      {
+        "id": "context",
+        "type": "object",
+        "description_vi": "Ngữ cảnh hỗ trợ diễn giải hoặc log"
+      },
+      {
+        "id": "annotations",
+        "type": "array<object>",
+        "description_vi": "Nhãn bổ sung cho từng trạng thái"
+      }
+    ]
+  },
+  "outputs": {
+    "primary": [
+      {
+        "id": "filtered_states",
+        "type": "array<object>",
+        "description_vi": "Tập trạng thái còn hợp lệ sau phép cắt"
+      }
+    ],
+    "standard_contract": [
+      "ContextPack",
+      "ToolPlan",
+      "DecisionLog"
+    ]
+  },
+  "parameters": {
+    "comparator": {
+      "type": "string",
+      "default": "le",
+      "enum": ["le", "lt", "ge", "gt"],
+      "description_vi": "Kiểu so sánh của phép cắt"
+    },
+    "epsilon": {
+      "type": "number",
+      "default": 0.0,
+      "range": [0.0, 1.0],
+      "description_vi": "Biên mềm để tránh cắt do sai số số học"
+    },
+    "keep_invalid_trace": {
+      "type": "boolean",
+      "default": true,
+      "description_vi": "Có lưu dấu vết các trạng thái bị loại hay không"
+    }
+  },
+  "state_model": {
+    "input_state": "Ω_k: miền nghiệm hoặc tập trạng thái hiện tại",
+    "intermediate_states": [
+      "hyperplane_scores",
+      "validity_partition"
+    ],
+    "output_state": "Ω_(k+1): miền nghiệm sau cắt"
+  },
+  "formulae": [
+    {
+      "id": "classical",
+      "name": "Classical cut form",
+      "latex": "\\Omega_{k+1} = \\Omega_k \\cap H_k",
+      "interpretation_vi": "Miền nghiệm mới là giao của miền cũ với siêu phẳng cắt"
+    },
+    {
+      "id": "operator",
+      "name": "Operator form",
+      "latex": "TC(\\Omega_k, \\Phi_k) = \\Omega_k \\cap H(\\Phi_k)",
+      "interpretation_vi": "Toán tử nhận miền nghiệm và thông tin cắt để trả về miền sau cắt"
+    },
+    {
+      "id": "logical",
+      "name": "Logical form",
+      "latex": "TC(S)=\\{x \\in S \\mid x\\text{ cannot be eliminated by constraint logic}\\}",
+      "interpretation_vi": "Giữ lại các trạng thái chưa bị chứng minh là sai"
+    },
+    {
+      "id": "hyperplane_eval",
+      "name": "Hyperplane evaluation",
+      "latex": "h(x)=a^T x - b",
+      "interpretation_vi": "Giá trị kiểm tra của một trạng thái đối với siêu phẳng cắt"
+    }
+  ],
+  "features": {
+    "relevance_features": ["state_presence"],
+    "authority_features": [],
+    "recency_features": [],
+    "consistency_features": ["constraint_satisfaction"],
+    "risk_features": ["margin_violation"]
+  },
+  "normalization": {
+    "method": "none",
+    "note_vi": "TC chủ yếu dựa trên kiểm tra ràng buộc, không cần chuẩn hóa điểm tổng hợp"
+  },
+  "metrics": {
+    "primary_metric": {
+      "name": "feasibility_ratio",
+      "type": "scalar",
+      "description_vi": "Tỷ lệ trạng thái còn lại sau cắt"
+    },
+    "secondary_metrics": [
+      {
+        "name": "removed_count",
+        "type": "integer",
+        "description_vi": "Số trạng thái bị loại"
+      },
+      {
+        "name": "kept_count",
+        "type": "integer",
+        "description_vi": "Số trạng thái được giữ"
+      },
+      {
+        "name": "max_margin_violation",
+        "type": "scalar",
+        "description_vi": "Biên vi phạm lớn nhất của các trạng thái bị loại"
+      }
+    ]
+  },
+  "thresholds": {
+    "epsilon": 0.0
+  },
+  "kernel": {
+    "type": "projection",
+    "pipeline_steps": [
+      {
+        "id": "collect_states",
+        "name": "Collect States",
+        "role": "collect",
+        "description_vi": "Thu thập tập trạng thái hiện tại và tham số cắt"
+      },
+      {
+        "id": "evaluate_hyperplane",
+        "name": "Evaluate Hyperplane",
+        "role": "score",
+        "description_vi": "Tính h(x)=a^T x-b cho từng trạng thái"
+      },
+      {
+        "id": "validity_gate",
+        "name": "Validity Gate",
+        "role": "gate",
+        "description_vi": "Giữ các trạng thái thỏa điều kiện cắt"
+      },
+      {
+        "id": "build_partition",
+        "name": "Build Partition",
+        "role": "classify",
+        "description_vi": "Tách tập trạng thái thành kept và removed để phục vụ log"
+      }
+    ],
+    "fusion_rule": "chained",
+    "hyperparameters": {
+      "comparator": "le",
+      "epsilon": 0.0
+    }
+  },
+  "cut_rules": [
+    {
+      "id": "hyperplane_cut",
+      "condition": "a^T x - b <= epsilon (for comparator=le)",
+      "action": "keep_else_drop",
+      "priority": 1,
+      "description_vi": "Giữ trạng thái nếu vượt qua kiểm tra siêu phẳng theo comparator"
+    }
+  ],
+  "override_policy": {
+    "priority_order": [
+      "safety_anchor",
+      "truth_anchor",
+      "cut_rules",
+      "user_intent",
+      "context"
+    ]
+  },
+  "anchors": {
+    "style_anchor": {
+      "strength": "soft",
+      "description_vi": "Neo cách diễn giải output"
+    },
+    "truth_anchor": {
+      "strength": "hard",
+      "description_vi": "Không giữ trạng thái vi phạm ràng buộc đã xác định"
+    },
+    "identity_anchor": {
+      "strength": "soft",
+      "description_vi": "Neo ký hiệu và bản sắc toán tử"
+    },
+    "safety_anchor": {
+      "strength": "hard",
+      "description_vi": "Không cho phép bỏ qua kiểm tra feasibility trong runtime chuẩn"
+    }
+  },
+  "runtime_mapping": {
+    "runtime_role": "Feasibility gate over search space",
+    "pipeline_steps": [
+      "collect_states",
+      "evaluate_hyperplane",
+      "validity_gate",
+      "build_partition"
+    ],
+    "state_transition": "Ω_(k+1) = TC(Ω_k, Φ_k) = Ω_k ∩ H(Φ_k)",
+    "decision_points": [
+      "before_gate",
+      "after_gate"
+    ],
+    "fallback_behavior": "Nếu thiếu tham số cắt hợp lệ, giữ nguyên trạng thái và phát validation event"
+  },
+  "silicon_mapping": {
+    "hardware_role": "Feasible-state gate",
+    "blocks": [
+      "input_state_buffer",
+      "hyperplane_eval_unit",
+      "comparator",
+      "valid_state_buffer",
+      "removed_state_trace_buffer",
+      "logger_bus"
+    ],
+    "critical_checks": [
+      "dot_product_compute",
+      "threshold_compare"
+    ],
+    "memory_needs": [
+      "state_vector",
+      "cut_vector_a",
+      "threshold_b",
+      "trace_meta"
+    ],
+    "control_signals": [
+      "cut_enable",
+      "keep_flag",
+      "drop_flag",
+      "commit_valid"
+    ],
+    "determinism_requirements": [
+      "fixed_rounding",
+      "stable_iteration_order",
+      "version_stamping"
+    ]
+  },
+  "logging": {
+    "log_level": "basic",
+    "required_fields": [
+      "run_id",
+      "operator_id",
+      "version",
+      "input_summary",
+      "step_events",
+      "final_summary"
+    ],
+    "redaction_rules": [
+      "mask_pii_if_present",
+      "hash_sensitive_annotations"
+    ],
+    "audit": {
+      "store_pre_metrics": true,
+      "store_post_metrics": true,
+      "store_cut_events": true,
+      "store_override_events": false
+    }
+  },
+  "decision_log_schema": {
+    "required_sections": [
+      "metadata",
+      "input_state",
+      "step_trace",
+      "metric_trace",
+      "events",
+      "final_summary"
+    ]
+  },
+  "presets": [
+    {
+      "preset_id": "default",
+      "name": "Default Feasibility Cut",
+      "description_vi": "Preset mặc định cho phép cắt với comparator ≤"
+    }
+  ],
+  "examples": [
+    {
+      "input_case": "3 trạng thái vector và một siêu phẳng a^T x <= b",
+      "expected_behavior_vi": "Giữ các trạng thái thỏa ràng buộc, loại các trạng thái vượt ngưỡng"
+    }
+  ],
+  "quote": "Tuy's Cut preserves only the states that remain feasible under the cut logic."
+}

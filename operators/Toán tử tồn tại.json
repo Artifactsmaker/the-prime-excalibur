@@ -1,0 +1,73 @@
+{
+  "title": "Toán tử tồn tại",
+  "alias_en": "Existence Operator",
+  "version": "1.0.0",
+  "domain": [
+    "Operatorology",
+    "Dynamical Systems",
+    "AI Convergence",
+    "Invariant Theory"
+  ],
+  "core": {
+    "operator": "𝒰 : 𝕊 → 𝕊",
+    "fixed_point": "𝒰x = x",
+    "existence_kernel": "Existence = ker(𝒰 − 𝕀)"
+  },
+  "metric": {
+    "name": "Existence Metric",
+    "symbol": "ℳ",
+    "definition": "ℳ(x) = ‖𝒰x − x‖",
+    "interpretation_vn": "ℳ(x) đo mức sai lệch của trạng thái x sau khi áp dụng 𝒰; ℳ(x)=0 nghĩa là bất biến (tồn tại ổn định)."
+  },
+  "extensions": {
+    "spectrum": {
+      "equation": "𝒰x = λx",
+      "classification": {
+        "λ = 1": "tồn tại bất biến tuyệt đối",
+        "|λ| < 1": "tồn tại suy giảm (decay)",
+        "|λ| > 1": "tồn tại bất ổn (blow-up)",
+        "|λ| = 1": "tồn tại bảo toàn (conserved)",
+        "λ = e^{iθ}": "tồn tại dao động (oscillatory)"
+      }
+    },
+    "flow": {
+      "equation": "dx/dt = 𝒰x − x",
+      "fixed_point_condition": "dx/dt = 0 ⇔ 𝒰x = x"
+    },
+    "projection": {
+      "equation": "𝒫(x) = lim_{n→∞} 𝒰ⁿx",
+      "properties": [
+        "𝒫² = 𝒫",
+        "𝒰𝒫 = 𝒫",
+        "𝒫x ∈ Existence"
+      ]
+    }
+  },
+  "practical_mappings": [
+    {
+      "area": "AI / Learning",
+      "mapping": "W_{t+1} = 𝒰_learn(W_t), hội tụ khi 𝒰_learn(W)=W",
+      "metric_hint": "ℳ(W) có thể chọn là ‖∇L(W)‖ (trong GD)."
+    },
+    {
+      "area": "Dynamical Systems",
+      "mapping": "x_{t+1} = 𝒰x_t, tồn tại ổn định khi lim ℳ(x_t)=0",
+      "metric_hint": "ℳ(x_t)=‖x_{t+1}-x_t‖."
+    },
+    {
+      "area": "Physics (Eigenstates)",
+      "mapping": "𝒪ψ = cψ ⇒ chuẩn hóa về dạng 𝒰ψ = ψ",
+      "metric_hint": "ℳ(ψ)=‖𝒰ψ−ψ‖."
+    }
+  ],
+  "training_notes": {
+    "no_latex_policy": true,
+    "preferred_math_strings": "Unicode math (Math_Unicode) for display + token stability",
+    "recommended_fields": [
+      "title",
+      "core.fixed_point",
+      "metric.definition",
+      "extensions"
+    ]
+  }
+}

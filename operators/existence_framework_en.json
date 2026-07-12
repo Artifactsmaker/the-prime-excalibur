@@ -1,0 +1,92 @@
+{
+  "artifact": {
+    "name": "Operatorology Existence Framework (English)",
+    "version": "1.0.0",
+    "generated_at": "2026-02-26T17:08:17",
+    "core": {
+      "axiom": {
+        "unicode": "𝒰x = x",
+        "label": "Existence fixed-point axiom"
+      },
+      "metric": {
+        "unicode": "𝓜(x) = ‖𝒰x − x‖",
+        "label": "Existence deviation metric"
+      },
+      "kernel": {
+        "unicode": "Existence = ker(𝒰 − 𝕀)",
+        "label": "Kernel form of existence"
+      }
+    },
+    "extensions": {
+      "spectral": {
+        "equation": "𝒰x = λx",
+        "classification": [
+          {
+            "condition": "λ = 1",
+            "meaning": "absolute invariant existence"
+          },
+          {
+            "condition": "|λ| < 1",
+            "meaning": "decaying / contracting existence"
+          },
+          {
+            "condition": "|λ| > 1",
+            "meaning": "unstable / expanding existence"
+          },
+          {
+            "condition": "|λ| = 1",
+            "meaning": "conserved / neutral stability"
+          },
+          {
+            "condition": "λ = e^{iθ}",
+            "meaning": "oscillatory existence"
+          }
+        ]
+      },
+      "flow": {
+        "equation": "dx/dt = 𝒰x − x",
+        "meaning": "Continuous-time existence flow; fixed points satisfy 𝒰x = x."
+      },
+      "projection": {
+        "equation": "𝒫 = lim_{n→∞} 𝒰^n",
+        "meaning": "Projection to invariant existence state (when the limit exists)."
+      },
+      "reality_set": {
+        "equation": "Reality = { x ∈ 𝕊 | 𝓜(x) = 0 }",
+        "meaning": "Reality defined as the zero-set of the existence metric."
+      },
+      "meta_existence": {
+        "equation": "Ω(𝒰) = 𝒰",
+        "meaning": "A law/operator exists (is stable) when it is a fixed point in operator-space."
+      }
+    },
+    "definitions": [
+      {
+        "name": "State Space",
+        "symbol": "𝕊",
+        "text": "The set of possible configurations (states) x."
+      },
+      {
+        "name": "Existence Operator",
+        "symbol": "𝒰",
+        "text": "A transformation 𝒰 : 𝕊 → 𝕊 describing intrinsic evolution."
+      },
+      {
+        "name": "Deviation",
+        "symbol": "Δ(x)",
+        "text": "Δ(x) = 𝒰x − x (requires a state difference operator)."
+      },
+      {
+        "name": "Existence Metric",
+        "symbol": "𝓜(x)",
+        "text": "𝓜(x) = ‖Δ(x)‖, distance from invariance."
+      },
+      {
+        "name": "Deviation Operator",
+        "symbol": "𝒟",
+        "text": "𝒟 = 𝒰 − 𝕀, with Existence = ker(𝒟)."
+      }
+    ],
+    "minimal_summary_for_poster": "Existence is an invariant solution of evolution. A state x exists stably iff 𝒰x = x. Define the existence metric 𝓜(x) = ‖𝒰x − x‖; reality is the zero-set 𝓜(x)=0. All stable structures—particles, memories, intelligences—are elements of ker(𝒰−𝕀)."
+  }
+}

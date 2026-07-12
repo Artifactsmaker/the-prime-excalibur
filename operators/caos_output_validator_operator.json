@@ -1,0 +1,315 @@
+{
+  "id": "omega_caos_output_validator",
+  "symbol": "ΩCAOS",
+  "name": "CAOS Output Validator Operator",
+  "shortName": "CAOS Validator",
+  "version": "1.0.0",
+  "status": "conceptual_runtime_reference",
+  "category": "composite_ai_output_decomposition_and_validation",
+  "generatedBy": "omega_prime_tb_cut_mother_operator",
+  "lineage": {
+    "parentOperator": "Prime-TB Cut Mother Operator",
+    "parentSymbol": "ΩPTB-M",
+    "childOperatorRole": "first practical child operator for AI/XAI output verification",
+    "operatorologyRole": "turns AI output from a single response into a decomposed, verifiable, recomposable structure"
+  },
+  "coreThesis": "AI output is not an atomic object. It is a composite structure that must be decomposed before evaluation.",
+  "formalSketch": {
+    "expression": "ΩCAOS(Output) = Validate(Decompose(Output | CAOS layers, task, context, risk))",
+    "compositeOutput": "AI Output = F-core × R-core × T-fit × C-fit × X-trace × S-bound × A-use × U-res × L-style",
+    "note": "The expression is a structural decomposition, not a strict algebraic multiplication."
+  },
+  "purpose": [
+    "Decompose AI output into CAOS layers.",
+    "Evaluate each layer through specialized child-operator logic.",
+    "Return a visible XAI trace for the output.",
+    "Classify the output as pass, pass_with_warning, repair_required, reject, or escalate.",
+    "Suggest repair actions or new child operators when repeated structural failures appear."
+  ],
+  "activationCondition": {
+    "default": "Triggered when an AI-generated output needs structural evaluation before release, reuse, citation, publication, or decision support.",
+    "highPriorityTriggers": [
+      "Output contains factual claims.",
+      "Output is used for research, science, mathematics, software, policy, medical, legal, or financial contexts.",
+      "Output must be explainable to a user.",
+      "Output will be used as part of an Operator Intelligence workflow.",
+      "Output quality cannot be judged safely by fluency alone."
+    ]
+  },
+  "inputSchema": {
+    "output": "string; required; AI-generated response to be evaluated",
+    "task": "string; optional; original user task or question",
+    "context": "string; optional; user context, domain context, or constraints",
+    "domain": "general | mathematics | science | software | research | medical | legal | financial | policy | creative | other",
+    "riskLevel": "low | medium | high | critical",
+    "expectedUse": "string; optional; intended use of the output",
+    "userConstraints": "string[]; optional; constraints explicitly stated by user",
+    "claims": "string[]; optional; extracted or declared factual claims",
+    "evidence": "array; optional; evidence, citations, theorem names, datasets, code, benchmarks, or user-provided context",
+    "requiredLayers": "CAOSLayerId[]; optional; layers that must be evaluated",
+    "metadata": "object; optional; implementation or workflow metadata"
+  },
+  "outputSchema": {
+    "overallStatus": "pass | pass_with_warning | repair_required | reject | escalate",
+    "overallScore": "number in [0, 1]",
+    "riskLevel": "risk level used during evaluation",
+    "domain": "inferred or supplied domain",
+    "layerEvaluations": "array of evaluations for each CAOS layer",
+    "failedLayers": "layers requiring repair or rejection",
+    "warningLayers": "layers with warnings",
+    "childOperatorActivations": "activated child operators and suggested actions",
+    "generatedOperatorCandidates": "candidate child operators if a repeated failure pattern is detected",
+    "explanationTrace": "XAI trace showing how the output was judged",
+    "repairPlan": "layer-specific repair actions",
+    "recompositionAdvice": "whether and how the output can be released, repaired, rejected, or escalated",
+    "interpretationBoundary": "limits of the validation result"
+  },
+  "caosLayers": [
+    {
+      "id": "F_CORE",
+      "label": "Factual Core",
+      "question": "Are factual claims grounded, supported, and not overconfident?",
+      "childOperator": "Fact-Core Validator",
+      "failureSigns": [
+        "unsupported factual claims",
+        "fabricated or missing sources",
+        "outdated facts treated as current",
+        "absolute claims without evidence"
+      ]
+    },
+    {
+      "id": "R_CORE",
+      "label": "Reasoning Core",
+      "question": "Does the output preserve a coherent premise-to-conclusion structure?",
+      "childOperator": "Reasoning Coherence Operator",
+      "failureSigns": [
+        "missing inference steps",
+        "internal contradiction",
+        "unjustified conclusion",
+        "premise drift"
+      ]
+    },
+    {
+      "id": "T_FIT",
+      "label": "Task Alignment",
+      "question": "Does the output answer the actual user task?",
+      "childOperator": "Task Alignment Operator",
+      "failureSigns": [
+        "topic drift",
+        "missing requested components",
+        "overproduction unrelated to task",
+        "ignoring explicit instructions"
+      ]
+    },
+    {
+      "id": "C_FIT",
+      "label": "Context Fit",
+      "question": "Does the output fit user context, domain, constraints, and expected use?",
+      "childOperator": "Context-Fit Operator",
+      "failureSigns": [
+        "wrong level of expertise",
+        "ignoring user constraints",
+        "domain mismatch",
+        "generic answer where context-specific answer is needed"
+      ]
+    },
+    {
+      "id": "X_TRACE",
+      "label": "Explainability Trace",
+      "question": "Can the user see why the output was produced and how it should be interpreted?",
+      "childOperator": "XAI Trace Operator",
+      "failureSigns": [
+        "no evidence trail",
+        "no theorem/law/method named",
+        "opaque conclusion",
+        "no assumptions or criteria"
+      ]
+    },
+    {
+      "id": "S_BOUND",
+      "label": "Safety Boundary",
+      "question": "Does the output stay within safe and justified interpretation boundaries?",
+      "childOperator": "Safety Boundary Guard",
+      "failureSigns": [
+        "unsafe certainty",
+        "missing limitations",
+        "high-risk advice without escalation",
+        "unsupported claims of safety"
+      ]
+    },
+    {
+      "id": "A_USE",
+      "label": "Actionability",
+      "question": "Can the output be used, followed, applied, or operationalized?",
+      "childOperator": "Actionability Cut",
+      "failureSigns": [
+        "no next steps",
+        "no procedure",
+        "too abstract for intended use",
+        "no implementation path"
+      ]
+    },
+    {
+      "id": "U_RES",
+      "label": "Residual Uncertainty",
+      "question": "Are missing information, uncertainty, assumptions, and residual risk disclosed?",
+      "childOperator": "Residual Uncertainty Cut",
+      "failureSigns": [
+        "no uncertainty marker",
+        "hidden assumptions",
+        "missing-data silence",
+        "unbounded residual risk"
+      ]
+    },
+    {
+      "id": "L_STYLE",
+      "label": "Style Layer",
+      "question": "Is the output readable, appropriately structured, and suitable for the intended audience?",
+      "childOperator": "Style Layer Checker",
+      "failureSigns": [
+        "too long",
+        "too short",
+        "too dense",
+        "wrong tone",
+        "wrong level of technicality"
+      ]
+    }
+  ],
+  "statusPolicy": {
+    "pass": "Output is structurally validated and can be released.",
+    "pass_with_warning": "Output is usable but must expose warnings or verification notes.",
+    "repair_required": "Output should not be released as final until failed layers are repaired.",
+    "reject": "Output should be rejected or regenerated.",
+    "escalate": "Output requires external verification, expert review, or higher-trust toolchain before release."
+  },
+  "runtimePipeline": [
+    "Receive raw AI output and optional task/context/evidence.",
+    "Infer or accept domain and risk level.",
+    "Decompose output into CAOS layers.",
+    "Evaluate each layer with layer-specific checks.",
+    "Activate child operators for weak or failed layers.",
+    "Compute weighted composite score.",
+    "Assign overall status.",
+    "Generate explanation trace and repair plan.",
+    "Return recomposition advice.",
+    "If failures repeat across outputs and show stable structure, propose a new child operator scaffold."
+  ],
+  "defaultLayerWeights": {
+    "F_CORE": 1.25,
+    "R_CORE": 1.15,
+    "T_FIT": 1.1,
+    "C_FIT": 0.95,
+    "X_TRACE": 1.05,
+    "S_BOUND": 1.25,
+    "A_USE": 0.9,
+    "U_RES": 1.0,
+    "L_STYLE": 0.75
+  },
+  "defaultThresholds": {
+    "passThreshold": 0.82,
+    "warningThreshold": 0.65,
+    "repairThreshold": 0.45
+  },
+  "childOperators": [
+    {
+      "id": "fact_core_validator",
+      "name": "Fact-Core Validator",
+      "layer": "F_CORE",
+      "role": "checks factual grounding, evidence, and overclaiming"
+    },
+    {
+      "id": "reasoning_coherence_operator",
+      "name": "Reasoning Coherence Operator",
+      "layer": "R_CORE",
+      "role": "checks premise-to-conclusion continuity and contradiction risk"
+    },
+    {
+      "id": "task_alignment_operator",
+      "name": "Task Alignment Operator",
+      "layer": "T_FIT",
+      "role": "checks task-output alignment and instruction satisfaction"
+    },
+    {
+      "id": "context_fit_operator",
+      "name": "Context-Fit Operator",
+      "layer": "C_FIT",
+      "role": "checks contextual suitability and user constraints"
+    },
+    {
+      "id": "xai_trace_operator",
+      "name": "XAI Trace Operator",
+      "layer": "X_TRACE",
+      "role": "checks explanation trace and interpretability"
+    },
+    {
+      "id": "safety_boundary_guard",
+      "name": "Safety Boundary Guard",
+      "layer": "S_BOUND",
+      "role": "checks safety scope, limitation markers, and escalation need"
+    },
+    {
+      "id": "actionability_cut",
+      "name": "Actionability Cut",
+      "layer": "A_USE",
+      "role": "checks concrete usefulness and operational next steps"
+    },
+    {
+      "id": "residual_uncertainty_cut",
+      "name": "Residual Uncertainty Cut",
+      "layer": "U_RES",
+      "role": "checks assumptions, missing data, and residual uncertainty"
+    },
+    {
+      "id": "style_layer_checker",
+      "name": "Style Layer Checker",
+      "layer": "L_STYLE",
+      "role": "checks readability, structure, tone, and length"
+    }
+  ],
+  "operatorGenerationRule": {
+    "principle": "Do not generate a new operator from a one-off error. Generate or propose a new operator only when repeated failures show a stable invariant core, activation condition, runtime behavior, trace, and failure condition.",
+    "minimumRequirements": [
+      "stable failure pattern",
+      "clear invariant core",
+      "reusable activation condition",
+      "runtime behavior that can be specified",
+      "trace requirement",
+      "failure boundary",
+      "non-overlap with existing child operators"
+    ]
+  },
+  "interpretationBoundaries": [
+    "ΩCAOS is not a truth oracle.",
+    "Scores are heuristic runtime indicators, not final proof of correctness.",
+    "High-risk domains require external verification or qualified human review.",
+    "The operator evaluates the structure of an AI output; it does not guarantee empirical truth.",
+    "A fluent answer can fail CAOS if its factual core, reasoning, safety boundary, or uncertainty layer is weak."
+  ],
+  "examples": [
+    {
+      "name": "Brauer Height Zero statement",
+      "inputSummary": "AI states that if a p-block has an abelian defect group, then all ordinary irreducible characters in that block have height zero.",
+      "expectedBehavior": "F-core and R-core pass with theorem evidence; S-bound warns if the statement is generalized to all simple modules without clarification."
+    },
+    {
+      "name": "Weak AI-output evaluation claim",
+      "inputSummary": "AI says answers are good if they sound convincing and this always proves the system is smart.",
+      "expectedBehavior": "F-core, R-core, S-bound, and U-res should warn or fail due to overclaiming, weak evidence, and no uncertainty boundary."
+    }
+  ],
+  "recommendedZenodoWorkType": "Software or Research protocol or technique",
+  "keywords": [
+    "Operatorology",
+    "Operator Intelligence",
+    "Composite AI Output Standard",
+    "CAOS",
+    "AI Output Decomposition",
+    "Explainable AI",
+    "XAI",
+    "AI Verification",
+    "Runtime Operators",
+    "Prime-TB Cut Mother Operator",
+    "Meta-Operator",
+    "Executable Knowledge"
+  ]
+}
