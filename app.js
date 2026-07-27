@@ -1,4 +1,4 @@
-const state = {
+﻿const state = {
   operators: [],
   selected: {
     inference: "AUG",
@@ -118,6 +118,8 @@ const i18n = {
     supportWork: "Support My Work",
     activityTotal: "Total Activity",
     visits: "Visits",
+    totalVisits: "Total visits",
+    onlineNow: "Online now",
     executions: "Executions",
     globalCounter: "Global counter",
     counterFallback: "Local fallback",
@@ -232,6 +234,8 @@ const i18n = {
     supportWork: "Ủng Hộ Dự Án",
     activityTotal: "Tổng Hoạt Động",
     visits: "Truy cập",
+    totalVisits: "Tổng truy cập",
+    onlineNow: "Đang trực tuyến",
     executions: "Thực thi",
     globalCounter: "Bộ đếm toàn cầu",
     counterFallback: "Dự phòng cục bộ",
@@ -305,843 +309,217 @@ const i18n = {
     bundled: "同梱",
     operatorCount: "演算子",
     noCommandTitle: "実行コマンドがありません。",
-    noCommandText: "The Prime Excalibur を実行する前にコマンドを入力してください。",
-    missingKeyTitle: "API key がありません。",
-    missingKeyText: "Gemini には無料の個人 API key が必要です。設定で key を貼り付け、適用を押してください。",
-    offlineAnswerTitle: "Openbeta 演算子チェーン応答。",
-    offlineAnswerIntro: "Gemini API key が有効ではないため、選択された演算子チェーンから Openbeta 応答を生成しました。",
-    offlineQuestion: "質問",
-    offlineReading: "演算子による読み解き",
-    offlineModeLabel: "モード",
-    offlineInferenceLabel: "推論レイヤー",
-    offlineKnowledgeLabel: "知識",
-    offlinePriorityLabel: "優先度",
-    offlineChainUsed: "使用した演算子チェーン",
-    offlineNext: "完全な O.i 応答を得るには、Setup で Gemini API key を貼り付けて Apply を押してください。",
-    callingProviderTitle: "{provider} を呼び出しています...",
-    callingProviderText: "The Prime Excalibur は演算子チェーンをコンパイルし、O.i provider へリクエストを送信しています。",
-    responseReadyTitle: "O.i 応答の準備ができました。",
-    providerErrorTitle: "Provider 呼び出しに失敗しました。",
-    traceInput: "入力取得",
-    traceInputDetail: "{count} 文字のコマンドを受信しました。",
-    traceOperator: "演算子選択",
-    traceOperatorDetail: "{mode} モード用に {count} 個の演算子を選択しました。",
-    tracePrompt: "プロンプト生成",
-    tracePromptDetail: "コマンド、ポリシー、演算子チェーン、出力契約をまとめました。",
-    traceProvider: "Provider Adapter",
-    traceProviderDetail: "{provider}/{model} を呼び出しています。",
-    traceMissingProvider: "API key がないため停止しました。",
-    traceOutput: "出力フィルター",
-    traceOutputDetail: "応答を受信し、演算子チェーン適用後の結果を表示しました。",
-    traceProviderError: "Provider エラー",
-    fileFetchError: "現在の app 表面から provider を呼び出せません。Openbeta web 版または GitHub Pages 版を使用してから、もう一度試してください。",
-    highDemand: "選択したモデルは現在高負荷です。API key は機能していますが、provider 側が一時的に混雑しています。後でもう一度試すか、別の Gemini model に切り替えてください。",
-    promptReturn: "日本語で明確に回答してください。最後に短い '使用した演算子チェーン' セクションを含めてください。",
-    langName: "日本語",
-    freeAiModels: "AI アシスタントを選択",
-    freeAiModelsHint: "クイック preset を選ぶか、下の使用中設定を編集してください。",
-    freeGeminiHint: "Google AI Studio の free-tier 向け",
-    freeGeminiAltHint: "高負荷時に切り替える Flash model",
-    requiresFreeApiKey: "無料 API key が必要",
-    supportWork: "プロジェクト支援",
-    activityTotal: "合計アクティビティ",
-    visits: "訪問",
-    executions: "実行",
-    globalCounter: "グローバルカウンター",
-    counterFallback: "ローカル予備",
-    developedBy: "開発者:",
-    activeConfig: "使用中設定",
-    activeConfigHint: "上級ユーザーは provider、model、key、endpoint をここで上書きできます。",
-    customPresetSummary: "手動設定",
-    companionApps: "連携アプリ",
-    companionAppsHint: "同梱された O.i ツールを別の作業画面として開きます。",
-    trajectoryLabName: "軌道ラボ",
-    trajectoryLabHint: "原稿の軌道フレームワーク",
-    elementPassportName: "元素パスポート",
-    elementPassportHint: "元素パスポート生成ツール",
-    primeUlamAtlasName: "Prime Ulam アトラス",
-    primeUlamAtlasHint: "Prime Ulam 核整数アトラス",
-  },
-};
-
-function t(key, values = {}) {
-  const template = i18n[state.language]?.[key] || i18n.EN[key] || key;
-  return Object.entries(values).reduce((text, [name, value]) => text.replaceAll(`{${name}}`, value), template);
-}
-
-function setLanguage(language) {
-  state.language = language;
-  localStorage.setItem("oiBoxLanguage", language);
-  applyLanguage();
-}
-
-function applyLanguage() {
-  const commandInput = $("#commandInput");
-  const defaultCommands = Object.values(i18n).map((locale) => locale.defaultCommand);
-  const shouldReplaceDefaultCommand = commandInput && (!state.commandTouched || defaultCommands.includes(commandInput.value.trim()));
-  document.documentElement.lang = state.language === "VN" ? "vi" : state.language === "JP" ? "ja" : "en";
-  $$("[data-i18n]").forEach((element) => {
-    element.textContent = t(element.dataset.i18n);
-  });
-  $$("[data-i18n-placeholder]").forEach((element) => {
-    element.placeholder = t(element.dataset.i18nPlaceholder);
-  });
-  $$("#languageSwitch button").forEach((button) => {
-    button.classList.toggle("active", button.dataset.lang === state.language);
-  });
-  if ($("#answerTitle")?.dataset.i18n) {
-    $("#answerTitle").textContent = t($("#answerTitle").dataset.i18n);
-  }
-  if ($("#answerText")?.dataset.i18n) {
-    const key = $("#answerText").dataset.i18n;
-    $("#answerText").innerHTML = key === "readyText"
-      ? formatAnswerText(t(key), { note: t("apiConfigRequired") })
-      : formatAnswerText(t(key));
-  }
-  if (shouldReplaceDefaultCommand) {
-    commandInput.value = t("defaultCommand");
-    state.commandTouched = false;
-  }
-  renderRuntime();
-  renderOperatorLibrary();
-}
-
-function saveSettings() {
-  state.settings.provider = "Gemini";
-  state.settings.model = getDefaultModel("Gemini");
-  state.settings.apiKey = $("#apiKeyInput").value.trim();
-  state.settings.endpoint = "";
-  localStorage.setItem("oiBoxSettings", JSON.stringify(state.settings));
-  syncSettingsFields();
-  renderRuntime();
-  const status = $("#apiKeyStatus");
-  if (!state.settings.apiKey) {
-    if (status) {
-      status.textContent = t("keyMissingStatus");
-      status.classList.add("visible", "warning");
-    }
-    return;
-  }
-  if (status) {
-    status.textContent = t("keySavedStatus");
-    status.classList.add("visible");
-    status.classList.remove("warning");
-  }
-  setAnswer(t("keySavedTitle"), t("keySavedText"));
-  window.setTimeout(() => activateTab("answer"), 120);
-}
-
-function loadSettings() {
-  const stored = localStorage.getItem("oiBoxSettings");
-  if (stored) {
-    state.settings = { ...state.settings, ...JSON.parse(stored) };
-  }
-  state.settings.provider = "Gemini";
-  state.settings.model = getDefaultModel("Gemini");
-  state.settings.endpoint = "";
-  syncSettingsFields();
-  renderRuntime();
-}
-
-function syncSettingsFields() {
-  state.settings.provider = "Gemini";
-  state.settings.model = getDefaultModel("Gemini");
-  state.settings.endpoint = "";
-  $("#providerSelect").value = "Gemini";
-  $("#modelInput").value = state.settings.model;
-  $("#apiKeyInput").value = state.settings.apiKey;
-  $("#endpointInput").value = state.settings.endpoint;
-  $("#apiKeyField")?.classList.remove("is-hidden");
-  updateFreeModelSelection();
-}
-
-function getDefaultModel(provider) {
-  return "gemini-3.5-flash";
-}
-
-function getOperatorName(operator, file) {
-  return cleanText(operator.name || operator.operator_name || operator.title || operator.short_name || file.split("/").pop().replace(".json", ""));
-}
-
-function getOperatorCategory(operator) {
-  return cleanText(operator.category || operator.domain || operator.layer || operator.type || "operator");
-}
-
-function getOperatorDescription(operator) {
-  return cleanText(operator.description || operator.summary || operator.purpose || "Local O.i operator specification loaded from the bundled pack.");
-}
-
-function cleanText(value) {
-  const text = String(value ?? "");
-  if (!/[ÃÂÄÅáºá»]/.test(text)) {
-    return text;
-  }
-  try {
-    const bytes = Uint8Array.from(Array.from(text, (char) => char.charCodeAt(0) & 255));
-    const repaired = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
-    return repaired.includes("�") ? text : repaired;
-  } catch (error) {
-    return text;
-  }
-}
-
-async function loadOperators() {
-  let loaded = [];
-  try {
-    const manifestResponse = await fetch("./operator-manifest.json");
-    const files = await manifestResponse.json();
-    loaded = await Promise.all(files.map(async (file) => {
-      const response = await fetch(`./${file}`);
-      const json = await response.json();
-      return {
-        file,
-        raw: json,
-        id: json.id || json.operator_id || file,
-        name: getOperatorName(json, file),
-        category: getOperatorCategory(json),
-        description: getOperatorDescription(json),
-        status: cleanText(json.status || json.version || "bundled"),
-        symbol: cleanText(json.symbol || json.short_name || "O.i"),
-      };
-    }));
-  } catch (error) {
-    loaded = (window.OI_OPERATOR_DATA || []).map((operator) => ({
-      ...operator,
-      name: cleanText(operator.name),
-      category: cleanText(operator.category),
-      description: cleanText(operator.description),
-      status: cleanText(operator.status),
-      symbol: cleanText(operator.symbol),
-      raw: operator,
-    }));
-  }
-  state.operators = loaded;
-  renderOperatorLibrary();
-  renderChain();
-  renderRuntime();
-}
-
-function chooseChain() {
-  const mode = $("#outputMode").value;
-  const byName = (fragment) => state.operators.find((operator) => operator.name.toLowerCase().includes(fragment));
-  const base = [
-    byName("existence") || state.operators[0],
-    byName("valid") || state.operators[1],
-    byName("prime") || state.operators[2],
-  ].filter(Boolean);
-
-  const maps = {
-    Explain: ["governance", "eco", "phase"],
-    Analyze: ["entropy", "fixed", "horizon"],
-    Write: ["pin", "stack", "deo"],
-    Code: ["runtime", "phase", "valid"],
-    Plan: ["governance", "horizon", "stack"],
-  };
-
-  const extra = (maps[mode] || maps.Explain)
-    .map((fragment) => byName(fragment))
-    .filter(Boolean);
-
-  const merged = [...base, ...extra];
-  const unique = new Map(merged.map((operator) => [operator.id, operator]));
-  return Array.from(unique.values()).slice(0, state.selected.inference === "DEEP" ? 7 : 5);
-}
-
-function renderChain() {
-  const chain = chooseChain();
-  if (!$("#chainList")) return;
-  $("#chainList").innerHTML = chain.map((operator, index) => `
-    <article class="chain-item">
-      <b>${index + 1}</b>
-      <div>
-        <strong title="${escapeHtml(operator.name)}">${escapeHtml(operator.name)}</strong>
-        <span title="${escapeHtml(operator.category)}">${escapeHtml(operator.category)}</span>
-      </div>
-    </article>
-  `).join("");
-  if ($("#runtimeOperators")) {
-    $("#runtimeOperators").textContent = `${state.operators.length} ${t("bundled")}`;
-  }
-}
-
-function renderRuntime() {
-  const providerLabel = getProviderLabel(state.settings.provider);
-  if ($("#runtimeProvider")) $("#runtimeProvider").textContent = providerLabel;
-  if ($("#runtimeModel")) $("#runtimeModel").textContent = state.settings.model;
-  if ($("#runtimeActiveModel")) $("#runtimeActiveModel").textContent = state.settings.model;
-  if ($("#providerStatus")) $("#providerStatus").textContent = `${providerLabel} / ${state.selected.inference}`;
-  if ($("#activeModelStatus")) $("#activeModelStatus").textContent = state.settings.model;
-  updateFreeModelSelection();
-}
-
-function getProviderLabel(provider) {
-  return "Gemini";
-}
-
-function updateFreeModelSelection() {
-  let activePreset = null;
-  $$(".free-model-card").forEach((card) => {
-    const isActive = card.dataset.provider === state.settings.provider && card.dataset.model === state.settings.model;
-    card.classList.toggle("active", isActive);
-    if (isActive) {
-      activePreset = card.querySelector("strong")?.textContent || null;
-    }
-  });
-  if ($("#selectedModelSummary")) {
-    const providerLabel = getProviderLabel(state.settings.provider);
-    const summaryPrefix = activePreset || t("customPresetSummary");
-    $("#selectedModelSummary").textContent = `${summaryPrefix}: ${providerLabel} / ${state.settings.model}`;
-  }
-}
-
-function renderOperatorLibrary() {
-  const query = $("#operatorSearch").value.toLowerCase();
-  const filtered = state.operators.filter((operator) => {
-    const haystack = `${operator.name} ${operator.category} ${operator.description}`.toLowerCase();
-    return haystack.includes(query);
-  });
-  $("#operatorCount").textContent = `${filtered.length} ${t("operatorCount")}`;
-  $("#operatorGrid").innerHTML = filtered.map((operator) => `
-    <article class="operator-card">
-      <div class="card-kicker">${escapeHtml(operator.symbol)}</div>
-      <h4>${escapeHtml(operator.name)}</h4>
-      <p>${escapeHtml(trimText(operator.description, 170))}</p>
-      <div class="tag-row">
-        <span class="tag">${escapeHtml(operator.category)}</span>
-        <span class="tag">${escapeHtml(operator.status)}</span>
-      </div>
-    </article>
-  `).join("");
-}
-
-function compileOperatorPrompt(command, chain, mode) {
-  const operatorContract = chain.map((operator, index) => {
-    const description = trimText(operator.description, 240);
-    return `${index + 1}. ${operator.name} [${operator.category}]: ${description}`;
-  }).join("\n");
-
-  return [
-    "You are The Prime Excalibur, an Operator Intelligence runtime.",
-    "You must answer the user only after applying the bundled operator chain.",
-    `Output mode: ${mode}.`,
-    `Inference layer: ${state.selected.inference}.`,
-    `Knowledge mode: ${state.selected.knowledge}.`,
-    `Priority: ${state.selected.priority}.`,
-    "",
-    "Operator chain:",
-    operatorContract,
-    "",
-    "User command:",
-    command,
-    "",
-    t("promptReturn"),
-  ].join("\n");
-}
-
-function setTrace(items) {
-  $("#traceList").innerHTML = items.map(([title, detail]) => `
-    <li>
-      <strong>${escapeHtml(title)}</strong>
-      <span>${escapeHtml(detail)}</span>
-    </li>
-  `).join("");
-}
-
-function setAnswer(title, text, options = {}) {
-  $("#answerTitle").removeAttribute("data-i18n");
-  $("#answerText").removeAttribute("data-i18n");
-  $("#answerTitle").textContent = title;
-  $("#answerText").innerHTML = formatAnswerText(text, options);
-}
-
-function formatAnswerText(text, options = {}) {
-  const normalized = String(text || "").replace(/\r\n/g, "\n").trim();
-  if (!normalized) return "";
-
-  const blocks = [];
-  let list = null;
-  let codeBlock = null;
-
-  const closeList = () => {
-    if (!list) return;
-    blocks.push(`<${list.type}>${list.items.map((item) => `<li>${inlineFormat(item)}</li>`).join("")}</${list.type}>`);
-    list = null;
-  };
-
-  const closeCodeBlock = () => {
-    if (!codeBlock) return;
-    const language = codeBlock.language || "code";
-    blocks.push(`
-      <pre class="code-block"><span class="code-lang">${escapeHtml(language)}</span><code>${escapeHtml(codeBlock.lines.join("\n"))}</code></pre>
-    `);
-    codeBlock = null;
-  };
-
-  normalized.split("\n").forEach((rawLine) => {
-    const fence = rawLine.trim().match(/^```([\w-]+)?\s*$/);
-    if (fence) {
-      if (codeBlock) {
-        closeCodeBlock();
-      } else {
-        closeList();
-        codeBlock = { language: fence[1] || "code", lines: [] };
-      }
-      return;
-    }
-
-    if (codeBlock) {
-      codeBlock.lines.push(rawLine.replace(/\s+$/, ""));
-      return;
-    }
-
-    const line = rawLine.trim();
-    if (!line) {
-      closeList();
-      return;
-    }
-
-    const heading = line.match(/^#{1,6}\s+(.+)$/) || line.match(/^(.{2,96}):$/);
-    if (heading) {
-      closeList();
-      blocks.push(`<h4>${inlineFormat(heading[1])}</h4>`);
-      return;
-    }
-
-    const bullet = line.match(/^(?:[-*]|\u2022)\s+(.+)$/);
-    if (bullet) {
-      if (!list || list.type !== "ul") {
-        closeList();
-        list = { type: "ul", items: [] };
-      }
-      list.items.push(bullet[1]);
-      return;
-    }
-
-    const numbered = line.match(/^\d+[.)]\s+(.+)$/);
-    if (numbered) {
-      if (!list || list.type !== "ol") {
-        closeList();
-        list = { type: "ol", items: [] };
-      }
-      list.items.push(numbered[1]);
-      return;
-    }
-
-    closeList();
-    blocks.push(`<p>${inlineFormat(line)}</p>`);
-  });
-
-  closeCodeBlock();
-  closeList();
-  const note = options.note ? `<div class="answer-note">${inlineFormat(options.note)}</div>` : "";
-  return note + blocks.join("");
-}
-
-function inlineFormat(text) {
-  const tokens = [];
-  const stash = (html) => {
-    const token = `@@OI_TOKEN_${tokens.length}@@`;
-    tokens.push([token, html]);
-    return token;
-  };
-
-  let output = String(text || "").replace(/`([^`]+?)`/g, (_, code) => stash(`<code>${escapeHtml(code)}</code>`));
-  output = output
-    .replace(/\$\$([\s\S]+?)\$\$/g, (_, math) => stash(renderLatex(math, true)))
-    .replace(/\\\[([\s\S]+?)\\\]/g, (_, math) => stash(renderLatex(math, true)))
-    .replace(/\\\(([\s\S]+?)\\\)/g, (_, math) => stash(renderLatex(math, false)))
-    .replace(/\$([^$\n]+?)\$/g, (_, math) => stash(renderLatex(math, false)));
-
-  output = escapeHtml(output)
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-
-  tokens.forEach(([token, html]) => {
-    output = output.replaceAll(token, html);
-  });
-  return output;
-}
-
-function renderLatex(source, display = false) {
-  const html = latexToHtml(source);
-  return display
-    ? `<span class="math-block">${html}</span>`
-    : `<span class="math-inline">${html}</span>`;
-}
-
-function latexToHtml(source) {
-  let math = String(source || "").trim();
-  const tokens = [];
-  const stash = (html) => {
-    const token = `@@OI_MATH_${tokens.length}@@`;
-    tokens.push([token, html]);
-    return token;
-  };
-  math = math
-    .replace(/\\left/g, "")
-    .replace(/\\right/g, "")
-    .replace(/\\,/g, " ")
-    .replace(/\\;/g, " ")
-    .replace(/\\!/g, "")
-    .replace(/\\cdot/g, "·")
-    .replace(/\\times/g, "×")
-    .replace(/\\div/g, "÷")
-    .replace(/\\pm/g, "±")
-    .replace(/\\mp/g, "∓")
-    .replace(/\\leq?/g, "≤")
-    .replace(/\\geq?/g, "≥")
-    .replace(/\\neq/g, "≠")
-    .replace(/\\approx/g, "≈")
-    .replace(/\\sim/g, "∼")
-    .replace(/\\infty/g, "∞")
-    .replace(/\\rightarrow|\\to/g, "→")
-    .replace(/\\leftarrow/g, "←")
-    .replace(/\\Rightarrow/g, "⇒")
-    .replace(/\\Leftarrow/g, "⇐")
-    .replace(/\\leftrightarrow/g, "↔")
-    .replace(/\\sum/g, "∑")
-    .replace(/\\prod/g, "∏")
-    .replace(/\\int/g, "∫")
-    .replace(/\\sqrt\{([^{}]+)\}/g, "√($1)")
-    .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, (_, numerator, denominator) => {
-      return stash(`<span class="math-frac"><span>${latexToHtml(numerator)}</span><span>${latexToHtml(denominator)}</span></span>`);
-    });
-
-  const symbols = {
-    alpha: "α", beta: "β", gamma: "γ", delta: "δ", epsilon: "ε", varepsilon: "ε",
-    zeta: "ζ", eta: "η", theta: "θ", vartheta: "ϑ", iota: "ι", kappa: "κ",
-    lambda: "λ", mu: "μ", nu: "ν", xi: "ξ", pi: "π", varpi: "ϖ",
-    rho: "ρ", sigma: "σ", tau: "τ", upsilon: "υ", phi: "φ", varphi: "φ",
-    chi: "χ", psi: "ψ", omega: "ω", Gamma: "Γ", Delta: "Δ", Theta: "Θ",
-    Lambda: "Λ", Xi: "Ξ", Pi: "Π", Sigma: "Σ", Upsilon: "Υ", Phi: "Φ",
-    Psi: "Ψ", Omega: "Ω", mathbb: "",mathrm: "",mathbf: "",
-  };
-  math = math.replace(/\\([A-Za-z]+)/g, (match, name) => symbols[name] ?? match.slice(1));
-  math = math.replace(/\{([^{}]+)\}/g, "$1");
-  math = escapeHtml(math);
-  math = math
-    .replace(/([A-Za-z0-9Α-Ωα-ωπμνλθφψωΩ]+)_([A-Za-z0-9Α-Ωα-ωπμνλθφψωΩ]+)/g, "$1<sub>$2</sub>")
-    .replace(/([A-Za-z0-9Α-Ωα-ωπμνλθφψωΩ]+)\^([A-Za-z0-9+\-Α-Ωα-ωπμνλθφψωΩ]+)/g, "$1<sup>$2</sup>");
-  tokens.forEach(([token, html]) => {
-    math = math.replaceAll(token, html);
-  });
-  return math;
-}
-
-function translatedMode(mode) {
-  const key = {
-    Explain: "modeExplain",
-    Analyze: "modeAnalyze",
-    Write: "modeWrite",
-    Code: "modeCode",
-    Plan: "modePlan",
-  }[mode];
-  return key ? t(key) : mode;
-}
-
-function translatedPriority(priority) {
-  const key = {
-    EXPLAIN: "priorityExplain",
-    STRICT: "priorityStrict",
-    CREATIVE: "priorityCreative",
-  }[priority];
-  return key ? t(key) : priority;
-}
-
-function buildOfflineAnswer(command, chain, mode) {
-  const operatorLines = chain.map((operator, index) => {
-    const category = operator.category ? ` (${operator.category})` : "";
-    return `${index + 1}. **${operator.name}**${category}: ${trimText(operator.description, 120)}`;
-  });
-
-  return [
-    `${t("offlineQuestion")}:`,
-    command,
-    "",
-    `${t("offlineReading")}:`,
-    `- ${t("offlineModeLabel")}: **${translatedMode(mode)}**`,
-    `- ${t("offlineInferenceLabel")}: **${state.selected.inference}**`,
-    `- ${t("offlineKnowledgeLabel")}: **${state.selected.knowledge}**`,
-    `- ${t("offlinePriorityLabel")}: **${translatedPriority(state.selected.priority)}**`,
-    "",
-    `${t("offlineChainUsed")}:`,
-    ...operatorLines,
-    "",
-    t("offlineNext"),
-  ].join("\n");
-}
-
-async function callGemini(prompt) {
-  const response = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "x-goog-api-key": state.settings.apiKey,
-    },
-    body: JSON.stringify({
-      model: state.settings.model || getDefaultModel("Gemini"),
-      input: prompt,
-      system_instruction: "You are The Prime Excalibur. Apply the provided operator chain before answering.",
-      generation_config: {
-        temperature: state.selected.priority === "CREATIVE" ? 0.95 : 0.35,
-        thinking_level: state.selected.inference === "DEEP" ? "high" : "low",
-      },
-    }),
-  });
-
-  const data = await readJsonResponse(response);
-  if (!response.ok) {
-    throw new Error(getProviderError(data, response.status));
-  }
-  return data.output_text || extractGeminiText(data) || JSON.stringify(data, null, 2);
-}
-
-async function callProvider(prompt) {
-  state.settings.provider = "Gemini";
-  state.settings.model = getDefaultModel("Gemini");
-  return callGemini(prompt);
-}
-
-async function readJsonResponse(response) {
-  const text = await response.text();
-  if (!text) return {};
-  try {
-    return JSON.parse(text);
-  } catch (error) {
-    return { raw: text };
-  }
-}
-
-function extractGeminiText(data) {
-  if (!Array.isArray(data.steps)) return "";
-  return data.steps
-    .flatMap((step) => step.content || step.output || [])
-    .map((item) => item.text || item.content || "")
-    .filter(Boolean)
-    .join("\n");
-}
-
-function getProviderError(data, status) {
-  return data.error?.message || data.message || data.raw || `Provider request failed with HTTP ${status}.`;
-}
-
-function getFriendlyError(error) {
-  const message = error?.message || String(error);
-  if (message.toLowerCase().includes("high demand") || message.toLowerCase().includes("spikes in demand")) {
-    return `${t("highDemand")} ${message}`;
-  }
-  if (message.includes("Failed to fetch") || message.includes("NetworkError")) {
-    return `${t("fileFetchError")} ${message}`;
-  }
-  return message;
-}
-
-async function runExecution() {
-  saveSettings();
-  const command = $("#commandInput").value.trim();
-  const chain = chooseChain();
-  const mode = $("#outputMode").value;
-  const hasKey = state.settings.apiKey.length > 0;
-
-  if (!command) {
-    setAnswer(t("noCommandTitle"), t("noCommandText"));
-    return;
-  }
-
-  incrementExecutionCount();
-
-  $("#stageCaption").textContent = t("processing");
-  $("#runButton").disabled = true;
-  $("#runButton").textContent = t("runningButton");
-  setAnswer(
-    hasKey ? t("callingProviderTitle", { provider: state.settings.provider }) : t("offlineAnswerTitle"),
-    hasKey ? t("callingProviderText") : buildOfflineAnswer(command, chain, mode),
-    hasKey ? {} : { note: t("offlineAnswerIntro") },
-  );
-
-  const baseTrace = [
-    [t("traceInput"), t("traceInputDetail", { count: command.length })],
-    [t("traceOperator"), t("traceOperatorDetail", { count: chain.length, mode })],
-    [t("tracePrompt"), t("tracePromptDetail")],
-    [t("traceProvider"), hasKey ? t("traceProviderDetail", { provider: state.settings.provider, model: state.settings.model }) : t("traceMissingProvider")],
-  ];
-
-  setTrace(baseTrace);
-
-  activateTab("answer");
-  renderChain();
-
-  if (!hasKey) {
-    $("#stageCaption").textContent = t("complete");
-    $("#runButton").disabled = false;
-    $("#runButton").textContent = t("run");
-    setTrace([...baseTrace, [t("traceOutput"), t("traceOutputDetail")]]);
-    return;
-  }
-
-  try {
-    const prompt = compileOperatorPrompt(command, chain, mode);
-    const output = await callProvider(prompt);
-    setAnswer(t("responseReadyTitle"), output);
-    $("#stageCaption").textContent = t("complete");
-    setTrace([...baseTrace, [t("traceOutput"), t("traceOutputDetail")]]);
-  } catch (error) {
-    setAnswer(t("providerErrorTitle"), getFriendlyError(error));
-    $("#stageCaption").textContent = t("connectionErrorCaption");
-    setTrace([...baseTrace, [t("traceProviderError"), getFriendlyError(error)]]);
-  } finally {
-    $("#runButton").disabled = false;
-    $("#runButton").textContent = t("run");
-  }
-}
-
-function activateTab(tab) {
-  $$(".tabs button").forEach((button) => button.classList.toggle("active", button.dataset.tab === tab));
-  $$(".tab-panel").forEach((panel) => panel.classList.remove("active"));
-  $(`#${tab}Panel`).classList.add("active");
-}
-
-function trimText(text, length) {
-  return text.length > length ? `${text.slice(0, length - 3)}...` : text;
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-function readUsageCount(key) {
-  const value = Number.parseInt(localStorage.getItem(key) || "0", 10);
-  return Number.isFinite(value) && value >= 0 ? value : 0;
-}
-
-function renderUsageMetrics(visits = readUsageCount("oiBoxVisits"), executions = readUsageCount("oiBoxExecutions"), scopeKey = "counterFallback") {
-  if ($("#visitCount")) $("#visitCount").textContent = visits.toLocaleString();
-  if ($("#executionCount")) $("#executionCount").textContent = executions.toLocaleString();
-  if ($("#activityTotalCount")) $("#activityTotalCount").textContent = (visits + executions).toLocaleString();
-  const scope = $("#counterScope");
-  if (scope) {
-    scope.dataset.i18n = scopeKey;
-    scope.textContent = t(scopeKey);
-  }
-}
-
-async function requestGlobalCounter(name, action = "") {
-  const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), 4500);
-  try {
-    const suffix = action ? `/${action}` : "";
-    const response = await fetch(`${GLOBAL_COUNTER_BASE}/${name}${suffix}`, {
-      method: "GET",
-      cache: "no-store",
-      signal: controller.signal,
-    });
-    if (response.status === 404 && !action) return 0;
-    if (!response.ok) throw new Error(`Counter API ${response.status}`);
-    const payload = await response.json();
-    const value = Number(payload.value ?? payload.count ?? payload.data?.value);
-    if (!Number.isFinite(value)) throw new Error("Counter API returned an invalid value");
-    return value;
-  } finally {
-    window.clearTimeout(timeout);
-  }
-}
-
-async function syncGlobalCounters(registerVisit = false, incrementExecution = false) {
-  const shouldRegisterVisit = registerVisit && !sessionStorage.getItem("oiBoxGlobalVisitRegistered");
-  try {
-    const [visits, executions] = await Promise.all([
-      requestGlobalCounter("visits", shouldRegisterVisit ? "up" : ""),
-      requestGlobalCounter("executions", incrementExecution ? "up" : ""),
-    ]);
-    if (shouldRegisterVisit) sessionStorage.setItem("oiBoxGlobalVisitRegistered", "1");
-    renderUsageMetrics(visits, executions, "globalCounter");
-  } catch (error) {
-    renderUsageMetrics();
-  }
-}
-
-function initializeUsageMetrics() {
-  if (!sessionStorage.getItem("oiBoxVisitRegistered")) {
-    localStorage.setItem("oiBoxVisits", String(readUsageCount("oiBoxVisits") + 1));
-    sessionStorage.setItem("oiBoxVisitRegistered", "1");
-  }
-  renderUsageMetrics();
-  syncGlobalCounters(true, false);
-}
-
-function incrementExecutionCount() {
-  localStorage.setItem("oiBoxExecutions", String(readUsageCount("oiBoxExecutions") + 1));
-  renderUsageMetrics();
-  syncGlobalCounters(false, true);
-}
-
-function bindControls() {
-  $$("[data-bind]").forEach((group) => {
-    group.addEventListener("click", (event) => {
-      const button = event.target.closest("button");
-      if (!button) return;
-      group.querySelectorAll("button").forEach((item) => item.classList.remove("active"));
-      button.classList.add("active");
-      state.selected[group.dataset.bind] = button.dataset.value;
-      renderRuntime();
-      renderChain();
-    });
-  });
-
-  $$(".tabs button").forEach((button) => {
-    button.addEventListener("click", () => activateTab(button.dataset.tab));
-  });
-
-  $("#runButton").addEventListener("click", runExecution);
-  $("#commandInput").addEventListener("input", () => {
-    state.commandTouched = true;
-  });
-  $("#saveSettingsButton").addEventListener("click", saveSettings);
-  $("#operatorSearch").addEventListener("input", renderOperatorLibrary);
-  $("#outputMode").addEventListener("change", renderChain);
-  $("#settingsButton").addEventListener("click", () => activateTab("setup"));
-  $$("#languageSwitch button").forEach((button) => {
-    button.addEventListener("click", () => setLanguage(button.dataset.lang));
-  });
-  $$(".free-model-card").forEach((card) => {
-    card.addEventListener("click", () => {
-      state.settings.provider = card.dataset.provider;
-      state.settings.model = card.dataset.model;
-      syncSettingsFields();
-      saveSettings();
-      renderRuntime();
-    });
-  });
-  $("#providerSelect").addEventListener("change", () => {
-    const provider = $("#providerSelect").value;
-    state.settings.provider = provider;
-    state.settings.model = getDefaultModel(provider);
-    syncSettingsFields();
-    renderRuntime();
-  });
-}
-
-bindControls();
-initializeUsageMetrics();
-applyLanguage();
-loadSettings();
-loadOperators().catch((error) => {
-  $("#answerTitle").removeAttribute("data-i18n");
-  $("#answerText").removeAttribute("data-i18n");
-  $("#answerTitle").textContent = state.language === "VN"
-    ? "Không tải được operator pack."
-    : state.language === "JP"
-      ? "operator pack を読み込めません。"
-      : "Cannot load operator pack.";
-  $("#answerText").textContent = state.language === "VN"
-    ? `${error.message}. Hãy chạy app bằng local server thay vì mở file trực tiếp.`
-    : state.language === "JP"
-      ? `${error.message}. file を直接開くのではなく、local server で app を実行してください。`
-      : `${error.message}. Run the app through a local server instead of opening the file directly.`;
-});
-
-
+    noCommandText: "The Prime Excalib￿޷z{-Ωܪם�ˈ
+ˈX]
+HOȜݘ\ڊٛٙ\Ә]^
+X]ݙJJJBȈܙ\Xيח
+
+לה׊ϊW
+Kً
+ˈX]
+HOȜݘ\ڊٛٙ\Ә]^
+X]؛يJJBȈܙ\Xي׉
+׉׊ϊW	ً
+ˈX]
+HOȜݘ\ڊٛٙ\Ә]^
+X]؛يJJNȈݝ]H\ؘ\R[
+ݝ]
+BȈܙ\Xي׊׊ʋʏʗ
+׊˙ˈϜݜُۛɌOܝُۛȊNȈڙ[܋ܑٛXXڊ
+ݛڙ[ˈ[JHOȞݝ]Hݝ]ܙ\Xِ[
+ڙ[ˈ[
+NJNٝ\ۈݝ]Bݛ؝[ۈٛٙ\Ә]^
+۝\ؙK\ܛ^HH؛يHۛܝ[H]^ҝ[
+۝\ؙJNٝ\ۈ\ܛ^BȈȘܘ[Șۘ\܏Hۘ]Xؚۛȏɞڝ[Oܜ[ϘȈȘܘ[Șۘ\܏Hۘ]Z[ۚ[وωڝ[Oܜ[ϘBݛ؝[ۈ]^ҝ[
+۝\ؙJH]X]Hݜڛي۝\ؙHȊKݜڛJ
+Nۛܝڙ[܈H׎ۛܝݘ\ڈH
+[
+HOȞۛܝڙ[ȏHҗӐUɞݛڙ[܋ۙ[ٝPڙ[܋ܝ\ڊݛڙ[ˈ[JNٝ\ۈڙ[΂ȈNX]HX]Ȉܙ\XيחY݋ًȊBȈܙ\XيחڙڝًȊBȈܙ\XيחًȈʂȈܙ\Xيח˙ˈȈʂȈܙ\XيחKًȊBȈܙ\Xيחٛ݋ًЭȊBȈܙ\Xيח[Y\˙ˈХȊBȈܙ\Xيח]˙ˈЭȊBȈܙ\XيחKًЬHʂȈܙ\Xيח\ًآ$ȊBȈܙ\Xيח\O˙ˈآiʂȈܙ\XيחٜO˙ˈآiHʂȈܙ\XيחٜKًآhʂȈܙ\Xيח\۞ًآbʂȈܙ\XيחڛKًآ/ʂȈܙ\Xيח[ٝKًآ'ȊBȈܙ\Xيחڙڝ\ܛݟ˙ˈءĈʂȈܙ\XيחYݘ\ܛ݋ًءĈʂȈܙ\Xيחڙڝ\ܛ݋ًء䈊BȈܙ\XيחYݘ\ܛ݋ًء䈊BȈܙ\XيחYݜڙڝ\ܛ݋ًءňʂȈܙ\XيחݛKًآ$HʂȈܙ\Xيחۙًآ#ȊBȈܙ\Xيח[݋ًآ*ȊBȈܙ\XيחܜݗʖמߗJʗKًآ&ʉJHʂȈܙ\XيחܘXמʖמߗJʗWʖמߗJʗKً
+ˈݛY\؝܋[ۛZ[؝܊HOȞٝ\ۈݘ\ڊܘ[Șۘ\܏Hۘ]YܘXȏϜܘ[ωۘ]^ҝ[
+ݛY\؝܊_Oܜ[Ϗܘ[ωۘ]^ҝ[
+[ۛZ[؝܊_Oܜ[Ϗܜ[Ϙ
+NJNȈۛܝޛXۛȏH[NȈӬHˈٝNȈӬȋ؛[XNȈӬȋ[NȈӭˈ\ڛێȈӭHˈ؜ٜڛێȈӭH˂ȈٝNȈӭȋ]NȈӭȋ]NȈӮˈ؜ݚ]NȈӤHˈ[ݘNȈӮHˈ؜NȈӮȋȈ[X٘NȈӮȋ]NȈӯˈݎȈӯHˈNȈӯȋNȈӠˈ؜ܚNȈӥȋȈڛΈӠHˈڙۘNȈӠȋ]NȈӡˈ\ڛێȈӡHˈNȈӡȋ؜ܚNȈӡȋȈښNȈӡȋڎȈӢˈۙY؎ȈӢHˈ؛[XNȈӤȋ[NȈӥˈ]NȈӦ˂Ȉ[X٘NȈӦȋNȈӧȋNȈӨˈڙۘNȈӨȋ\ڛێȈөHˈNȈөȋȈڎȈӪˈۙY؎ȈӪHˈX]؎ȈȋX]ێȈȋX]َȈȋȈNX]HX]ܙ\Xيח
+ЋV؋^׊ʋً
+X]ڋ؛YJHOȜޛXۛ֛؛YWHψX]ڋܛXيJJNX]HX]ܙ\XيמʖמߗJʗKًɌHʎX]H\ؘ\R[
+X]
+NX]HX]Ȉܙ\XيʖЋV؋^̋Nsċsʳ̋sⳠ3ϳϳγγ᳢3⳪WJʗʖЋV؋^̋Nsċsʳ̋sⳠ3ϳϳγγ᳢3⳪WJʋًɌOݘωϋܝXψʂȈܙ\XيʖЋV؋^̋Nsċsʳ̋sⳠ3ϳϳγγ᳢3⳪WJʗʖЋV؋^̋NJ׋sċsʳ̋sⳠ3ϳϳγγ᳢3⳪WJʋًɌOݜɌϋܝ\ȊNڙ[܋ܑٛXXڊ
+ݛڙ[ˈ[JHOȞX]HX]ܙ\Xِ[
+ڙ[ˈ[
+NJNٝ\ۈX]Bݛ؝[ۈ؛ܛ]Y[ٙJ[ٙJHۛܝٞHH^Z[ΈۛٙQ^Z[ȋȈ[؛^َȈۛٙP[؛^و˂Ȉܚ]NȈۛٙUܚ]H˂ȈۙNȈۛٙPۙH˂Ȉ[ΈۛٙT[ȋȈVۛٙWNٝ\ۈٞHȝ
+ٞJHț[ٙNBݛ؝[ۈ؛ܛ]Yڛܚ]Jڛܚ]JHۛܝٞHHVRSΈܜڛܚ]Q^Z[ȋȈՔҐՎȈܜڛܚ]Tݜژ݈˂ȈԑPUUюȈܜڛܚ]PܙX]]و˂ȈVܜڛܚ]WNٝ\ۈٞHȝ
+ٞJHȜڛܚ]NBݛ؝[ۈݚ[ٙۚ[ِ[ܝٜʘۛ[X[ًژZ[ˈ[ٙJHۛܝܙ\؝ܓ[ٜȏHژZ[˛X\
+
+ܙ\؝܋[ٙ^
+HOȞۛܝ؝YۜވHܙ\؝܋ؘ]YۜވȘ
+	ۜ\؝܋ؘ]YۜޟJXȈȎٝ\ۈ	ڛٙ^
+Ȍ_KȊʉۜ\؝܋ۘ[Y_Jʉؘ]YۜޟNȉݜڛU^
+ܙ\؝܋ٙ\؜ڜ[ۋL̊_XJNȈٝ\ۈ	݊ۙٛ[ٔ]Y\ݚ[ۈʟN؋Ȉۛ[X[ًȈȋȈ	݊ۙٛ[ٔ٘Y[وʟN؋ȈH	݊ۙٛ[ٓ[ٙSXٛʟNȊʉݜ؛ܛ]Y[ٙJ[ٙJ_JʘȈH	݊ۙٛ[ْ[ٙ\ؙٛSXٛʟNȊʉܝ]Kܙ[XݙYڛٙ\ؙٛ_JʘȈH	݊ۙٛ[ْۛݛYٓXٛʟNȊʉܝ]Kܙ[XݙYڛ۝ۙYٟJʘȈH	݊ۙٛ[ٔڛܚ]SXٛʟNȊʉݜ؛ܛ]Yڛܚ]Jݘ]Kܙ[XݙYܜڛܚ]J_JʘȈȋȈ	݊ۙٛ[ِژZ[՜ٙʟN؋Ȉˋۜ\؝ܓ[ٜ˂ȈȋȈ
+ۙٛ[ٓٞʋȈKڛڛʈכȊNB\ޛ؈ݛ؝[ۈ؛ٛZ[ڊۛ\
+HۛܝٜܛۜوH]ؚ]ٝڊڝ΋˙ٜٛ؝]ٛ[ٝXYًٛۙۙX\\˘ۛK݌XٝKڛݙ\ؘݚ[ۜȋY]َȈԓԕ˂ȈXY\܎ȞЛ۝[݋U\HΈ؜X؝[ۋڜۛȋȈދYًۛX\KZٞHΈݘ]Kܙ][ٜ˘\RٞKȈKȈۙNȒԓӋܝڛٚYފ[ٙ[Ȝݘ]Kܙ][ٜ˛[ٙ[ٝY؝[[ٙ[
+љ[Z[ڈʋȈ[ܝ]Ȝۛ\Ȉޜݙ[Wڛܝݘݚ[ێȈ֛݈\وHڛYH^؛Xݜˈ\HH۝ڙYܙ\؝܈ژZ[Șٙۜو[ܝٜڛًȋȈٜٛ؝[ۗ؛ۙڙΈ[\\؝\َȜݘ]Kܙ[XݙYܜڛܚ]HOOHДѐUUшȏȌ΍HȌ̍KȈ[ښ[ٗۙ]ٛȜݘ]Kܙ[XݙYڛٙ\ؙٛHOOHёQTȏȈښYڈȎȈ݈ۛ˂ȈKȈJKȈJNȈۛܝ]HH]ؚ]٘Yܛ۔ٜܛۜيٜܛۜيNYȊ\ٜܛًۜۚʈ۝țٝȑ\ܛ܊ٝ۝ڙ\ќܛ܊]Kٜܛًۜܝ]\ʊNBȈٝ\ۈ]K۝]]ݙ^^ؘݑٛZ[ڕ^
+]JHԓӋܝڛٚYފ]KݛʎB\ޛ؈ݛ؝[ۈ؛۝ڙ\ʜۛ\
+Hݘ]Kܙ][ٜ˜۝ڙ\ȏHљ[Z[ڈ΂Ȉݘ]Kܙ][ٜ˛[ٙ[HٝY؝[[ٙ[
+љ[Z[ڈʎٝ\ۈ؛ٛZ[ڊۛ\
+NB\ޛ؈ݛ؝[ۈ٘Yܛ۔ٜܛۜيٜܛۜيHۛܝ^H]ؚ]ٜܛًۜݙ^
+
+NYȊ]^
+Hٝ\ۈߎވٝ\ۈԓӋܘ\ܙJ^
+NH؝ڈ
+\ܛ܊Hٝ\ۈȜ؝Έ^NB߂ݛ؝[ۈ^ؘݑٛZ[ڕ^
+]JHYȊP\ܘ^KڜМܘ^J]Kܝ\ʊHٝ\ۈȎٝ\ۈ]Kܝ\ٛ]X\
+
+ݙ\
+HOȜݙ\؛۝[݈ݙ\۝]]׊BȈۘ\
+
+][JHOȚ][Kݙ^][K؛۝[݈ȊBȈٚ[\ʐۛۙX[ʂȈڛڛʈכȊNBݛ؝[ۈٝ۝ڙ\ќܛ܊]Kݘ]\ʈٝ\ۈ]Kٜܛ܏˛Y\ܘYو]Kۙ\ܘYو]Kܘ]ȟ۝ڙ\Ȝٜ]Y\݈ؚ[Yڝ	ܝ]\ߋ؎Bݛ؝[ۈٝܚY[ٛQ\ܛ܊\ܛ܊HۛܝY\ܘYوH\ܛ܏˛Y\ܘYوݜڛي\ܛ܊NYȊY\ܘYًݛӛݙ\И\ي
+Kڛ؛Y\ʈښYڈ[X[وʈY\ܘYًݛӛݙ\И\ي
+Kڛ؛Y\ʈܜZٜȚ[ș[X[وʊHٝ\ۈ	݊ښYڑ[X[وʟH	ۙ\ܘYٟXBȈYȊY\ܘYًڛ؛Y\ʈјZ[YșٝڈʈY\ܘYًڛ؛Y\ʈә]ۜڑ\ܛ܈ʊHٝ\ۈ	݊ٚ[Qٝڑ\ܛ܈ʟH	ۙ\ܘYٟXBȈٝ\ۈY\ܘYَB\ޛ؈ݛ؝[ۈݛўXݝ[ۊ
+H؝ٔٝ[ٜʊNۛܝۛ[X[وH	
+Șۛ[X[ْ[ܝ]ʋݘ[YKݜڛJ
+NۛܝژZ[ȏHڛِۜژZ[ʊNۛܝ[ٙHH	
+țݝ][ٙHʋݘ[YNۛܝ\ҙ^HHݘ]Kܙ][ٜ˘\RٞKۙ[ٝȌȈYȊXۛ[X[يHٝ[ܝٜʝ
+ۛЛۛX[ٕ]Hʋ
+ۛЛۛX[ٕ^ʊNٝ\ێB[؜ٛY[ݑ^Xݝ[ې۝[݊
+NȈ	
+ȜݘYِ؜[ۈʋݙ^ۛݙ[݈H
+ܜٜۘܚ[وʎ	
+ȜݛН]ۈʋٚ\ؘۙYHݙN	
+ȜݛН]ۈʋݙ^ۛݙ[݈H
+ܝ[ۚ[ِݝۈʎٝ[ܝٜʂȈ\ҙ^Hȝ
+ؘ[[ٔ۝ڙ\՚]HˈȜ۝ڙ\Έݘ]Kܙ][ٜ˜۝ڙ\ȟJHȝ
+ۙٛ[ِ[ܝٜ՚]HʋȈ\ҙ^Hȝ
+ؘ[[ٔ۝ڙ\ՙ^ʈȘݚ[ٙۚ[ِ[ܝٜʘۛ[X[ًژZ[ˈ[ٙJKȈ\ҙ^HȞ߈Ȟț۝Nȝ
+ۙٛ[ِ[ܝٜқݜۈʈKȈ
+NȈۛܝ؜ٕؘوH݊ݜؘْ[ܝ]ʋ
+ݜؘْ[ܝ]]Z[ˈȘ۝[ݎȘۛ[X[ًۙ[ٝJWKȈ݊ݜؘٓܙ\؝܈ʋ
+ݜؘٓܙ\؝ܑ]Z[ˈȘ۝[ݎȘژZ[˛[ٝ[ٙHJWKȈ݊ݜؘٔۛ\ʋ
+ݜؘٔۛ\]Z[ʗKȈ݊ݜؘٔ۝ڙ\ȊK\ҙ^Hȝ
+ݜؘٔ۝ڙ\љ]Z[ˈȜ۝ڙ\Έݘ]Kܙ][ٜ˜۝ڙ\ˈ[ٙ[Ȝݘ]Kܙ][ٜ˛[ٙ[JHȝ
+ݜؘٓZ\ܚ[ٔ۝ڙ\ȊWKȈNȈٝؘي؜ٕؘيNȈXݚ]؝UXʈ؛ܝٜȊNٛٙ\КZ[ʊNȈYȊZ\ҙ^JH	
+ȜݘYِ؜[ۈʋݙ^ۛݙ[݈H
+؛ۜ]Hʎ	
+ȜݛН]ۈʋٚ\ؘۙYH؛َ	
+ȜݛН]ۈʋݙ^ۛݙ[݈H
+ܝ[ȊNٝؘيˋ˘؜ٕًؘ݊ݜؘٓݝ]ʋ
+ݜؘٓݝ]]Z[ʗWJNٝ\ێBވۛܝۛ\Hۛ\[Sܙ\؝ܔۛ\
+ۛ[X[ًژZ[ˈ[ٙJNۛܝݝ]H]ؚ]؛۝ڙ\ʜۛ\
+Nٝ[ܝٜʝ
+ܙ\ܛۜٔ٘YU]Hʋݝ]
+N	
+ȜݘYِ؜[ۈʋݙ^ۛݙ[݈H
+؛ۜ]Hʎٝؘيˋ˘؜ٕًؘ݊ݜؘٓݝ]ʋ
+ݜؘٓݝ]]Z[ʗWJNH؝ڈ
+\ܛ܊Hٝ[ܝٜʝ
+ܜ۝ڙ\ќܛܕ]HʋٝܚY[ٛQ\ܛ܊\ܛ܊JN	
+ȜݘYِ؜[ۈʋݙ^ۛݙ[݈H
+؛ۛ٘ݚ[ۑ\ܛܐ؜[ۈʎٝؘيˋ˘؜ٕًؘ݊ݜؘٔ۝ڙ\ќܛ܈ʋٝܚY[ٛQ\ܛ܊\ܛ܊WWJNHڛ؛H	
+ȜݛН]ۈʋٚ\ؘۙYH؛َ	
+ȜݛН]ۈʋݙ^ۛݙ[݈H
+ܝ[ȊNB߂ݛ؝[ۈXݚ]؝UXʝXʈ		
+˝X܈ݝۈʋܑٛXXڊ
+ݝۊHOȘݝۋ؛\ܓ\݋ݛٙۙJؘݚ]وˈݝۋ٘]\ٝݘXȏOOHXʊN		
+˝X˜[ٛʋܑٛXXڊ
+[ٛ
+HOȜ[ٛ؛\ܓ\݋ܙ[[ݙJؘݚ]وʊN	
+ɞݘXߔ[ٛ
+K؛\ܓ\݋ؙ
+ؘݚ]وʎBݛ؝[ۈڛU^
+^[ٝ
+Hٝ\ۈ^ۙ[ٝț[ٝȘ	ݙ^ܛXي[ٝHʟKˋ؈ȝ^Bݛ؝[ۈ\ؘ\R[
+؛YJHٝ\ۈݜڛي؛YJBȈܙ\Xِ[
+Ɉˈɘ[\ȊBȈܙ\Xِ[
+ψˈɛȊBȈܙ\Xِ[
+ψˈəݎȊBȈܙ\Xِ[
+	ȉˈɜ][ݎȊBȈܙ\Xِ[
+ɈˈɈ̌ΎȊNBݛ؝[ۈ٘Y\ؙِ۝[݊ٞJHۛܝ؛YHHݛXٜ˜\ܙR[݊ؘ[ݛܘYًٙ]][JٞJH̈ˈL
+Nٝ\ۈݛXٜ˚\њ[ڝJ؛YJH	Ɉ؛YHψȝ؛YHȌB]ۛ[ٔؙٜٛTٙڜݙ\ٙH؛َٝ[؝[ۈٛٙ\՜ؙٓY]ژ܊ȈڜڝȏH٘Y\ؙِ۝[݊ۚP۞ڜڝȊKȈ^Xݝ[ۜȏH٘Y\ؙِ۝[݊ۚP۞^Xݝ[ۜȊKȈۛ[وH؝[Y[݋ښY[ȏȌȌKȈ؛ܙRٞHH؛ݛݙ\ј[ؘڈ˂ʈYȊ	
+ȝڜڝ۝[݈ʊH	
+ȝڜڝ۝[݈ʋݙ^ۛݙ[݈Hڜڝ˝ӛؘ[Tݜڛي
+NYȊ	
+țۛ[ِ۝[݈ʊH	
+țۛ[ِ۝[݈ʋݙ^ۛݙ[݈HX]ۘ^
+ۛ[يKݛӛؘ[Tݜڛي
+NYȊ	
+ș^Xݝ[ې۝[݈ʊH	
+ș^Xݝ[ې۝[݈ʋݙ^ۛݙ[݈H^Xݝ[ۜ˝ӛؘ[Tݜڛي
+NYȊ	
+ȘXݚ]ڝUݘ[۝[݈ʊH	
+ȘXݚ]ڝUݘ[۝[݈ʋݙ^ۛݙ[݈H
+ڜڝȊș^Xݝ[ۜʋݛӛؘ[Tݜڛي
+Nۛܝ؛ܙHH	
+Ș۝[ݙ\ԘۜHʎYȊ؛ܙJH؛ܙK٘]\ٝڌNȏH؛ܙRٞN؛ܙKݙ^ۛݙ[݈H
+؛ܙRٞJNB߂\ޛ؈ݛ؝[ۈٜ]Y\ݑؘۛ[۝[ݙ\ʛ؛YKXݚ[ۈHȊHۛܝۛݜۛ\ȏHٝȐXۜݐۛݜۛ\ʊNۛܝ[Y[ݝHڛٛ݋ܙ][Y[ݝ
+
+
+HOȘۛݜۛ\˘Xۜ݊
+KL
+Nވۛܝݙٚ^HXݚ[ۈȘɞؘݚ[۟XȈȎۛܝٜܛۜوH]ؚ]ٝڊ	ѓАSГՓՑTאДџKɞۘ[Y_IܝYٚ^XY]َȈёU˂ȈؘڙNȈۛ˜ݛܙH˂Ȉڙۘ[Șۛݜۛ\˜ڙۘ[ȈJNYȊٜܛًۜܝ]\ȏOOH	ɈXXݚ[ۊHٝ\ۈYȊ\ٜܛًۜۚʈ۝țٝȑ\ܛ܊۝[ݙ\ȐTH	ܙ\ܛًۜܝ]\ߘ
+Nۛܝ^[ؙH]ؚ]ٜܛًۜڜۛʊNۛܝ؛YHHݛXٜʜ^[ؙݘ[YHψ^[ؙ؛ݛ݈ψ^[ؙ٘]O˝؛YJNYȊSݛXٜ˚\њ[ڝJ؛YJJH۝țٝȑ\ܛ܊Лݛݙ\ȐTHٝ\ۙY[Ț[ݘ[Y؛YHʎٝ\ۈ؛YNHڛ؛Hڛٛ݋؛X\՚[Y[ݝ
+[Y[ݝ
+NB߂\ޛ؈ݛ؝[ۈޛؘؑۛ[۝[ݙ\܊ٙڜݙ\՚\ڝH؛ً[؜ٛY[ݑ^Xݝ[ۈH؛ًٙڜݙ\ӛۚ[وH؛يHۛܝڛݛٙڜݙ\՚\ڝHٙڜݙ\՚\ڝ	Ɉ\ٜܚ[۔ݛܘYًٙ]][JۚP۞ؘۛ[ڜڝٙڜݙ\ٙʎۛܝڛݛٙڜݙ\ӛۚ[وHٙڜݙ\ӛۚ[و	Ɉ[ۛ[ٔؙٜٛTٙڜݙ\ٙވۛܝݚ\ڝˈ^Xݝ[ۜˈۛ[ٗHH]ؚ]ۛZ\ً؛
+ٜ]Y\ݑؘۛ[۝[ݙ\ʈݚ\ڝȋڛݛٙڜݙ\՚\ڝȈݜȎȈȊKȈٜ]Y\ݑؘۛ[۝[ݙ\ʈٞXݝ[ۜȋ[؜ٛY[ݑ^Xݝ[ۈȈݜȎȈȊKȈٜ]Y\ݑؘۛ[۝[ݙ\ʈۛۚ[وˈڛݛٙڜݙ\ӛۚ[وȈݜȎȈȊKȈJNYȊڛݛٙڜݙ\՚\ڝ
+Hٜܚ[۔ݛܘYًܙ]][JۚP۞ؘۛ[ڜڝٙڜݙ\ٙˈ̈ʎYȊڛݛٙڜݙ\ӛۚ[يHۛ[ٔؙٜٛTٙڜݙ\ٙHݙNٛٙ\՜ؙٓY]ژ܊ڜڝˈ^Xݝ[ۜˈۛ[ًٛؘ[۝[ݙ\ȊNH؝ڈ
+\ܛ܊Hٛٙ\՜ؙٓY]ژ܊
+NB߂ݛ؝[ۈٛX\ٓۛ[ٔؙٜٛJ
+HYȊ[ۛ[ٔؙٜٛTٙڜݙ\ٙ
+Hٝ\ێۛ[ٔؙٜٛTٙڜݙ\ٙH؛َٝڊ	ѓАSГՓՑTאДџKۛۚ[ًٛݛ؋Y]َȈёU˂ȈؘڙNȈۛ˜ݛܙH˂Ȉٙ\[]َȝݙKȈJKؘ]ڊ
+
+HOȞߊNBݛ؝[ۈ[ڝX[^ٕ\ؙٓY]ژ܊
+HYȊ\ٜܚ[۔ݛܘYًٙ]][JۚP۞ڜڝٙڜݙ\ٙʊHؘ[ݛܘYًܙ]][JۚP۞ڜڝȋݜڛي٘Y\ؙِ۝[݊ۚP۞ڜڝȊH
+ȌJJNٜܚ[۔ݛܘYًܙ]][JۚP۞ڜڝٙڜݙ\ٙˈ̈ʎBȈٛٙ\՜ؙٓY]ژ܊
+Nޛؘؑۛ[۝[ݙ\܊ݙK؛ًݙJNڛٛ݋ܙ][ݙ\ݘ[
+
+
+HOȞYȊY؝[Y[݋ښY[ʈޛؘؑۛ[۝[ݙ\܊
+NK̌
+Nڛٛ݋ؙ]ٛݓ\ݙ[ٜʈܘYٚYHˈٛX\ٓۛ[ٔؙٜٛJNڛٛ݋ؙ]ٛݓ\ݙ[ٜʈܘYٜڛ݈ˈ
+
+HOȞYȊ[ۛ[ٔؙٜٛTٙڜݙ\ٙ
+Hޛؘؑۛ[۝[ݙ\܊؛ً؛ًݙJNJNBݛ؝[ۈ[؜ٛY[ݑ^Xݝ[ې۝[݊
+Hؘ[ݛܘYًܙ]][JۚP۞^Xݝ[ۜȋݜڛي٘Y\ؙِ۝[݊ۚP۞^Xݝ[ۜȊH
+ȌJJNٛٙ\՜ؙٓY]ژ܊
+Nޛؘؑۛ[۝[ݙ\܊؛ًݙJNBݛ؝[ۈڛِۛݜۛʊH		
+֙]KXڛٗHʋܑٛXXڊ
+ܛݜ
+HOȞܛݜؙ]ٛݓ\ݙ[ٜʈ؛Xڈˈ
+]ٛ݊HOȞۛܝݝۈH]ٛ݋ݘ\ٙ]؛ܙ\݊؝]ۈʎYȊXݝۊHٝ\ێܛݜܝY\ޔٛXݛܐ[
+؝]ۈʋܑٛXXڊ
+][JHOȚ][K؛\ܓ\݋ܙ[[ݙJؘݚ]وʊNݝۋ؛\ܓ\݋ؙ
+ؘݚ]وʎݘ]Kܙ[XݙYٜ۝\٘]\ٝؚ[ٗHHݝۋ٘]\ٝݘ[YNٛٙ\ԝ[ݚ[YJ
+Nٛٙ\КZ[ʊNJNJNȈ		
+˝X܈ݝۈʋܑٛXXڊ
+ݝۊHOȞݝۋؙ]ٛݓ\ݙ[ٜʈ؛Xڈˈ
+
+HOȘXݚ]؝UXʘݝۋ٘]\ٝݘXʊNJNȈ	
+ȜݛН]ۈʋؙ]ٛݓ\ݙ[ٜʈ؛XڈˈݛўXݝ[ۊN	
+Șۛ[X[ْ[ܝ]ʋؙ]ٛݓ\ݙ[ٜʈڛܝ]ˈ
+
+HOȞݘ]K؛ۛX[ٕݘڙYHݙNJN	
+Ȝ؝ٔٝ[ٜН]ۈʋؙ]ٛݓ\ݙ[ٜʈ؛Xڈˈ؝ٔٝ[ٜʎ	
+țܙ\؝ܔ٘\ؚʋؙ]ٛݓ\ݙ[ٜʈڛܝ]ˈٛٙ\Ӝ\؝ܓXܘ\ފN	
+țݝ][ٙHʋؙ]ٛݓ\ݙ[ٜʈؚ[ٙHˈٛٙ\КZ[ʎ	
+Ȝٝ[ٜН]ۈʋؙ]ٛݓ\ݙ[ٜʈ؛Xڈˈ
+
+HOȘXݚ]؝UXʈܙ]\ʊN		
+ț[ٝXYٔݚ]ڈݝۈʋܑٛXXڊ
+ݝۊHOȞݝۋؙ]ٛݓ\ݙ[ٜʈ؛Xڈˈ
+
+HOȜٝ[ٝXYيݝۋ٘]\ٝۘ[يJNJN		
+˙ܙYK[[ٙ[X؜وʋܑٛXXڊ
+؜يHOȞ؜ًؙ]ٛݓ\ݙ[ٜʈ؛Xڈˈ
+
+HOȞݘ]Kܙ][ٜ˜۝ڙ\ȏH؜ً٘]\ٝܜ۝ڙ\΂Ȉݘ]Kܙ][ٜ˛[ٙ[H؜ً٘]\ٝۛٙ[ޛؔٝ[ٜњY[ʊN؝ٔٝ[ٜʊNٛٙ\ԝ[ݚ[YJ
+NJNJN	
+Ȝ۝ڙ\ԙ[X݈ʋؙ]ٛݓ\ݙ[ٜʈؚ[ٙHˈ
+
+HOȞۛܝ۝ڙ\ȏH	
+Ȝ۝ڙ\ԙ[X݈ʋݘ[YNݘ]Kܙ][ٜ˜۝ڙ\ȏH۝ڙ\΂Ȉݘ]Kܙ][ٜ˛[ٙ[HٝY؝[[ٙ[
+۝ڙ\ʎޛؔٝ[ٜњY[ʊNٛٙ\ԝ[ݚ[YJ
+NJNBڛِۛݜۛʊN[ڝX[^ٕ\ؙٓY]ژ܊
+N\S[ٝXYي
+Nؙٝ[ٜʊNؙܙ\؝ܜʊKؘ]ڊ
+\ܛ܊HOȞ	
+Ș[ܝٜ՚]Hʋܙ[[ݙP]ژݝJ٘]KZLNȊN	
+Ș[ܝٜՙ^ʋܙ[[ݙP]ژݝJ٘]KZLNȊN	
+Ș[ܝٜ՚]Hʋݙ^ۛݙ[݈Hݘ]Kۘ[ٝXYوOOHՓȂȈȈҚ0훙ȝ8nȚH1$q̸n蘈ܙ\؝܈XڋȂȈȜݘ]Kۘ[ٝXYوOOHҔȈۜ\؝܈Xڈ8ऺ*˸௺/ϸ࠸௸সसࠈȈИ[݈ۛؙܙ\؝܈XڋȎ	
+Ș[ܝٜՙ^ʋݙ^ۛݙ[݈Hݘ]Kۘ[ٝXYوOOHՓȂȈȘ	ٜܛ܋ۙ\ܘYٟKȒ0螈ڸnȞH\خ̛وؘ[ٜݙ\ȝ^HЫxn爙ڛHخ예xnϜ؂ȈȜݘ]Kۘ[ٝXYوOOHҔȘ	ٜܛ܋ۙ\ܘYٟKșڛH8ह歹éze¸ࣸ૸੸૸સࣸࠛؘ[ٜݙ\ȸੈ\8हkǺ(c8ॸ੸ࣸਸॸࡸ࠘ȈȘ	ٜܛ܋ۙ\ܘYٟKȔݛȝH\۝YڈHؘ[ٜݙ\Ț[ܝXYوܙ[ڛوHڛH\٘ݛK؎JNBÂ
