@@ -18,7 +18,7 @@
   const gl = canvas.getContext("webgl", {
     alpha: false,
     antialias: true,
-    preserveDrawingBuffer: true,
+    preserveDrawingBuffer: false,
     powerPreference: "high-performance",
   });
   if (!gl) {
@@ -30,6 +30,8 @@
   }
 
   let contextLost = false;
+  let animationFrameId = 0;
+  let resizeObserver = null;
 
   const vertexSource = `
     attribute vec3 aPosition;
@@ -85,10 +87,20 @@
     return program;
   }
 
-  const pointProgram = createProgram(pointFragmentSource);
-  const lineProgram = createProgram(lineFragmentSource);
-  const pointBuffer = gl.createBuffer();
-  const lineBuffer = gl.createBuffer();
+  let pointProgram = null;
+  let lineProgram = null;
+  let pointBuffer = null;
+  let lineBuffer = null;
+
+  function initializeGlResources() {
+    pointProgram = createProgram(pointFragmentSource);
+    lineProgram = createProgram(lineFragmentSource);
+    pointBuffer = gl.createBuffer();
+    lineBuffer = gl.createBuffer();
+    if (!pointBuffer || !lineBuffer) throw new Error("WebGL buffer initialization failed");
+  }
+
+  initializeGlResources();
   const state = { coEmergenceUntil: 0, lastPhase: -1 };
 
   const genesisPhases = [
@@ -194,7 +206,7 @@
 
   function resize() {
     const box = chamber.getBoundingClientRect();
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    const dpr = Math.min(1.5, window.devicePixelRatio || 1);
     const width = Math.max(320, Math.floor((box.width || stage?.clientWidth || 960) * dpr));
     const height = Math.max(240, Math.floor((box.height || stage?.clientHeight || 480) * dpr));
     canvas.width = width;
@@ -270,10 +282,8 @@
   }
 
   function animate(ms) {
-    if (contextLost) {
-      window.requestAnimationFrame(animate);
-      return;
-    }
+    animationFrameId = 0;
+    if (contextLost || document.hidden) return;
 
     try {
     const time = ms * 0.001;
@@ -383,6 +393,8 @@
     drawBuffer(pointProgram, pointBuffer, points, gl.POINTS, 4.8 + overlap * 4.4, matrix);
     drawBuffer(lineProgram, lineBuffer, lines, gl.LINE_STRIP, 1, matrix);
 
+    if (fallback) fallback.style.display = "none";
+
     if (readout) {
       readout.textContent = `Ω ${Math.round(overlap * 100)} | C ${products} | K ${cores} | M ${matter} | D ${residuePercent} | L ${forces} | Φ ${fields} | V ${vortices} | G ${galaxySeeds} | BH ${blackHoles} | 𝓤 ${Math.round(closure * 100)}`;
     }
@@ -393,12 +405,22 @@
       if (pipelineReadout) pipelineReadout.textContent = `A ∩ B → ${genesisPhases.slice(0, phaseIndex + 1).map((item) => item[0]).join(" → ")}`;
     }
     } catch (error) {
+      if (gl.isContextLost()) {
+        contextLost = true;
+        return;
+      }
       if (fallback) {
         fallback.style.display = "block";
         fallback.textContent = "Prime Overlap chamber is restoring...";
       }
     }
-    window.requestAnimationFrame(animate);
+    requestNextFrame();
+  }
+
+  function requestNextFrame() {
+    if (!animationFrameId && !contextLost && !document.hidden) {
+      animationFrameId = window.requestAnimationFrame(animate);
+    }
   }
 
   expandButton?.addEventListener("click", () => {
@@ -415,6 +437,8 @@
     canvas.addEventListener("webglcontextlost", (event) => {
       event.preventDefault();
       contextLost = true;
+      if (animationFrameId) window.cancelAnimationFrame(animationFrameId);
+      animationFrameId = 0;
       if (fallback) {
         fallback.style.display = "block";
         fallback.textContent = "Prime Overlap chamber is restoring...";
@@ -422,15 +446,38 @@
     }, false);
 
     canvas.addEventListener("webglcontextrestored", () => {
-      contextLost = false;
-      if (fallback) fallback.style.display = "none";
-      resize();
-      window.requestAnimationFrame(animate);
+      try {
+        initializeGlResources();
+        contextLost = false;
+        state.lastPhase = -1;
+        resize();
+        if (fallback) fallback.style.display = "none";
+        requestNextFrame();
+      } catch (error) {
+        contextLost = true;
+        if (fallback) {
+          fallback.style.display = "block";
+          fallback.textContent = "Prime Overlap chamber could not recover.";
+        }
+      }
     }, false);
 
     window.addEventListener("resize", resize);
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        if (animationFrameId) window.cancelAnimationFrame(animationFrameId);
+        animationFrameId = 0;
+      } else {
+        resize();
+        requestNextFrame();
+      }
+    });
+    if ("ResizeObserver" in window) {
+      resizeObserver = new ResizeObserver(() => resize());
+      resizeObserver.observe(chamber);
+    }
     resize();
-    window.requestAnimationFrame(animate);
+    requestNextFrame();
   } catch (error) {
     if (fallback) {
       fallback.style.display = "block";
