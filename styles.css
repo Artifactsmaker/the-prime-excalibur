@@ -721,1025 +721,90 @@ select:focus {
   font-weight: 700;
 }
 
-.math-inline {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.12em;
-  padding: 0 2px;
-  vertical-align: baseline;
-}
-
-.math-block {
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  max-width: 100%;
-  margin: 4px 0;
-  padding: 12px 14px;
-  overflow-x: auto;
-  border: 1px solid rgba(247, 198, 91, 0.24);
-  border-radius: 8px;
-  background: rgba(255, 202, 86, 0.06);
-  line-height: 1.5;
-  white-space: nowrap;
-  contain-intrinsic-size: auto 74px;
-}
-
-.math-frac {
-  display: inline-grid;
-  grid-template-rows: auto auto;
-  align-items: center;
-  margin: 0 0.16em;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.math-frac > span:first-child {
-  padding: 0 0.26em 0.08em;
-  border-bottom: 1px solid currentColor;
-}
-
-.math-frac > span:last-child {
-  padding: 0.08em 0.26em 0;
-}
-
-.math-inline sub,
-.math-inline sup,
-.math-block sub,
-.math-block sup {
-  line-height: 0;
-}
-
-.answer-body pre.code-block {
-  position: relative;
-  margin: 2px 0 6px;
-  padding: 38px 16px 16px;
-  overflow: auto;
-  border: 1px solid rgba(247, 198, 91, 0.26);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(255, 202, 86, 0.08), transparent 32%),
-    rgba(3, 7, 16, 0.94);
-  box-shadow: inset 0 1px 0 rgba(255, 244, 196, 0.06);
-  contain-intrinsic-size: auto 220px;
-}
-
-.answer-body pre.code-block code {
-  display: block;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: #dff7ff;
-  font-size: 0.88rem;
-  line-height: 1.65;
-  white-space: pre;
-}
-
-.code-lang {
-  position: absolute;
-  top: 10px;
-  left: 12px;
-  padding: 3px 8px;
-  border: 1px solid rgba(247, 198, 91, 0.28);
-  border-radius: 999px;
-  color: var(--gold);
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.answer-note {
-  padding: 12px 14px;
-  border: 1px solid rgba(247, 198, 91, 0.26);
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(247, 198, 91, 0.1), rgba(0, 213, 255, 0.05));
-  color: #fff3c4;
-  font-weight: 850;
-}
-
-.result-card p {
-  margin: 0;
-  color: #c5d4e7;
-  line-height: 1.7;
-}
-
-.trace-list {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.trace-list li {
-  padding: 14px;
-}
-
-.trace-list strong {
-  display: block;
-  margin-bottom: 5px;
-  color: var(--text);
-}
-
-.trace-list span {
-  color: var(--muted);
-}
-
-.operator-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.operator-toolbar span {
-  color: var(--muted);
-  white-space: nowrap;
-  font-weight: 800;
-}
-
-.operator-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 12px;
-}
-
-.operator-card {
-  display: grid;
-  gap: 8px;
-  min-height: 132px;
-  padding: 12px;
-  border-top-color: rgba(247, 198, 91, 0.22);
-}
-
-.operator-card h4 {
-  margin: 0;
-  font-size: 0.9rem;
-}
-
-.operator-card p {
-  display: -webkit-box;
-  overflow: hidden;
-  margin: 0;
-  color: #b8c7da;
-  font-size: 0.78rem;
-  line-height: 1.35;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-}
-
-.tag-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-self: end;
-}
-
-.tag {
-  max-width: 100%;
-  overflow: hidden;
-  padding: 5px 8px;
-  border: 1px solid rgba(247, 198, 91, 0.22);
-  border-radius: 6px;
-  color: #f3cd7d;
-  font-size: 0.7rem;
-  font-weight: 850;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.setup-stack {
-  display: grid;
-  gap: 16px;
-}
-
-.api-key-card {
-  display: grid;
-  gap: 16px;
-  max-width: 760px;
-  padding: 18px;
-  border: 1px solid rgba(247, 137, 47, 0.42);
-  border-radius: 10px;
-  background:
-    linear-gradient(135deg, rgba(247, 198, 91, 0.1), rgba(132, 79, 255, 0.12)),
-    rgba(15, 16, 31, 0.92);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
-}
-
-.api-key-card-header {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 18px;
-}
-
-.api-key-card-header > div {
-  display: grid;
-  gap: 8px;
-}
-
-.api-key-card-header span {
-  color: var(--gold);
-  font-size: 0.88rem;
-  font-weight: 950;
-  letter-spacing: 0.02em;
-}
-
-.api-key-card-header small {
-  color: var(--muted);
-  font-size: 0.86rem;
-  font-weight: 700;
-  line-height: 1.55;
-}
-
-.api-key-card-header a {
-  flex: 0 0 auto;
-  color: #c8a7ff;
-  font-size: 0.8rem;
-  font-weight: 850;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.api-key-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 10px;
-  align-items: end;
-}
-
-.api-key-input-wrap {
-  display: grid;
-  gap: 7px;
-}
-
-.api-key-input-wrap span {
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.api-key-row input {
-  min-height: 38px;
-  border-color: rgba(255, 126, 38, 0.72);
-  background: rgba(4, 10, 22, 0.9);
-}
-
-.api-key-status {
-  display: none;
-  min-height: 20px;
-  padding: 8px 10px;
-  border: 1px solid rgba(82, 255, 187, 0.22);
-  border-radius: 8px;
-  background: rgba(30, 255, 171, 0.08);
-  color: #9cffd6;
-  font-size: 0.82rem;
-  font-weight: 850;
-}
-
-.api-key-status.visible {
-  display: block;
-}
-
-.api-key-status.warning {
-  border-color: rgba(255, 198, 91, 0.28);
-  background: rgba(255, 198, 91, 0.08);
-  color: #ffe2a1;
-}
-
-.secondary-button.compact {
-  width: auto;
-  min-width: 86px;
-  min-height: 38px;
-  padding: 0 18px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #ff7a00, #ff9d10);
-  font-size: 0.84rem;
-  letter-spacing: 0;
-}
-
-.setup-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  padding: 18px;
-}
-
-.setup-grid label {
-  display: grid;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 0.78rem;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.setup-grid .wide {
-  grid-column: 1 / -1;
-}
-
-.setup-section-title {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 2px;
-}
-
-.setup-section-title span {
-  color: var(--gold);
-  font-size: 0.82rem;
-  font-weight: 950;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.setup-section-title small {
-  color: var(--muted);
-  font-weight: 750;
-  text-align: right;
-}
-
-.free-models {
-  display: grid;
-  gap: 14px;
-  margin-top: 4px;
-  padding: 16px;
-  border: 1px solid rgba(247, 198, 91, 0.18);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(247, 198, 91, 0.08), transparent 38%),
-    linear-gradient(180deg, rgba(2, 5, 10, 0.78), rgba(8, 7, 18, 0.78));
-}
-
-.free-models-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.free-models-header > div {
-  display: grid;
-  gap: 6px;
-}
-
-.free-models-header span {
-  color: var(--gold);
-  font-size: 0.82rem;
-  font-weight: 950;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.free-models-header small {
-  color: var(--muted);
-  font-weight: 750;
-  text-align: right;
-  text-transform: none;
-}
-
-#selectedModelSummary {
-  flex: 0 0 auto;
-  max-width: 360px;
-  overflow: hidden;
-  padding: 8px 12px;
-  border: 1px solid rgba(247, 198, 91, 0.35);
-  border-radius: 8px;
-  background: linear-gradient(135deg, rgba(247, 198, 91, 0.11), rgba(0, 213, 255, 0.07));
-  color: var(--text);
-  font-size: 0.82rem;
-  font-weight: 900;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.free-model-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.free-model-card {
-  display: grid;
-  gap: 8px;
-  min-height: 96px;
-  padding: 12px;
-  border: 1px solid rgba(43, 61, 88, 0.9);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(0, 213, 255, 0.05), transparent 42%),
-    #050810;
-  color: var(--text);
-  cursor: pointer;
-  text-align: left;
-}
-
-.free-model-card:hover,
-.free-model-card.active {
-  border-color: rgba(247, 198, 91, 0.72);
-  background:
-    linear-gradient(135deg, rgba(247, 198, 91, 0.12), rgba(0, 213, 255, 0.08)),
-    #050810;
-}
-
-.free-model-card strong {
-  font-size: 0.92rem;
-}
-
-.free-model-card em {
-  justify-self: start;
-  padding: 4px 8px;
-  border: 1px solid rgba(247, 198, 91, 0.28);
-  border-radius: 999px;
-  color: var(--gold);
-  font-size: 0.68rem;
-  font-style: normal;
-  font-weight: 900;
-  text-transform: uppercase;
-}
-
-.free-model-card span {
-  color: var(--muted);
-  font-size: 0.76rem;
-  font-weight: 750;
-  line-height: 1.35;
-}
-
-.is-hidden {
-  display: none !important;
-}
-
-.chain-list {
-  display: grid;
-  gap: 8px;
-}
-
-.chain-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 28px minmax(0, 1fr);
-  align-items: center;
-  gap: 8px;
-  min-height: 54px;
-  padding: 8px;
-  border: 1px solid rgba(247, 198, 91, 0.2);
-  border-left: 2px solid var(--gold);
-  border-radius: 8px;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(247, 198, 91, 0.14), transparent 42%),
-    linear-gradient(135deg, rgba(5, 11, 22, 0.96), rgba(18, 10, 31, 0.92));
-  box-shadow: inset 0 0 0 1px rgba(255, 242, 198, 0.025);
-}
-
-.chain-item::after {
-  position: absolute;
-  inset: 8px;
-  border: 1px solid rgba(0, 213, 255, 0.06);
-  border-radius: 6px;
-  pointer-events: none;
-  content: "";
-}
-
-.chain-item b {
-  display: grid;
-  width: 24px;
-  height: 24px;
-  place-items: center;
-  border: 1px solid rgba(247, 198, 91, 0.38);
-  border-radius: 999px;
-  background: rgba(247, 198, 91, 0.08);
-  color: var(--gold);
-  font-size: 0.78rem;
-  font-weight: 950;
-}
-
-.chain-item div {
-  min-width: 0;
-}
-
-.chain-item strong {
-  display: block;
-  overflow: hidden;
-  color: #fff8d8;
-  font-size: 0.8rem;
-  line-height: 1.25;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.chain-item span {
-  display: block;
-  margin-top: 4px;
-  overflow: hidden;
-  color: var(--muted);
-  font-size: 0.68rem;
-  line-height: 1.35;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.runtime-card {
-  margin-top: 12px;
-  padding: 10px;
-}
-
-.runtime-card dl {
-  display: grid;
-  gap: 7px;
-  margin: 0;
-}
-
-.runtime-card div {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.runtime-card dt {
-  color: var(--muted);
-}
-
-.runtime-card dd {
-  max-width: 160px;
-  margin: 0;
-  overflow: hidden;
-  color: var(--text);
-  font-weight: 850;
-  text-align: right;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.app-footer {
-  display: grid;
-  grid-template-columns: minmax(260px, 1.1fr) minmax(180px, 0.7fr) minmax(150px, 0.52fr) minmax(280px, 1fr);
-  align-items: center;
-  gap: 14px;
-  min-height: 54px;
-  padding: 10px 24px;
-  border-top: 1px solid rgba(247, 198, 91, 0.42);
-  background:
-    radial-gradient(circle at 12% 20%, rgba(247, 198, 91, 0.16), transparent 26%),
-    radial-gradient(circle at 82% 18%, rgba(191, 84, 255, 0.14), transparent 28%),
-    linear-gradient(90deg, rgba(11, 29, 78, 0.62), rgba(28, 8, 43, 0.5) 52%, rgba(5, 44, 52, 0.48)),
-    #02040a;
-  box-shadow: inset 0 1px 0 rgba(255, 242, 198, 0.08), 0 -16px 42px rgba(0, 0, 0, 0.2);
-}
-
-.footer-support h2 {
-  margin: 0 0 4px;
-  color: var(--gold);
-  font-size: 0.68rem;
-  font-weight: 950;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.footer-support h2 span:first-child {
-  color: #ffffff;
-  opacity: 0.72;
-}
-
-.footer-links {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.footer-links a,
-.bank-pill,
-.footer-credit a {
-  color: var(--text);
-  font-size: 0.72rem;
-  font-weight: 900;
-  text-decoration: none;
-}
-
-.bank-pill {
-  padding: 6px 10px;
-  border: 1px solid rgba(247, 198, 91, 0.28);
-  border-radius: 6px;
-  background: rgba(15, 12, 20, 0.82);
-  box-shadow: inset 0 0 18px rgba(247, 198, 91, 0.04);
-}
-
-.footer-links a {
-  padding: 6px 9px;
-  border: 1px solid rgba(27, 38, 56, 0.72);
-  border-radius: 6px;
-  color: #b8c7da;
-}
-
-.footer-links a:hover {
-  border-color: rgba(247, 198, 91, 0.44);
-  background: rgba(247, 198, 91, 0.08);
-}
-
-.footer-center {
-  color: #dfefff;
-  font-size: clamp(0.76rem, 0.95vw, 0.92rem);
-  font-style: italic;
-  font-weight: 950;
-  letter-spacing: 0.16em;
-  line-height: 1.35;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-.footer-center span {
-  color: var(--gold);
-  font-style: normal;
-}
-
-.footer-counter {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 2px 8px;
-  min-width: 0;
-  padding: 7px 10px;
-  border: 1px solid rgba(247, 198, 91, 0.28);
-  border-radius: 6px;
-  background: rgba(3, 12, 24, 0.72);
-  box-shadow: inset 0 0 22px rgba(0, 213, 255, 0.05);
-}
-
-.footer-counter-label {
-  align-self: center;
-  overflow: hidden;
-  color: var(--gold);
-  font-size: 0.61rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.footer-counter > strong {
-  grid-row: span 2;
-  align-self: center;
-  color: #ffffff;
-  font-family: "Cambria Math", "Segoe UI", sans-serif;
-  font-size: 1.35rem;
-  line-height: 1;
-}
-
-.footer-counter-details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px 8px;
-  color: #b8c7da;
-  font-size: 0.62rem;
-  font-weight: 800;
-}
-
-.footer-counter-details b {
-  color: var(--cyan);
-}
-
-.footer-counter small {
-  grid-column: 1 / -1;
-  color: var(--muted);
-  font-size: 0.56rem;
-}
-
-.footer-credit {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 4px 8px;
-  color: var(--muted);
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.footer-credit a {
-  color: #c99cff;
-  font-style: italic;
-}
-
-.footer-credit .footer-id {
-  color: #b8c7da;
-  font-style: normal;
-  opacity: 0.9;
-}
-
-.companion-apps {
-  display: grid;
-  gap: 16px;
-  padding: 22px 28px 24px;
-  border-top: 1px solid rgba(247, 198, 91, 0.18);
-  background:
-    radial-gradient(circle at 14% 14%, rgba(247, 198, 91, 0.08), transparent 28%),
-    radial-gradient(circle at 86% 4%, rgba(255, 75, 142, 0.07), transparent 30%),
-    linear-gradient(180deg, rgba(7, 10, 22, 0.98), rgba(5, 4, 15, 0.98));
-}
-
-.companion-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.companion-heading span {
-  color: var(--gold);
-  font-size: 0.9rem;
-  font-style: italic;
-  font-weight: 950;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-}
-
-.companion-heading small {
-  color: var(--muted);
-  font-weight: 800;
-  text-align: right;
-}
-
-.tarot-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.tarot-card {
-  position: relative;
-  display: grid;
-  min-height: 224px;
-  place-items: center;
-  gap: 10px;
-  overflow: hidden;
-  padding: 22px 18px;
-  border: 1px solid rgba(247, 198, 91, 0.22);
-  border-radius: 8px;
-  background:
-    radial-gradient(circle at 50% 12%, rgba(247, 198, 91, 0.16), transparent 28%),
-    linear-gradient(180deg, rgba(0, 213, 255, 0.08), rgba(122, 23, 255, 0.08)),
-    #050810;
-  color: var(--text);
-  text-align: center;
-  text-decoration: none;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
-}
-
-.tarot-trajectory {
-  background:
-    radial-gradient(circle at 22% 18%, rgba(0, 213, 255, 0.22), transparent 30%),
-    radial-gradient(circle at 82% 82%, rgba(191, 84, 255, 0.22), transparent 30%),
-    linear-gradient(145deg, rgba(8, 33, 82, 0.88), rgba(31, 8, 66, 0.82)),
-    #050810;
-}
-
-.tarot-passport {
-  background:
-    radial-gradient(circle at 18% 18%, rgba(247, 198, 91, 0.26), transparent 31%),
-    radial-gradient(circle at 80% 78%, rgba(255, 75, 142, 0.18), transparent 32%),
-    linear-gradient(145deg, rgba(58, 29, 10, 0.82), rgba(34, 10, 60, 0.82)),
-    #050810;
-}
-
-.tarot-prime {
-  background:
-    radial-gradient(circle at 18% 18%, rgba(18, 185, 129, 0.24), transparent 30%),
-    radial-gradient(circle at 84% 80%, rgba(247, 198, 91, 0.18), transparent 31%),
-    linear-gradient(145deg, rgba(5, 49, 45, 0.86), rgba(49, 42, 9, 0.78)),
-    #050810;
-}
-
-.tarot-card::before,
-.tarot-card::after {
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  border: 1px solid rgba(247, 198, 91, 0.24);
-  border-radius: 50%;
-  content: "";
-}
-
-.tarot-card::before {
-  top: -24px;
-  left: -18px;
-}
-
-.tarot-card::after {
-  right: -18px;
-  bottom: -24px;
-}
-
-.tarot-card:hover {
-  border-color: rgba(247, 198, 91, 0.72);
-  transform: translateY(-2px);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32), 0 0 26px rgba(247, 198, 91, 0.14);
-}
-
-.tarot-number {
-  position: absolute;
-  top: 14px;
-  left: 16px;
-  color: #f3cd7d;
-  font-size: 0.74rem;
-  font-weight: 950;
-  letter-spacing: 0.18em;
-}
-
-.tarot-icon {
-  display: grid;
-  width: 72px;
-  height: 96px;
-  place-items: center;
-  border: 1px solid rgba(247, 198, 91, 0.52);
-  border-radius: 8px;
-  background:
-    radial-gradient(circle at 50% 18%, rgba(255, 240, 191, 0.18), transparent 34%),
-    linear-gradient(180deg, rgba(247, 198, 91, 0.11), rgba(122, 23, 255, 0.09)),
-    rgba(5, 8, 16, 0.72);
-  color: #fff0bf;
-  font-size: 1.65rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  box-shadow: inset 0 0 20px rgba(247, 198, 91, 0.08), 0 0 20px rgba(247, 198, 91, 0.08);
-}
-
-.tarot-card strong {
-  font-size: 1.04rem;
-}
-
-.tarot-card small {
-  color: var(--muted);
-  font-size: 0.8rem;
-  font-weight: 800;
-  line-height: 1.4;
-}
-
-@media (max-width: 1120px) {
-  .workspace {
-    grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
-  }
-
-  .free-model-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .app-footer {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 18px;
-  }
-
-  .tarot-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-center,
-  .footer-credit {
-    text-align: left;
-    justify-content: flex-start;
-  }
-}
-
-@media (max-width: 760px) {
-  .topbar,
-  .brand,
-  .system-strip {
-    align-items: flex-start;
-  }
-
-  .topbar,
-  .workspace,
-  .setup-grid,
-  .api-key-row,
-  .free-models-header,
-  .companion-heading,
-  .setup-section-title,
-  .app-footer,
-  .footer-credit {
-    display: block;
-  }
-
-  .topbar {
-    padding: 16px;
-  }
-
-  .brand h1 {
-    font-size: 2.25rem;
-  }
-
-  .brand p {
-    letter-spacing: 0.22em;
-  }
-
-  .system-strip {
-    width: 100%;
-    margin-top: 16px;
-    flex-wrap: wrap;
-  }
-
-  .main-stage {
-    padding: 18px;
-  }
-
-  .control-panel {
-    border-right: 0;
-  }
-
-  .stage-visual {
-    min-height: 260px;
-  }
-
-  .stage-visual.is-expanded {
-    inset: 8px;
-  }
-
-  .genesis-hud {
-    top: 64px;
-    right: 12px;
-    left: 12px;
-    min-width: 0;
-    font-size: 0.62rem;
-  }
-
-  .genesis-expand {
-    top: 12px;
-    right: 12px;
-  }
-
-  .genesis-controls {
-    right: 12px;
-    bottom: 12px;
-    left: 12px;
-    width: auto;
-    padding: 10px;
-  }
-
-  .genesis-pipeline {
-    display: none;
-  }
-
-  .genesis-phase {
-    right: 64px;
-    bottom: 14px;
-    max-width: none;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  #stageCaption {
-    top: 14px;
-    left: 16px;
-    max-width: calc(100% - 88px);
-    letter-spacing: 0.12em;
-  }
-
-  .free-model-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .api-key-card {
-    max-width: none;
-  }
-
-  .secondary-button.compact {
-    width: 100%;
-    margin-top: 10px;
-  }
-
-  #selectedModelSummary {
-    display: block;
-    max-width: none;
-    margin-top: 12px;
-  }
-
-  .footer-center {
-    margin: 18px 0;
-    letter-spacing: 0.12em;
-  }
-
-  .footer-counter {
-    margin: 12px 0;
-  }
-
-  .companion-heading small {
-    margin-top: 8px;
-    text-align: left;
-  }
-
-  .footer-links {
-    align-items: stretch;
-  }
-
-  .footer-links a,
-  .bank-pill {
-    display: inline-flex;
-    align-items: center;
-  }
-}
+.m￿^u򚤺{-Ωܪם￿Nۛ݋]ٚYڝȎL]\˜ܘXڛَȌ̎[N^]؛ܙۜێȝ\\ؘ\َB؜KZٞK\۝Ț[ܝ]Z[˚ZYڝȌΜۜٙ\˘ۛ܎Ȝ٘؊͍KL͋΋͌ʎؘڙܛݛَȜ٘؊L̋ΊNB؜KZٞK\ݘ]\Ȟ\ܛ^NțَۛZ[˚ZYڝȌ̜Y[َȎLۜٙ\Έ\ۛY٘؊ˈ͍KNˈ̌ʎۜٙ\˜ؙ]\ΈؘڙܛݛَȜ٘؊̋͍KM̋̎
+Nۛ܎ȈΘٍٙ΂Ȉۛ݋\ڞَȌΌܙ[Nۛ݋]ٚYڝȎLB؜KZٞK\ݘ]\˝ڜژۙH\ܛ^NȘؚۛ΂߂؜KZٞK\ݘ]\˝؜ۚ[وۜٙ\˘ۛ܎Ȝ٘؊͍KNNLK̎
+NؘڙܛݛَȜ٘؊͍KNNLK̎
+Nۛ܎Ȉٌٙ،NBܙXۛ٘\ދXݝۋ؛ۜX݈ڙȘ]]΂ȈZ[˝ڙȎܞZ[˚ZYڝȌΜY[َȌNۜٙ\˜ؙ]\Έؘڙܛݛَț[٘\˙ܘYY[݊L͙Yˈٙ͘LٙΙL
+Nۛ݋\ڞَȌ΍ٛN]\˜ܘXڛَȌBܙ]\YܚY\ܛ^NșܚYܚY][\]KXۛ[[܎ȜٜX]
+ˈZ[ۘ^
+Y܊JN؜ȌMY[َȌNBܙ]\YܚYXٛ\ܛ^NșܚY؜Ȏۛ܎ȝ؜ʋK[]]Y
+Nۛ݋\ڞَȌ͎ٛNۛ݋]ٚYڝȎL^]؛ܙۜێȝ\\ؘ\َBܙ]\YܚYݚYHܚYXۛ[[ΈHȋLNBܙ]\\٘ݚ[ۋ]]H\ܛ^Nșۙ^[YۋZ][\Έ؜ٛ[َݜݚYދXۛݙ[ݎȜܘXًXٝٙ[΂Ȉ؜ȌMܞY[ًX۝ێȌܞBܙ]\\٘ݚ[ۋ]]Hܘ[Ȟۛ܎ȝ؜ʋKYۛ
+Nۛ݋\ڞَȌΌܙ[Nۛ݋]ٚYڝȎML]\˜ܘXڛَȌ̍ٛN^]؛ܙۜێȝ\\ؘ\َBܙ]\\٘ݚ[ۋ]]Hۘ[ۛ܎ȝ؜ʋK[]]Y
+Nۛ݋]ٚYڝȍ͌^X[YێȜڙڝBٜٙK[[ٙ[Ȟ\ܛ^NșܚY؜ȌMX\ٚ[˝܎ȍY[َȌMܞۜٙ\Έ\ۛY٘؊͍ˈNNLK̎
+Nۜٙ\˜ؙ]\Έؘڙܛݛَ[٘\˙ܘYY[݊L͙Yˈ٘؊͍ˈNNLK̎
+K؛ܜ\݈ٛΉJKȈ[٘\˙ܘYY[݊NYˈ٘؊ˈKL͎
+K٘؊ˈN͎
+JNBٜٙK[[ٙ[˚XY\Ȟ\ܛ^Nșۙ^[YۋZ][\Έ؜ٛ[َݜݚYދXۛݙ[ݎȜܘXًXٝٙ[΂Ȉ؜ȌMܞBٜٙK[[ٙ[˚XY\ȏș]Ȟ\ܛ^NșܚY؜ȍܞBٜٙK[[ٙ[˚XY\Ȝܘ[Ȟۛ܎ȝ؜ʋKYۛ
+Nۛ݋\ڞَȌΌܙ[Nۛ݋]ٚYڝȎML]\˜ܘXڛَȌ̍ٛN^]؛ܙۜێȝ\\ؘ\َBٜٙK[[ٙ[˚XY\Ȝۘ[ۛ܎ȝ؜ʋK[]]Y
+Nۛ݋]ٚYڝȍ͌^X[YێȜڙڝ^]؛ܙۜێțَۛBܙ[XݙY[ٙ[ݛ[X\ވۙ^Ȍ]]΂ȈX^]ڙȌ͌ݙ\ٛݎȚY[΂ȈY[َȎLܞۜٙ\Έ\ۛY٘؊͍ˈNNLK̍JNۜٙ\˜ؙ]\Έؘڙܛݛَț[٘\˙ܘYY[݊L͙Yˈ٘؊͍ˈNNLK̌JK٘؊̌ˈ͍K̍ʊNۛ܎ȝ؜ʋK]^
+Nۛ݋\ڞَȌΌܙ[Nۛ݋]ٚYڝȎL^[ݙ\ٛݎș[\ڜ΂Ȉښ]K\ܘXَț۝ܘ\BٜٙK[[ٙ[YܚY\ܛ^NșܚYܚY][\]KXۛ[[܎ȜٜX]
+Z[ۘ^
+Y܊JN؜ȌLBٜٙK[[ٙ[X؜و\ܛ^NșܚY؜ȎZ[˚ZYڝȎMܞY[َȌLܞۜٙ\Έ\ۛY٘؊ˈ̋ΊNۜٙ\˜ؙ]\Έؘڙܛݛَ[٘\˙ܘYY[݊L͙Yˈ٘؊̌ˈ͍K̍JK؛ܜ\݈ٛɊKȈ̍LLۛ܎ȝ؜ʋK]^
+Nݜܛ܎Ȝڛݙ\΂Ȉ^X[YێțYݎBٜٙK[[ٙ[X؜َڛݙ\˂˙ܙYK[[ٙ[X؜ًؘݚ]وۜٙ\˘ۛ܎Ȝ٘؊͍ˈNNLK͌ʎؘڙܛݛَ[٘\˙ܘYY[݊L͙Yˈ٘؊͍ˈNNLK̌ʋ٘؊̌ˈ͍K̎
+JKȈ̍LLBٜٙK[[ٙ[X؜وݜۛوۛ݋\ڞَȌΌܙ[NBٜٙK[[ٙ[X؜و[HݜݚYދ\ٛΈݘ\ݎY[َȍۜٙ\Έ\ۛY٘؊͍ˈNNLK̎
+Nۜٙ\˜ؙ]\ΈNN\ۛ܎ȝ؜ʋKYۛ
+Nۛ݋\ڞَȌ͎ٛNۛ݋\ݞ[Nțۜۘ[ۛ݋]ٚYڝȎL^]؛ܙۜێȝ\\ؘ\َBٜٙK[[ٙ[X؜وܘ[Ȟۛ܎ȝ؜ʋK[]]Y
+Nۛ݋\ڞَȌ͍ܙ[Nۛ݋]ٚYڝȍ͌[ًZZYڝȌK̍NBڜ˚Y[Ȟ\ܛ^NțۛوZ[\ܝ[ݎBؚZ[˛\݈\ܛ^NșܚY؜ȎBؚZ[˚][Hܚ][ێȜٛ]]َ\ܛ^NșܚYܚY][\]KXۛ[[܎ȌΜZ[ۘ^
+Y܊N[YۋZ][\Έٛݙ\΂Ȉ؜ȎZ[˚ZYڝȍMY[َȎۜٙ\Έ\ۛY٘؊͍ˈNNLK̊Nۜٙ\˛YݎȌܞۛY؜ʋKYۛ
+Nۜٙ\˜ؙ]\ΈؘڙܛݛَؙX[YܘYY[݊ڜ؛H]	H	K٘؊͍ˈNNLK̍
+K؛ܜ\݈ٛɊKȈ[٘\˙ܘYY[݊L͙Yˈ٘؊KLK̋΍ʋ٘؊NL̋ΌʊN۞\ژYݎȚ[ܙ]\٘؊͍K͌ˈNN̌͊NBؚZ[˚][NΘYݙ\Ȟܚ][ێȘXܛ۝]N[ܙ]Ȏۜٙ\Έ\ۛY٘؊̌ˈ͍K̍ʎۜٙ\˜ؙ]\Έܞڛݙ\˙]ٛݜΈَۛۛݙ[ݎȈȎBؚZ[˚][HȞ\ܛ^NșܚYڙȌ͜ZYڝȌ͜XًZ][\Έٛݙ\΂Ȉۜٙ\Έ\ۛY٘؊͍ˈNNLK̎
+Nۜٙ\˜ؙ]\ΈNN\ؘڙܛݛَȜ٘؊͍ˈNNLK̎
+Nۛ܎ȝ؜ʋKYۛ
+Nۛ݋\ڞَȌ͎ٛNۛ݋]ٚYڝȎMLBؚZ[˚][H]ȞZ[˝ڙȌBؚZ[˚][Hݜۛو\ܛ^NȘؚۛ΂Ȉݙ\ٛݎȚY[΂Ȉۛ܎Ȉَٙۛ݋\ڞَȌΜٛN[ًZZYڝȌK̍N^[ݙ\ٛݎș[\ڜ΂Ȉښ]K\ܘXَț۝ܘ\BؚZ[˚][Hܘ[Ȟ\ܛ^NȘؚۛ΂ȈX\ٚ[˝܎ȍݙ\ٛݎȚY[΂Ȉۛ܎ȝ؜ʋK[]]Y
+Nۛ݋\ڞَȌ͎ٛN[ًZZYڝȌK̍N^[ݙ\ٛݎș[\ڜ΂Ȉښ]K\ܘXَț۝ܘ\Bܝ[ݚ[YKX؜وX\ٚ[˝܎ȌLܞY[َȌLBܝ[ݚ[YKX؜و\ܛ^NșܚY؜ȍܞX\ٚ[ΈBܝ[ݚ[YKX؜و]Ȟ\ܛ^Nșۙ^ݜݚYދXۛݙ[ݎȜܘXًXٝٙ[΂Ȉ؜ȌLܞBܝ[ݚ[YKX؜وۛ܎ȝ؜ʋK[]]Y
+NBܝ[ݚ[YKX؜وX^]ڙȌM̜X\ٚ[Έݙ\ٛݎȚY[΂Ȉۛ܎ȝ؜ʋK]^
+Nۛ݋]ٚYڝȎL^X[YێȜڙڝ^[ݙ\ٛݎș[\ڜ΂Ȉښ]K\ܘXَț۝ܘ\B؜Yۛݙ\Ȟ\ܛ^NșܚYܚY][\]KXۛ[[܎țZ[ۘ^
+͌K̙܊HZ[ۘ^
+N͙܊HZ[ۘ^
+MLٜ͌ʈZ[ۘ^
+ΌY܊N[YۋZ][\Έٛݙ\΂Ȉ؜ȌMZ[˚ZYڝȍMY[َȌL͜ۜٙ\˝܎Ȍ\ۛY٘؊͍ˈNNLK͌ʎؘڙܛݛَؙX[YܘYY[݊ڜ؛H]LɈ̉K٘؊͍ˈNNLK̍ʋ؛ܜ\݈ٛ͉JKȈؙX[YܘYY[݊ڜ؛H]ɈN	K٘؊NLK͍K̍
+K؛ܜ\݈ٛΉJKȈ[٘\˙ܘYY[݊LYˈ٘؊LK΋΋͌ʋ٘؊΋ˈ͊HLɋ٘؊KLˈ͎
+JKȈ̌̍N۞\ژYݎȚ[ܙ]\٘؊͍K͌ˈNN̎
+KLMܞܞ٘؊̊NBٛ۝\˜ݜܝȞX\ٚ[Έۛ܎ȝ؜ʋKYۛ
+Nۛ݋\ڞَȌ͎ٛNۛ݋]ٚYڝȎML]\˜ܘXڛَȌ̎[N^]؛ܙۜێȝ\\ؘ\َBٛ۝\˜ݜܝȜܘ[ΙڜܝXښ[ۛ܎Ȉٙٙٙ΂ȈܘXڝNȌ͌΂߂ٛ۝\˛[ڜȞ\ܛ^Nșۙ^[YۋZ][\Έٛݙ\΂Ȉۙ^]ܘ\ȝܘ\؜ȍܞBٛ۝\˛[ڜȘK˘؛ڋ\[˙ۛݙ\˘ܙY]Hۛ܎ȝ؜ʋK]^
+Nۛ݋\ڞَȌ͌ܙ[Nۛ݋]ٚYڝȎL^YXۜ؝[ێțَۛBؘ[ڋ\[Y[َȍܞLۜٙ\Έ\ۛY٘؊͍ˈNNLK̎
+Nۜٙ\˜ؙ]\ΈܞؘڙܛݛَȜ٘؊MKLˈ̋Όʎ۞\ژYݎȚ[ܙ]N٘؊͍ˈNNLK̍
+NBٛ۝\˛[ڜȘHY[َȍܞ\ۜٙ\Έ\ۛY٘؊͋΋Mˈ͌ʎۜٙ\˜ؙ]\Έܞۛ܎Ȉ؎͙NBٛ۝\˛[ڜȘNڛݙ\Ȟۜٙ\˘ۛ܎Ȝ٘؊͍ˈNNLK͍
+NؘڙܛݛَȜ٘؊͍ˈNNLK̎
+NBٛ۝\˘ٛݙ\Ȟۛ܎Ȉٙٙٙ΂Ȉۛ݋\ڞَȘۘ[\
+͍ܙ[K΍]݋Όܙ[JNۛ݋\ݞ[NȚ][X΂Ȉۛ݋]ٚYڝȎML]\˜ܘXڛَȌ̍ٛN[ًZZYڝȌK̍N^X[YێȘٛݙ\΂Ȉ^]؛ܙۜێȝ\\ؘ\َBٛ۝\˘ٛݙ\Ȝܘ[Ȟۛ܎ȝ؜ʋKYۛ
+Nۛ݋\ݞ[Nțۜۘ[Bٛ۝\˘۝[ݙ\Ȟ\ܛ^NșܚYܚY][\]KXۛ[[܎ȌY܈]]΂Ȉ؜ȌܞZ[˝ڙȌY[َȍܞLۜٙ\Έ\ۛY٘؊͍ˈNNLK̎
+Nۜٙ\˜ؙ]\ΈܞؘڙܛݛَȜ٘؊ˈLˈ͋͌ʎ۞\ژYݎȚ[ܙ]̜٘؊̌ˈ͍K̍JNBٛ۝\˘۝[ݙ\˛Xٛ[Yۋ\ٛΈٛݙ\΂Ȉݙ\ٛݎȚY[΂Ȉۛ܎ȝ؜ʋKYۛ
+Nۛ݋\ڞَȌ͌\ٛNۛ݋]ٚYڝȎML]\˜ܘXڛَȌ̎[N^[ݙ\ٛݎș[\ڜ΂Ȉ^]؛ܙۜێȝ\\ؘ\َښ]K\ܘXَț۝ܘ\Bٛ۝\˘۝[ݙ\ȏȜݜۛوܚY\۝Έܘ[Ȍ΂Ȉ[Yۋ\ٛΈٛݙ\΂Ȉۛ܎Ȉٙٙٙ΂Ȉۛ݋Y؛Z[NȈИ[XܚXHX]ˈԙYۙHRHˈ؛܋\ٜڙ΂Ȉۛ݋\ڞَȌK̍\ٛN[ًZZYڝȌNBٛ۝\˘۝[ݙ\˙]Z[Ȟ\ܛ^Nșۙ^ۙ^]ܘ\ȝܘ\؜Ȍܞۛ܎Ȉ؎͙Nۛ݋\ڞَȌ͌ܙ[Nۛ݋]ٚYڝȎBٛ۝\˘۝[ݙ\˙]Z[ȘȞۛ܎ȝ؜ʋKXޘ[ʎBٛ۝\˘۝[ݙ\˙]Z[ȋۛۚ[ً[Y]ژȞۛ܎ȈؙΙ΂߂ۛۚ[ً[Y]ژȚH\ܛ^NȚ[ۚ[ًXؚۛ΂ȈڙȍܞZYڝȍܞX\ٚ[˜ڙڝȌܞۜٙ\˜ؙ]\ΈL	NؘڙܛݛَȈ͍YMN΂Ȉ۞\ژYݎȌ٘؊΋̎KL΋ΊNBۛۚ[ً[Y]ژȘȞۛ܎Ȉٌ͌M΂߂ٛ۝\˘۝[ݙ\Ȝۘ[ܚYXۛ[[ΈHȋLNۛ܎ȝ؜ʋK[]]Y
+Nۛ݋\ڞَȌ͍ܙ[NBٛ۝\˘ܙY]\ܛ^Nșۙ^ۙ^]ܘ\ȝܘ\ݜݚYދXۛݙ[ݎșۙ^Y[َ؜ȍۛ܎ȝ؜ʋK[]]Y
+Nۛ݋\ڞَȌ͌ܙ[Nۛ݋]ٚYڝȎL]\˜ܘXڛَȌ̍ٛN^]؛ܙۜێȝ\\ؘ\َBٛ۝\˘ܙY]Hۛ܎Ȉ؎NXٙ΂Ȉۛ݋\ݞ[NȚ][X΂߂ٛ۝\˘ܙY]ٛ۝\˚Yۛ܎Ȉ؎͙Nۛ݋\ݞ[Nțۜۘ[ܘXڝNȌΎB؛ۜ[ڛۋX\Ȟ\ܛ^NșܚY؜ȌMܞY[َȌ̜Μ͜ۜٙ\˝܎Ȍ\ۛY٘؊͍ˈNNLK̎
+NؘڙܛݛَؙX[YܘYY[݊ڜ؛H]M	HM	K٘؊͍ˈNNLK̎
+K؛ܜ\݈ٛΉJKȈؙX[YܘYY[݊ڜ؛H]Ɉ	K٘؊͍K͋Mˈ̍ʋ؛ܜ\݈ٛ̉JKȈ[٘\˙ܘYY[݊NYˈ٘؊ˈL̋Ύ
+K٘؊KMKΎ
+JNB؛ۜ[ڛۋZXY[و\ܛ^Nșۙ^[YۋZ][\Έ؜ٛ[َݜݚYދXۛݙ[ݎȜܘXًXٝٙ[΂Ȉ؜ȌMܞB؛ۜ[ڛۋZXY[وܘ[Ȟۛ܎ȝ؜ʋKYۛ
+Nۛ݋\ڞَȌΜٛNۛ݋\ݞ[NȚ][X΂Ȉۛ݋]ٚYڝȎML]\˜ܘXڛَȌ̎[N^]؛ܙۜێȝ\\ؘ\َB؛ۜ[ڛۋZXY[وۘ[ۛ܎ȝ؜ʋK[]]Y
+Nۛ݋]ٚYڝȎ^X[YێȜڙڝBݘ\۝YܚY\ܛ^NșܚYܚY][\]KXۛ[[܎ȜٜX]
+ˈZ[ۘ^
+Y܊JN؜ȌMBݘ\۝X؜وܚ][ێȜٛ]]َ\ܛ^NșܚYZ[˚ZYڝȌ̍XًZ][\Έٛݙ\΂Ȉ؜ȌLݙ\ٛݎȚY[΂ȈY[َȌ̜Nۜٙ\Έ\ۛY٘؊͍ˈNNLK̌ʎۜٙ\˜ؙ]\ΈؘڙܛݛَؙX[YܘYY[݊ڜ؛H]L	HLɋ٘؊͍ˈNNLK̍ʋ؛ܜ\݈ٛΉJKȈ[٘\˙ܘYY[݊NYˈ٘؊̌ˈ͍K̎
+K٘؊L̋̋͍K̎
+JKȈ̍LLۛ܎ȝ؜ʋK]^
+N^X[YێȘٛݙ\΂Ȉ^YXۜ؝[ێțَۛ۞\ژYݎȚ[ܙ]\٘؊͍K͍K͍K̌ʎBݘ\۝]ؚ٘ݛܞHؘڙܛݛَؙX[YܘYY[݊ڜ؛H]̉HN	K٘؊̌ˈ͍K̌ʋ؛ܜ\݈ٛ̉JKȈؙX[YܘYY[݊ڜ؛H]Ɉɋ٘؊NLK͍K̌ʋ؛ܜ\݈ٛ̉JKȈ[٘\˙ܘYY[݊MYYˈ٘؊̋ˈΎ
+K٘؊̋͋ΌʊKȈ̍LLBݘ\۝\\ܜܝؘڙܛݛَؙX[YܘYY[݊ڜ؛H]N	HN	K٘؊͍ˈNNLK̍ʋ؛ܜ\݈ٛ̉JKȈؙX[YܘYY[݊ڜ؛H]	HΉK٘؊͍K͋Mˈ̎
+K؛ܜ\݈ٛ̉JKȈ[٘\˙ܘYY[݊MYYˈ٘؊N΋LΌʋ٘؊͋L̋ΌʊKȈ̍LLBݘ\۝\ڛYHؘڙܛݛَؙX[YܘYY[݊ڜ؛H]N	HN	K٘؊NNKL΋̍
+K؛ܜ\݈ٛ̉JKȈؙX[YܘYY[݊ڜ؛H]	H	K٘؊͍ˈNNLK̎
+K؛ܜ\݈ٛ̉JKȈ[٘\˙ܘYY[݊MYYˈ٘؊KKK΍ʋ٘؊KˈK͎
+JKȈ̍LLBݘ\۝X؜َΘًٙۜ˝\۝X؜َΘYݙ\Ȟܚ][ێȘXܛ۝]Nڙȍ͜ZYڝȍ͜ۜٙ\Έ\ۛY٘؊͍ˈNNLK̍
+Nۜٙ\˜ؙ]\ΈL	Nۛݙ[ݎȈȎBݘ\۝X؜َΘٙۜو܎ȋL͜YݎȋLNBݘ\۝X؜َΘYݙ\ȞڙڝȋLN۝ێȋL͜Bݘ\۝X؜َڛݙ\Ȟۜٙ\˘ۛ܎Ȝ٘؊͍ˈNNLK͌ʎ؛ܙۜێȝ؛ܛ]VJLܞ
+N۞\ژYݎȌNܞ٘؊̌ʋ͜٘؊͍ˈNNLK̍
+NBݘ\۝[ݛXٜȞܚ][ێȘXܛ۝]N܎ȌMYݎȌMܞۛ܎Ȉٌؙَۛ݋\ڞَȌ͍ٛNۛ݋]ٚYڝȎML]\˜ܘXڛَȌ̎[NBݘ\۝ZXۛȞ\ܛ^NșܚYڙȍ̜ZYڝȎMܞXًZ][\Έٛݙ\΂Ȉۜٙ\Έ\ۛY٘؊͍ˈNNLK͌ʎۜٙ\˜ؙ]\ΈؘڙܛݛَؙX[YܘYY[݊ڜ؛H]L	HN	K٘؊͍K͌NLK̎
+K؛ܜ\݈ٛ͉JKȈ[٘\˙ܘYY[݊NYˈ٘؊͍ˈNNLK̌JK٘؊L̋̋͍K̎JJKȈ٘؊KMˈ͌ʎۛ܎Ȉٌٙَۛ݋\ڞَȌK͍\ٛNۛ݋]ٚYڝȎML]\˜ܘXڛَȌ̎[N[ًZZYڝȌN۞\ژYݎȚ[ܙ]̜٘؊͍ˈNNLK̎
+K̜٘؊͍ˈNNLK̎
+NBݘ\۝X؜وݜۛوۛ݋\ڞَȌK̍ٛNBݘ\۝X؜وۘ[ۛ܎ȝ؜ʋK[]]Y
+Nۛ݋\ڞَȌΜٛNۛ݋]ٚYڝȎ[ًZZYڝȌK͎BYYXH
+X^]ڙȌLL̜
+HݛܚܜXوܚY][\]KXۛ[[܎țZ[ۘ^
+͌̌
+HZ[ۘ^
+Y܊NBٜٙK[[ٙ[YܚYܚY][\]KXۛ[[܎ȜٜX]
+ˈZ[ۘ^
+Y܊JNB؜Yۛݙ\ȞܚY][\]KXۛ[[܎ȜٜX]
+ˈZ[ۘ^
+Y܊JN؜ȌLܞNBݘ\۝YܚYܚY][\]KXۛ[[܎ȌY܎Bٛ۝\˘ٛݙ\˂Ȉٛ۝\˘ܙY]^X[YێțYݎݜݚYދXۛݙ[ݎșۙ^\ݘ\ݎB߂YYXH
+X^]ڙȍ͌
+Hݛܘ؜˂Ȉ؜؛ًȈܞ\ݙ[K\ݜڜ[YۋZ][\Έۙ^\ݘ\ݎBݛܘ؜˂ȈݛܚܜXًȈܙ]\YܚYȈ؜KZٞK\۝˂ȈٜٙK[[ٙ[˚XY\˂Ȉ؛ۜ[ڛۋZXY[ًȈܙ]\\٘ݚ[ۋ]]KȈ؜Yۛݙ\˂Ȉٛ۝\˘ܙY]\ܛ^NȘؚۛ΂ȈBݛܘ؜ȞY[َȌMܞB؜؛وHۛ݋\ڞَȌˌٛ͜NB؜؛و]\˜ܘXڛَȌ̌ٛNBܞ\ݙ[K\ݜڜڙȌL	NX\ٚ[˝܎ȌMܞۙ^]ܘ\ȝܘ\BۘZ[˜ݘYوY[َȌNB؛۝ۛ\[ٛۜٙ\˜ڙڝȌBܝYً]ڜݘ[Z[˚ZYڝȌ͌BܝYً]ڜݘ[ڜ˙^[ٙY[ܙ]ȎBٙ[ٜڜ˚Y܎ȍ͜ڙڝȌLܞYݎȌLܞZ[˝ڙȌۛ݋\ڞَȌ͌ܙ[NBٙ[ٜڜ˙^[و܎ȌLܞڙڝȌLܞBٙ[ٜڜ˘ۛݜۛȞڙڝȌLܞ۝ێȌLܞYݎȌLܞڙȘ]]΂ȈY[َȌLBٙ[ٜڜ˜\[[و\ܛ^NțَۛBٙ[ٜڜ˜\وڙڝȍ͜۝ێȌMX^]ڙțَۛݙ\ٛݎȚY[΂Ȉ^[ݙ\ٛݎș[\ڜ΂Ȉښ]K\ܘXَț۝ܘ\BܝYِ؜[ۈ܎ȌMYݎȌMܞX^]ڙȘ؛ʌL	HH
+N]\˜ܘXڛَȌ̌ٛNBٜٙK[[ٙ[YܚYܚY][\]KXۛ[[܎ȌY܎B؜KZٞKX؜وX^]ڙțَۛBܙXۛ٘\ދXݝۋ؛ۜX݈ڙȌL	NX\ٚ[˝܎ȌLBܙ[XݙY[ٙ[ݛ[X\ވ\ܛ^NȘؚۛ΂ȈX^]ڙțَۛX\ٚ[˝܎ȌLܞBٛ۝\˘ٛݙ\ȞX\ٚ[ΈN]\˜ܘXڛَȌ̌ٛNBٛ۝\˘۝[ݙ\ȞX\ٚ[ΈLܞB؛ۜ[ڛۋZXY[وۘ[X\ٚ[˝܎Ȏ^X[YێțYݎBٛ۝\˛[ڜȞ[YۋZ][\ΈݜٝڎBٛ۝\˛[ڜȘKȈؘ[ڋ\[\ܛ^NȚ[ۚ[ًYۙ^[YۋZ][\Έٛݙ\΂ȈB߂
