@@ -228,6 +228,66 @@
             background: #05070d !important;
             color: var(--oi-muted) !important;
         }
+
+        /* Size panels by their available space, including embedded/narrow views. */
+        *, *::before, *::after { box-sizing: border-box; }
+        main, main .flex > *, main .grid > *, header .flex > * { min-width: 0; }
+        main, header, body > section, footer { overflow-wrap: anywhere; }
+        main { align-items: flex-start; }
+        #inputWorkspace, #outputWorkspace { width: 100%; }
+        #outputWorkspace { container-type: inline-size; }
+        #resultsContainer .grid { grid-template-columns: minmax(0, 1fr); }
+        #dnaGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+        @media (min-width: 1100px) {
+            main { flex-direction: row !important; }
+            #inputWorkspace { flex: 0 0 32%; }
+            #outputWorkspace { flex: 1 1 0%; }
+        }
+        @media (max-width: 1099px) {
+            main { flex-direction: column !important; }
+        }
+        @container (min-width: 560px) {
+            #resultsContainer .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            #dnaGrid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+        }
+        @container (min-width: 840px) {
+            #resultsContainer .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            #resultsContainer .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        }
+        .results-tabs { flex-wrap: wrap; overflow: visible; }
+        .results-tabs .tab-btn { flex: 1 1 9rem; white-space: normal; text-align: left; }
+        #resultsContainer ul { list-style: disc outside; padding-inline-start: 1.25rem; }
+        #resultsContainer li { padding-inline-start: .15rem; line-height: 1.65; }
+        #resultsContainer h3, #resultsContainer h4 { line-height: 1.5; }
+        #resultsContainer .flex { flex-wrap: wrap; }
+        #resultsContainer .flex > .overflow-hidden { min-width: 6px; }
+        #terminalLog, #aiAnalysisOutput, mjx-container[display="true"] {
+            max-width: 100%; overflow-x: auto;
+        }
+        header > div { height: auto !important; min-height: 4rem; flex-wrap: wrap; gap: .75rem; padding-block: .75rem; }
+        header > div > div:last-child { margin-left: auto; gap: .5rem; flex-wrap: wrap; }
+        header > div > div:last-child > * { margin-left: 0 !important; }
+        input, textarea, select { max-width: 100%; min-width: 0; }
+        #settingsModal > div { max-height: calc(100dvh - 2rem); overflow-y: auto; }
+        .score-guide { margin-top: 1rem; padding: 1rem; border: 1px solid var(--oi-line); border-radius: 8px; font-size: .8rem; line-height: 1.65; }
+        .score-guide summary { cursor: pointer; color: var(--oi-cyan); font-weight: 700; }
+        #resultsContainer .text-slate-600, #resultsContainer .text-slate-700,
+        #resultsContainer .text-slate-800 { color: var(--oi-text) !important; }
+        #resultsContainer .text-slate-400, #resultsContainer .text-slate-500 { color: var(--oi-muted) !important; }
+        #content-reports .grid { grid-template-columns: minmax(0, 1fr); }
+        #content-reports .grid > div { background: rgba(25, 215, 255, .035) !important; }
+        #content-reports [data-i18n="positive_title"] { color: #34d399; }
+        #content-reports [data-i18n="deficiencies_title"] { color: #fb7185; }
+        @container (min-width: 840px) {
+            #content-reports .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+        .score-guide p { margin-top: .6rem; }
+        @media (max-width: 480px) {
+            header h1 { font-size: .95rem !important; letter-spacing: .06em; }
+            main { padding-inline: .75rem !important; }
+            #resultsContainer .p-5, #resultsContainer .p-4 { padding: .875rem; }
+            header { position: relative !important; }
+        }
     </style>
 </head>
 <body class="bg-academic-50 dark:bg-academic-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
@@ -488,6 +548,13 @@
                         </div>
                     </div>
 
+                    <details class="score-guide" open>
+                        <summary data-i18n="score_guide_title">How to read these scores</summary>
+                        <p data-i18n="score_guide_scales"></p>
+                        <p data-i18n="score_guide_overall"></p>
+                        <p data-i18n="score_guide_action"></p>
+                    </details>
+
                     <!-- Category Status / determined tier Indicator widgets -->
                     <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/60 w-full">
                         <div class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-1">
@@ -504,7 +571,7 @@
                 </div>
 
                 <!-- NAVIGATION TABS -->
-                <div class="border-b border-slate-200 dark:border-slate-800 flex overflow-x-auto gap-2 no-print">
+                <div class="results-tabs border-b border-slate-200 dark:border-slate-800 flex gap-2 no-print">
                     <button onclick="switchTab('overview')" class="tab-btn px-4 py-2 border-b-2 border-indigo-600 font-bold text-xs uppercase tracking-wider text-indigo-600 shrink-0 flex items-center gap-1.5" id="tab-overview">
                         <i class="fa-solid fa-chart-pie"></i> <span data-i18n="tab_overview">ADN &amp; Genotype</span>
                     </button>
@@ -883,7 +950,11 @@
                 progress_lbl: "AI Positioning Progress",
                 progress_percent: "0% Complete",
                 decision_report: "Official Decision Report",
-                editorial_rigor: "Editorial Rigor",
+                editorial_rigor: "Manuscript readiness",
+                score_guide_title: "How to read these scores",
+                score_guide_scales: "Higher is better. Screening and overall readiness use 0–100; novelty, technical soundness, reproducibility and impact use 0–10. For scale comparison, 8/10 equals 80/100.",
+                score_guide_overall: "The overall score is the AI’s holistic assessment, not a calculated average or an acceptance probability. Read it alongside the editor’s summary and the requested revisions.",
+                score_guide_action: "Use the lowest component scores and major concerns to prioritize revisions. A high total does not resolve a critical flaw or guarantee journal acceptance.",
                 tab_overview: "ADN & Genotype",
                 tab_soundness: "Technical Aspects",
                 tab_simulation: "Journal Matching",
@@ -955,7 +1026,11 @@
                 progress_lbl: "Tiến trình Định vị AI",
                 progress_percent: "0% Hoàn thành",
                 decision_report: "Báo cáo Quyết định Chính thức",
-                editorial_rigor: "Độ Nghiêm khắc Biên tập",
+                editorial_rigor: "Mức sẵn sàng bản thảo",
+                score_guide_title: "Hiểu điểm số như thế nào?",
+                score_guide_scales: "Điểm càng cao càng tốt. Sàng lọc và tổng thể dùng thang 0–100; tính mới, độ vững kỹ thuật, khả năng tái lập và tác động dùng thang 0–10. Khi so thang điểm, 8/10 tương đương 80/100.",
+                score_guide_overall: "Điểm tổng là đánh giá tổng thể của AI, không phải trung bình cộng hay xác suất được nhận đăng. Hãy đọc cùng nhận định biên tập và các yêu cầu sửa đổi.",
+                score_guide_action: "Ưu tiên sửa các tiêu chí điểm thấp và lỗi kỹ thuật chính. Điểm tổng cao không khắc phục được lỗi nghiêm trọng và không bảo đảm tạp chí nhận bài.",
                 tab_overview: "ADN & Kiểu gen",
                 tab_soundness: "Khía cạnh Kỹ thuật",
                 tab_simulation: "Khớp nối Tạp chí",
@@ -1027,7 +1102,11 @@
                 progress_lbl: "AI ポジショニング進行状況",
                 progress_percent: "0% 完了",
                 decision_report: "公式判定レポート",
-                editorial_rigor: "編集上の厳密性",
+                editorial_rigor: "原稿の準備度",
+                score_guide_title: "スコアの読み方",
+                score_guide_scales: "高いほど良い評価です。初期審査と総合評価は0〜100、新規性・技術的妥当性・再現性・影響度は0〜10です。尺度を比較すると8/10は80/100に相当します。",
+                score_guide_overall: "総合点はAIによる全体的な評価であり、単純平均や採択確率ではありません。編集者の要約と修正要求を併せて確認してください。",
+                score_guide_action: "低い項目と重大な懸念を優先して修正してください。総合点が高くても重大な欠陥が解消されるわけではなく、採択を保証しません。",
                 tab_overview: "DNA & 遺伝子型",
                 tab_soundness: "技術面",
                 tab_simulation: "ジャーナル照合",
@@ -1437,6 +1516,9 @@
 Your objective is to provide strict, balanced, completely objective scientific analysis on publication readiness, novelty, math consistency, replication potential, and journal matchmaking.
 
 CRITICAL SCORING CONSTRAINTS & ACCURACY:
+- All scores measure manuscript quality/readiness: higher is better, not stricter reviewing.
+- phase1.score and phase8.overall_score must be integers from 0 to 100. phase2 through phase5 scores and DNA scores must be integers from 0 to 10.
+- phase8.overall_score is a holistic assessment, not an acceptance probability or a fixed arithmetic average. Explain the main reasons for this score and any critical blockers in phase8.summary.
 - Ensure numeric scores are mathematically, proportionally, and logically aligned with your qualitative text reviews.
 - NEVER output low single-digit scores (like 8/100) if the qualitative feedback is highly positive ("high suitability", "excellent logical flow"). In such cases, the score must be proportional (e.g., 80 to 90 out of 100).
 - Check your JSON output closely to ensure you don't drop zeros (e.g., writing 8 instead of 80) for score fields like 'score' in phase1, and phase8 'overall_score'. Keep 0-100 metrics fully consistent with 0-10 metrics.
@@ -1673,13 +1755,17 @@ Construct your analysis and produce a JSON payload matching the requested struct
             // Editor Verdict
             document.getElementById('editorSummary').textContent = data.phase8.summary;
 
-            // Prevent double dot lists and cleanse redundant markdown list markers
+            // Only HTML supplies the marker; preserve numbers and signs in scientific text.
             const renderList = (elId, list) => {
                 const el = document.getElementById(elId);
-                el.innerHTML = '';
-                list.forEach(item => { 
-                    const cleanedItem = item.replace(/^[\s•\-\*\d\.\)]+/, '').trim();
-                    el.innerHTML += `<li>• ${cleanedItem}</li>`; 
+                el.replaceChildren();
+                (Array.isArray(list) ? list : []).forEach(item => {
+                    const cleanedItem = String(item).trim()
+                        .replace(/^(?:(?:[•●▪◦]|[-*+](?=\s)|\d+[.)](?=\s))\s*)+/, '').trim();
+                    if (!cleanedItem) return;
+                    const li = document.createElement('li');
+                    li.textContent = cleanedItem;
+                    el.appendChild(li);
                 });
             };
             renderList('reasonsAccept', data.phase8.reasons_accept);
@@ -1779,7 +1865,8 @@ Construct your analysis and produce a JSON payload matching the requested struct
             return `# TRAJECTORYLAB POSITIONING REPORT
 ## Paper Title: ${document.getElementById('paperTitle').value}
 **Final Verdict:** ${d.phase10.final_verdict}
-**Overall Rigor Index:** ${d.phase8.overall_score}/100
+**Overall Manuscript Readiness:** ${d.phase8.overall_score}/100
+${TRANSLATIONS[state.language].score_guide_overall}
 
 ### PHASE 0: ONTOLOGY &amp; COMPONENTS
 - Classification Species: ${d.phase0.final_classification_species}
