@@ -1,4 +1,4 @@
-﻿const state = {
+const state = {
   operators: [],
   selected: {
     inference: "AUG",
@@ -17,7 +17,10 @@
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
-const GLOBAL_COUNTER_BASE = "https://api.counterapi.dev/v1/o-i-vn-prime-excalibur";
+// Abacus is a no-auth, CORS-enabled counter service. The former CounterAPI v1
+// endpoint was retired, so cumulative totals use pure reads after each event.
+const GLOBAL_COUNTER_BASE = "https://abacus.jasoncameron.dev";
+const GLOBAL_COUNTER_NAMESPACE = "oi-vn-prime-excalibur";
 
 const i18n = {
   EN: {
@@ -120,8 +123,8 @@ const i18n = {
     visits: "Visits",
     totalVisits: "Total visits",
     onlineNow: "Online now",
-    executions: "Executions",
-    globalCounter: "Global counter",
+    executions: "Total executions",
+    globalCounter: "Global totals · this session online",
     counterFallback: "Local fallback",
     developedBy: "Developed by:",
     activeConfig: "Active Configuration",
@@ -234,10 +237,10 @@ const i18n = {
     supportWork: "Ủng Hộ Dự Án",
     activityTotal: "Tổng Hoạt Động",
     visits: "Truy cập",
-    totalVisits: "Tổng truy cập",
+    totalVisits: "Tổng lượt truy cập",
     onlineNow: "Đang trực tuyến",
-    executions: "Thực thi",
-    globalCounter: "Bộ đếm toàn cầu",
+    executions: "Tổng lần thực thi",
+    globalCounter: "Tổng toàn cầu · online trong phiên này",
     counterFallback: "Dự phòng cục bộ",
     developedBy: "Phát triển bởi:",
     activeConfig: "Cấu Hình Đang Dùng",
@@ -350,10 +353,10 @@ const i18n = {
     supportWork: "プロジェクト支援",
     activityTotal: "合計アクティビティ",
     visits: "訪問",
-    totalVisits: "累計訪問",
+    totalVisits: "累計訪問数",
     onlineNow: "現在オンライン",
-    executions: "実行",
-    globalCounter: "グローバルカウンター",
+    executions: "累計実行数",
+    globalCounter: "全体の累計 · このセッションはオンライン",
     counterFallback: "ローカル予備",
     developedBy: "開発者:",
     activeConfig: "使用中設定",
@@ -1047,8 +1050,9 @@ async function requestGlobalCounter(name, action = "") {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 4500);
   try {
-    const suffix = action ? `/${action}` : "";
-    const response = await fetch(`${GLOBAL_COUNTER_BASE}/${name}${suffix}`, {
+    if (action === "down") throw new Error("Abacus counters do not support decrementing presence");
+    const operation = action === "up" ? "hit" : "get";
+    const response = await fetch(`${GLOBAL_COUNTER_BASE}/${operation}/${GLOBAL_COUNTER_NAMESPACE}/${name}`, {
       method: "GET",
       cache: "no-store",
       signal: controller.signal,
@@ -1068,14 +1072,13 @@ async function syncGlobalCounters(registerVisit = false, incrementExecution = fa
   const shouldRegisterVisit = registerVisit && !sessionStorage.getItem("oiBoxGlobalVisitRegistered");
   const shouldRegisterOnline = registerOnline && !onlinePresenceRegistered;
   try {
-    const [visits, executions, online] = await Promise.all([
+    const [visits, executions] = await Promise.all([
       requestGlobalCounter("visits", shouldRegisterVisit ? "up" : ""),
       requestGlobalCounter("executions", incrementExecution ? "up" : ""),
-      requestGlobalCounter("online", shouldRegisterOnline ? "up" : ""),
     ]);
     if (shouldRegisterVisit) sessionStorage.setItem("oiBoxGlobalVisitRegistered", "1");
     if (shouldRegisterOnline) onlinePresenceRegistered = true;
-    renderUsageMetrics(visits, executions, online, "globalCounter");
+    renderUsageMetrics(visits, executions, document.hidden ? 0 : 1, "globalCounter");
   } catch (error) {
     renderUsageMetrics();
   }
@@ -1084,11 +1087,7 @@ async function syncGlobalCounters(registerVisit = false, incrementExecution = fa
 function releaseOnlinePresence() {
   if (!onlinePresenceRegistered) return;
   onlinePresenceRegistered = false;
-  fetch(`${GLOBAL_COUNTER_BASE}/online/down`, {
-    method: "GET",
-    cache: "no-store",
-    keepalive: true,
-  }).catch(() => {});
+  renderUsageMetrics(undefined, undefined, 0, "globalCounter");
 }
 
 function initializeUsageMetrics() {
@@ -1102,6 +1101,13 @@ function initializeUsageMetrics() {
     if (!document.hidden) syncGlobalCounters();
   }, 30000);
   window.addEventListener("pagehide", releaseOnlinePresence);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      releaseOnlinePresence();
+      return;
+    }
+    syncGlobalCounters(false, false, true);
+  });
   window.addEventListener("pageshow", () => {
     if (!onlinePresenceRegistered) syncGlobalCounters(false, false, true);
   });
@@ -1177,5 +1183,4 @@ loadOperators().catch((error) => {
       ? `${error.message}. file を直接開くのではなく、local server で app を実行してください。`
       : `${error.message}. Run the app through a local server instead of opening the file directly.`;
 });
-
 

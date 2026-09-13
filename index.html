@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
@@ -228,13 +228,21 @@
           </div>
         </section>
         <section class="footer-center"><span>::</span> Operator Intelligence / 2026 <span>::</span></section>
-        <section class="footer-counter" aria-live="polite">
-          <span class="footer-counter-label" data-i18n="activityTotal">Tổng Hoạt Động</span>
-          <strong id="activityTotalCount">0</strong>
+        <section class="footer-counter" aria-live="polite" aria-label="Usage metrics">
+          <span class="footer-counter-label" data-i18n="activityTotal">Hoạt động</span>
           <div class="footer-counter-details">
-            <span><b id="visitCount">0</b> <span data-i18n="totalVisits">Tổng truy cập</span></span>
-            <span class="online-metric"><i aria-hidden="true"></i><b id="onlineCount">0</b> <span data-i18n="onlineNow">Đang trực tuyến</span></span>
-            <span><b id="executionCount">0</b> <span data-i18n="executions">Thực thi</span></span>
+            <span class="counter-metric">
+              <b id="visitCount">0</b>
+              <span data-i18n="totalVisits">Tổng lượt truy cập</span>
+            </span>
+            <span class="counter-metric">
+              <b id="executionCount">0</b>
+              <span data-i18n="executions">Tổng lần thực thi</span>
+            </span>
+            <span class="counter-metric online-metric">
+              <span class="online-indicator"><i aria-hidden="true"></i><b id="onlineCount">0</b></span>
+              <span data-i18n="onlineNow">Đang online</span>
+            </span>
           </div>
           <small id="counterScope" data-i18n="globalCounter">Bộ đếm toàn cầu</small>
         </section>
@@ -252,3 +260,4 @@
     <script src="./genesis-chamber.js"></script>
   </body>
 </html>
+
