@@ -1277,7 +1277,7 @@ select:focus {
 
 .app-footer {
   display: grid;
-  grid-template-columns: minmax(260px, 1.1fr) minmax(180px, 0.7fr) minmax(150px, 0.52fr) minmax(280px, 1fr);
+  grid-template-columns: minmax(220px, 1fr) minmax(180px, 0.75fr) minmax(300px, 1.35fr) minmax(260px, 1fr);
   align-items: center;
   gap: 14px;
   min-height: 54px;
@@ -1359,48 +1359,55 @@ select:focus {
 
 .footer-counter {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 2px 8px;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 3px 10px;
   min-width: 0;
-  padding: 7px 10px;
-  border: 1px solid rgba(247, 198, 91, 0.28);
-  border-radius: 6px;
+  padding: 9px 11px;
+  border: 1px solid rgba(247, 198, 91, 0.34);
+  border-radius: 8px;
   background: rgba(3, 12, 24, 0.72);
   box-shadow: inset 0 0 22px rgba(0, 213, 255, 0.05);
 }
 
 .footer-counter-label {
   align-self: center;
-  overflow: hidden;
   color: var(--gold);
-  font-size: 0.61rem;
+  font-size: 0.62rem;
   font-weight: 950;
   letter-spacing: 0.08em;
-  text-overflow: ellipsis;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
-.footer-counter > strong {
-  grid-row: span 2;
-  align-self: center;
-  color: #ffffff;
-  font-family: "Cambria Math", "Segoe UI", sans-serif;
-  font-size: 1.35rem;
-  line-height: 1;
+.footer-counter-details {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  min-width: 0;
 }
 
-.footer-counter-details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px 8px;
+.counter-metric {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
   color: #b8c7da;
   font-size: 0.62rem;
   font-weight: 800;
+  line-height: 1.25;
 }
 
-.footer-counter-details b {
+.counter-metric b {
   color: var(--cyan);
+  font-family: "Cambria Math", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.counter-metric > span:last-child {
+  overflow-wrap: anywhere;
 }
 
 .footer-counter-details .online-metric {
@@ -1415,6 +1422,13 @@ select:focus {
   border-radius: 50%;
   background: #45e58b;
   box-shadow: 0 0 8px rgba(69, 229, 139, 0.9);
+}
+
+.online-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: max-content;
 }
 
 .online-metric b {
@@ -1613,6 +1627,10 @@ select:focus {
     gap: 12px 18px;
   }
 
+  .footer-counter {
+    grid-column: 1 / -1;
+  }
+
   .tarot-grid {
     grid-template-columns: 1fr;
   }
@@ -1746,6 +1764,21 @@ select:focus {
     margin: 12px 0;
   }
 
+  .footer-counter-details {
+    margin-top: 4px;
+    grid-template-columns: 1fr;
+  }
+
+  .counter-metric {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 3px;
+  }
+
+  .counter-metric b {
+    font-size: 0.94rem;
+  }
+
   .companion-heading small {
     margin-top: 8px;
     text-align: left;
@@ -1761,3 +1794,4 @@ select:focus {
     align-items: center;
   }
 }
+
