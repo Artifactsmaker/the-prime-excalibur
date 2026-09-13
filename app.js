@@ -1,4 +1,4 @@
-﻿const state = {
+const state = {
   operators: [],
   selected: {
     inference: "AUG",
@@ -120,7 +120,7 @@ const i18n = {
     visits: "Visits",
     totalVisits: "Total visits",
     onlineNow: "Online now",
-    executions: "Executions",
+    executions: "Total executions",
     globalCounter: "Global counter",
     counterFallback: "Local fallback",
     developedBy: "Developed by:",
@@ -234,9 +234,9 @@ const i18n = {
     supportWork: "Ủng Hộ Dự Án",
     activityTotal: "Tổng Hoạt Động",
     visits: "Truy cập",
-    totalVisits: "Tổng truy cập",
+    totalVisits: "Tổng lượt truy cập",
     onlineNow: "Đang trực tuyến",
-    executions: "Thực thi",
+    executions: "Tổng lần thực thi",
     globalCounter: "Bộ đếm toàn cầu",
     counterFallback: "Dự phòng cục bộ",
     developedBy: "Phát triển bởi:",
@@ -350,9 +350,9 @@ const i18n = {
     supportWork: "プロジェクト支援",
     activityTotal: "合計アクティビティ",
     visits: "訪問",
-    totalVisits: "累計訪問",
+    totalVisits: "累計訪問数",
     onlineNow: "現在オンライン",
-    executions: "実行",
+    executions: "累計実行数",
     globalCounter: "グローバルカウンター",
     counterFallback: "ローカル予備",
     developedBy: "開発者:",
@@ -1084,6 +1084,7 @@ async function syncGlobalCounters(registerVisit = false, incrementExecution = fa
 function releaseOnlinePresence() {
   if (!onlinePresenceRegistered) return;
   onlinePresenceRegistered = false;
+  renderUsageMetrics(undefined, undefined, 0, "globalCounter");
   fetch(`${GLOBAL_COUNTER_BASE}/online/down`, {
     method: "GET",
     cache: "no-store",
@@ -1102,6 +1103,13 @@ function initializeUsageMetrics() {
     if (!document.hidden) syncGlobalCounters();
   }, 30000);
   window.addEventListener("pagehide", releaseOnlinePresence);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      releaseOnlinePresence();
+      return;
+    }
+    syncGlobalCounters(false, false, true);
+  });
   window.addEventListener("pageshow", () => {
     if (!onlinePresenceRegistered) syncGlobalCounters(false, false, true);
   });
